@@ -23,7 +23,7 @@ Miss any one and the race is invisible.
 
 **Verdict: B.** VDI-06 is in the right neighborhood but would likely miss. Run **STRESS-06 concurrently with STRESS-01 + check `C:\dump`** and it catches the bug. That's a real twist, not a fresh design.
 
-## Grade B — `system_test_v0.xlsx` (27 rows, my output)
+## Grade B — `system_test_v0.xlsx` (27 rows)
 
 **Closest rows:**
 
