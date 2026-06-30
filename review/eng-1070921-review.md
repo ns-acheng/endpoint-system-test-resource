@@ -1,5 +1,15 @@
 I read both xlsx files, mapped each row's coverage against the actual bug shape (heap-corruption race between config worker thread writing `m_customDnsSettings` / `m_ipRanges` and packet threads reading them, triggered by steering config reload under traffic), and graded honestly.
 
+## Grading Rubric
+
+Each suite is judged on whether its rows, **implemented as written**, would surface this crash on a fresh run — *without* prior knowledge of ENG-1070921 or PR-8768.
+
+| Grade | Meaning |
+|---|---|
+| **A** | After implementing the test case(s) as written, the crash issue **can be caught**. The row's steps, pass criteria, and observability cover all four conditions needed to surface the race. |
+| **B** | After implementing the test case(s) as written, **a twist is needed** to cover this issue — for example, overlapping two rows, tightening pass criteria, or adding usermode dump observability. The shape is in the suite, just not aimed at this race. |
+| **C** | **Not even close.** The issue is beyond the scope of the suite. No row touches the relevant subsystem under the relevant orchestration; new design work would be required. |
+
 ## What it actually takes to catch this bug
 
 Any test must satisfy **all four**:
@@ -10,7 +20,7 @@ Any test must satisfy **all four**:
 
 Miss any one and the race is invisible.
 
-## Grade A — `system_test_m2_v1.xlsx` (63 rows)
+## Grade A — `system_test_new.xlsx` (63 rows)
 
 **Closest rows:**
 
@@ -23,7 +33,7 @@ Miss any one and the race is invisible.
 
 **Verdict: B.** VDI-06 is in the right neighborhood but would likely miss. Run **STRESS-06 concurrently with STRESS-01 + check `C:\dump`** and it catches the bug. That's a real twist, not a fresh design.
 
-## Grade B — `system_test_v0.xlsx` (27 rows)
+## Grade B — `system_test_v0.xlsx` (27 rows, my output)
 
 **Closest rows:**
 
