@@ -39,17 +39,17 @@ TLS-key）不對 = 整個 case 白跑。
 | POWER-04 | REG-only(code-gated) | 1118 systest | **1334** systest✅<br>**1334** systest1334✅ | reboot類<br>self-runner不跨重開機 |
 | STEER-01 | LOCAL-untested | 1118 systest | **1334** systeststatic✅(141)<br>**1331** systestcloud✅<br>mac:1334 systeststatic | 不需DSE<br>test自備cloud前置✅ |
 | STEER-05 | REG-only | 1118 systest | **1334** systeststatic✅<br>mac:1334 systeststatic | LOCAL2本機runner對tenant UI API會斷線→用REG<br>cloud自切<br>✅ |
-| STRESS-01 | BOTH✅ | **1119** systest✅ | **1331** systest<br>**1331** systest1331✅(141,LOCAL1 233×20) | REG6兩tenant peak-conns=0是VM問題非tenant |
+| STRESS-01 | BOTH✅ | **1119** systest✅ | **1331** systest<br>**1331** systest1331✅ | REG6兩tenant peak-conns=0是VM問題非tenant |
 | STRESS-02 | LOCAL-untested | 1119 systest | **1331** systest1331✅ | - |
 | STRESS-03 | LOCAL-only | **1119** systest✅ | **1331** systest✅ | NIC disable切斷SSH；需自帶rescue self-heal task |
-| STRESS-04 | BOTH✅ | 1119 systest | **1334** systeststatic<br>**1334** systest1334✅(REG253)<br>**1331** systest1331✅(LOCAL1 231)<br>**1331** systeststatic✅(LOCAL2 78) | 141 三lane皆✅ |
+| STRESS-04 | BOTH✅ | 1119 systest | **1334** systeststatic<br>**1334** systest1334✅<br>**1331** systest1331✅<br>**1331** systeststatic✅ | 141 三lane皆✅ |
 | STRESS-05 | BOTH(設計相容,LOCAL未證) | **1119** systest✅ | 1331/1334 systest<br>**1334** systest1334 | 雙lane刻意設計 |
 | STRESS-06 | LOCAL-untested | 1118 systest<br>**1119** systest✅ | 1331/1334 systest<br>**1334** systest1334 | LOCAL已證 |
-| STRESS-07 | LOCAL-untested | N/A(qa無NPA) | **1334** systeststatic(首選,2026-08-18起)<br>**1347** systeststatic | NPA+CPA+TLS-key |
-| STRESS-08 | LOCAL-untested | **1119** systest✅ | **1334** systest✅(141)<br>mac:1334 systeststatic✅ | 雙tenant 141已證|
-| STRESS-11 | LOCAL-untested | ? | **1331** systest✅✅(141.1.0.2802,REG-02 176,DNS markers[1,1,1]PASS) | DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143<br>mac:1334 systest(非systest1334)✅(MAC2#53,PR437;見dc→config binding表陷阱) |
-| STRESS-13 | ? | 未實測 | **1334** systest1334✅(141,REG261×20) | CPA-only→用1334 |
-| STRESS-26 | LOCAL-only | **1119** systest✅ | 1331/1334 systest<br>**1331** systest1331✅(141,LOCAL1 235/236,需PR344) | flood塞爆SSH；must use localtest |
+| STRESS-07 | LOCAL-untested | N/A(qa無NPA) | **1334** systeststatic<br>**1347** systeststatic | NPA+CPA+TLS-key |
+| STRESS-08 | LOCAL-untested | **1119** systest✅ | **1334** systest✅<br>mac:1334 systeststatic✅ | 雙tenant 141已證|
+| STRESS-11 | LOCAL-untested | ? | **1331** systest✅ <br>mac:1334 systest| DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143 |
+| STRESS-13 | ? | 未實測 | **1334** systest1334✅ | CPA-only→用1334 |
+| STRESS-26 | LOCAL-only | **1119** systest✅ | 1331/1334 systest<br>**1331** systest1331✅ | flood塞爆SSH；must use localtest |
 | UPGRADE-01 | REG-only(failclose需VM外下config) | 1118/1119 systeststatic| **1334** systeststatic✅<br>**1331** systeststatic✅<br>**1334** stg1334up(upgrade專用dc) | 需DSE=FALSE |
 | UPGRADE-02 | REG-only(code-gated) | 1118(watchdog=false) | **1334** systest✅(137 baseline)<br>**1334** stg1334up(upgrade專用dc) | reboot類 |
 | FC-03 | REG-only(code-gated) | 1118 | **1334** systest✅ | reboot類 |
