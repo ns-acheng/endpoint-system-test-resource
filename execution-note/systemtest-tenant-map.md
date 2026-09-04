@@ -64,7 +64,22 @@ TLS-key）不對 = 整個 case 白跑。
 REG-02 lane 常用 tenant 1118 或 1331 `dc=systest`；watchdog=false；groovy 與 REG
 byte-identical，patch 需兩邊同步。
 
-## dc → config 實測 binding 表（2026-08-16 直接打 tenant API，勿再猜）
+
+## Jenkins lane ↔ VM ↔ tenant（目前實際用法）
+
+| Lane / job | VM | 常用 tenant/dc | 備注 |
+|---|---|---|---|
+| DEV/GRS-SYSTEMTEST-REG | SYS-07 `10.136.217.108` | 1331 `dc=systest` | 主 lane |
+| DEV/GRS-SYSTEMTEST-REG-02 | AUSTIN-FED-SYSTEST `10.136.211.181` | 1118 或 1331 `dc=systest` | 第二 lane；groovy 與 REG byte-identical |
+| DEV/GRS-SYSTEMTEST-**LOCAL1** | SYS-03 `10.136.124.102` | 1119 `dc=systest` | alias `localtest`/`local1` 都通 |
+| DEV/GRS-SYSTEMTEST-**LOCAL2** | SYS-04 `10.136.219.35`** | 1119 或 1331 | node `systest-local2`|
+| DEV/GRS-SYSTEMTEST-**MAC1** | mac VM `10.56.6.70`（靜態）| **1334** `nsclientauto4.stg` `dc=systeststatic`| SSH mode（非 `--localTest`）<br>`preflight`/`recover` 不支援<br>固定 `vm=10.56.6.70 _force_preflight=1`<br>已證 PASS：STEER-01/05F。見 [[mac_setup]] |
+| DEV/GRS-SYSTEMTEST-**MAC2** | main mac agent，node `systest-mac-tar1` | **1334** `dc=systeststatic` | self-runner 直跑（非 SSH<br>已證 PASS<br>見 [[mac_setup]] |
+
+
+
+
+## dc → config 實測 binding 表
 
 **client config 層**（`ou_or_group_name` 精確匹配，不進任何一條 = 落 Default）：
 
@@ -76,26 +91,14 @@ byte-identical，patch 需兩邊同步。
 **steering 層**：`systeststatic`（ou+group）→ 'static'；`systeststatic1334` 實見也綁
 'static'（314 nsdiag）；`systest` → 專屬；`systestcloud` → 專屬（1331）。
 
-**不可並行規則（owner 2026-08-16 定調：只有兩個家族 — static = non-DSE、
-non-static = DSE；1331 與 1334 相同）**：
+**不可並行規則（只有兩個家族 — static = non-DSE、non-static = DSE）**：
 - **static 家族**（non-DSE）：`systeststatic`、`systeststatic1331`、`systeststatic1334`
   → 共享 'static' steering config → **同家族互不可並行**
 - **non-static 家族**（DSE）：`systest`、`systest1331`、`systest1334`、`systestcloud`
   → **同家族互不可並行**
 - **跨家族可以並行**（一個 DSE + 一個 non-DSE = 打不同 config）
-- 此規則 1331 / 1334 完全同型（owner 2026-08-16 確認「1331 is the same」）
+- 此規則 1331 / 1334 完全同型
 - **跨 tenant 永不共享**（owner 2026-08-16）— config 是 tenant 內資源，不同 tenant 隨便並行
-- 既有：STRESS-26 × 1331-config-敏感 case（STRESS-11/FC-04）不可並行（109/118 實證）
-- **⚠️ `systest1334` 陷阱（git44 實測，2026-09-03，STRESS-11 mac port）**：以為
-  `systest1334` 是 1334 的「DSE 版本」（類比 1331 的 `systest`）而直接
-  `--dc=systest1334` 去跑 DSE-要求的 case，結果卡在
-  `dynamic_steering off`——真正原因是 `systest1334` 沒有專屬 config（見上表落
-  Default 那一列），enroll 時 client 實際 bind 到的是裸名 **`systest`**（`nsdiag -f`
-  讀回 `Config:: systest.`，不是 `systest1334`）。**1334 要 DSE，一律用
-  `--dc=systest`**（跟 1331 同名，靠 `--tenant` 分開，不是靠 dc 名字加數字）；
-  `systest1334`/`systeststatic1334` 這類「dc 名字加 tenant id」的變體是給
-  overlap-domain（NPLAN-7844）或 email 防撞用的**標籤**，不是獨立的 steering
-  config，別直接拿來當 `--dc` 傳。
 - ⚠️ 實測註記（client-config 軸，與家族規則分開看）：1334 上 systest1334/
   systeststatic1334/systeststatic 的 **client config** 都落 Default tenant config
   （無專屬）。家族規則管的是 steering/DSE 軸；若某 case 要做 **client-config**
@@ -136,17 +139,6 @@ DNS Security **OFF median 3ms → ON median 221ms**，拆成 **~168ms per-connec
 （tunnel 建立）+ ~46ms per-query**。回應大小不影響（10448B 與 1459B 同為 221ms）。
 故 gate 訂 **300ms** 而非 spec 的 100ms —— spec 的數字是在沒有 tunnel 的前提下寫的。
 量測方法與陷阱見 [[feedback_push_success_is_not_applied]]（假基線 220ms vs 真 3ms）。
-
-## Jenkins lane ↔ VM ↔ tenant（目前實際用法）
-
-| Lane / job | VM | 常用 tenant/dc | 備注 |
-|---|---|---|---|
-| DEV/GRS-SYSTEMTEST-REG | SYS-07 `10.136.217.108` | 1331 `dc=systest` | 主 lane |
-| DEV/GRS-SYSTEMTEST-REG-02 | AUSTIN-FED-SYSTEST `10.136.211.181` | 1118 或 1331 `dc=systest` | 第二 lane；groovy 與 REG byte-identical |
-| DEV/GRS-SYSTEMTEST-**LOCAL1** | SYS-03 `10.136.124.102` | 1119 `dc=systest` | alias `localtest`/`local1` 都通 |
-| DEV/GRS-SYSTEMTEST-**LOCAL2** | SYS-04 `10.136.219.35`** | 1119 或 1331 | node `systest-local2`|
-| DEV/GRS-SYSTEMTEST-**MAC1** | mac VM `10.56.6.70`（靜態）| **1334** `nsclientauto4.stg` `dc=systeststatic`| SSH mode（非 `--localTest`）<br>`preflight`/`recover` 不支援<br>固定 `vm=10.56.6.70 _force_preflight=1`<br>已證 PASS：STEER-01/05F。見 [[mac_setup]] |
-| DEV/GRS-SYSTEMTEST-**MAC2** | main mac agent，node `systest-mac-tar1` | **1334** `dc=systeststatic` | self-runner 直跑（非 SSH<br>已證 PASS<br>見 [[mac_setup]] |
 
 
 **VM/tenant 會漂移**：以 Jenkins console 的 `Target VM found:` + VM 上 `nsdiag -f`
