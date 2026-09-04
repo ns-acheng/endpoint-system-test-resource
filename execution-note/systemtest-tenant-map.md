@@ -12,7 +12,7 @@ source: frontmatter
 # SystemTest test ↔ tenant 對照表
 
 **動工前先查這張表。** tenant 能力（NPA / CPA / DSE / DNS-Security / watchdog /
-TLS-key）不對 = 整個 case 白跑。實測過的才寫進表；沒驗過的標 `?`。
+TLS-key）不對 = 整個 case 白跑。
 
 ## Lane 分類
 
