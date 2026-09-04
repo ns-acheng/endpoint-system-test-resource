@@ -141,14 +141,13 @@ DNS Security **OFF median 3ms → ON median 221ms**，拆成 **~168ms per-connec
 
 | Lane / job | VM | 常用 tenant/dc | 備注 |
 |---|---|---|---|
-| DEV/GRS-SYSTEMTEST-REG | SYS-06 `10.136.126.244` | 1331 `dc=systest` | STRESS/FC/STEER/UPGRADE 主 lane |
-| DEV/GRS-SYSTEMTEST-REG-02 | SYS-07 `10.136.217.108` | 1118 或 1331 `dc=systest` | 第二 lane；groovy 與 REG byte-identical |
-| DEV/GRS-SYSTEMTEST-**LOCAL1** | SYS-03 `10.136.124.102` | 1119 `dc=systest` | 2026-08-01 由 `GRS-SYSTEMTEST-LOCALTEST` 更名（舊 URL 404;`grs_jenkins.py:54` alias `localtest`/`local1` 都通）|
-| DEV/GRS-SYSTEMTEST-**LOCAL2** | **SYS-04 `10.136.219.35`** | 1119 或 1331 | node `systest-local2`。SYS-06 已退役（2026-08-04）|
-| DEV/GRS-AUSTIN | REG6 `10.136.220.37` | `Default tenant config`、DSE FALSE、client 139.0.0.2721（2026-08-03 `nsdiag -f`）| 通用 feature lane。**綁定會被其他人改 —— 跑之前先讀 `nsdiag -f`，別信本表** |
-| DEV/GRS-SYSTEMTEST-**MAC1** | mac VM `10.56.6.70`（靜態）| **1334** `nsclientauto4.stg` `dc=systeststatic`，client 141.0.0.2792 | SSH mode（非 `--localTest`）；`preflight`/`recover` 不支援，固定 `vm=10.56.6.70 _force_preflight=1`。已證 PASS：STEER-01/05F。見 [[mac_setup]] |
-| DEV/GRS-SYSTEMTEST-**MAC2** | 另一台 mac agent，node `systest-mac-tar1`（非 10.56.6.70）| **1334** `dc=systeststatic`，client 141.0.0.2792 | self-runner 直跑（非 SSH）。已證 PASS：STEER-01/05、STRESS-01/02/06/08，見 [[mac_setup]] |
-| ~~REG5~~ | 除役 2026-07-15 | — | 歷史記錄全部 stale |
+| DEV/GRS-SYSTEMTEST-REG | SYS-07 `10.136.217.108` | 1331 `dc=systest` | 主 lane |
+| DEV/GRS-SYSTEMTEST-REG-02 | AUSTIN-FED-SYSTEST `10.136.211.181` | 1118 或 1331 `dc=systest` | 第二 lane；groovy 與 REG byte-identical |
+| DEV/GRS-SYSTEMTEST-**LOCAL1** | SYS-03 `10.136.124.102` | 1119 `dc=systest` | alias `localtest`/`local1` 都通 |
+| DEV/GRS-SYSTEMTEST-**LOCAL2** | SYS-04 `10.136.219.35`** | 1119 或 1331 | node `systest-local2`|
+| DEV/GRS-SYSTEMTEST-**MAC1** | mac VM `10.56.6.70`（靜態）| **1334** `nsclientauto4.stg` `dc=systeststatic`| SSH mode（非 `--localTest`）<br>`preflight`/`recover` 不支援<br>固定 `vm=10.56.6.70 _force_preflight=1`<br>已證 PASS：STEER-01/05F。見 [[mac_setup]] |
+| DEV/GRS-SYSTEMTEST-**MAC2** | main mac agent，node `systest-mac-tar1` | **1334** `dc=systeststatic` | self-runner 直跑（非 SSH<br>已證 PASS<br>見 [[mac_setup]] |
+
 
 **VM/tenant 會漂移**：以 Jenkins console 的 `Target VM found:` + VM 上 `nsdiag -f`
 的 Tenant URL 為準，不要信舊記錄（[[feedback_verify_vm_before_touch]]）。
