@@ -105,6 +105,21 @@ byte-identical，patch 需兩邊同步。
   push（update_client_config），同 tenant 跨家族也可能撞 Default — 此情境目前
   無實例，碰到再驗
 
+## dc 衝突分組（tenant 1334, owner 2026-09-09）
+
+**MSI exit 1603 可能是 dc 衝突**（同一台 VM/tenant 在短時間內用同一個 dc 重複
+enroll，或該 dc 當下正被別的 lane/case 佔用）——不是產品安裝 bug 就一定要換 dc
+重跑，不要無腦重試同一個 dc。同一組內的 dc 互為替代品（同一 tenant 1334，行為
+等價，撞到其中一個就換組內另一個）：
+
+| Group | dc 成員 |
+|---|---|
+| `systest` | `systest`、`stg1334systemtest`、`sys1334`、`systest1334`、`systest1334mac` |
+| `systeststatic` | `systeststatic1334`、`systeststatic1334mac`、`systeststatic` |
+| `stg1334cpa` | `stg1334cpa`、`stg1334cpacpa` |
+| `stg1334cloud` | `stg1334cloud` |
+| `stg1334up` | `stg1334up` |
+
 ## dc 選法（owner 規則 2026-07-30）—— 選錯等於測錯東西
 
 | 需要 | 用 |
