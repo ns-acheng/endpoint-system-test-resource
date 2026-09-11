@@ -105,6 +105,46 @@ byte-identical，patch 需兩邊同步。
   push（update_client_config），同 tenant 跨家族也可能撞 Default — 此情境目前
   無實例，碰到再驗
 
+## tenant 103182 — SUPERSEDED 2026-09-11, r142 iter5 已改用 tenant 1347
+
+owner 2026-09-11："we are using new tenant to go iter 5, forget about 103182" — 103182 從未跑過任何
+case（見上一版本記錄），該方向已放棄，不要再往這個 tenant 排任何東西。
+
+## tenant 1347（karthik.stg.boomskope.com）— r142 iter5 campaign 現役 tenant（2026-09-11）
+
+owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，見
+`golden_regression/test_environment/boomskope_nonprod_stg.json`/`staging.json`）：
+
+| dc（含別名） | AD group | 用途 |
+|---|---|---|
+| `sysstatic1347`、`systeststatic1347`、`systeststatic` | systeststatic | non-DSE |
+| `sytest1347`、`sytest1347mac` | systest | DSE |
+| `up1347`、`up1347mac` | upsystest | upgrade 專用（UPGRADE-01/02） |
+| `cloud1347`、`cloud1347mac` | cloud | cloud steering（OVLP/STEER-05 系列用） |
+
+**Jenkins 現況（2026-09-11 排定，`grs_groovy_lint.py patch-trigger` 直推 live）：**
+- **REG2**（`W11-26H1-AUSTIN-SYS-07`）：8 組 cron slot 全部指向 1347/stg，G1/G4/G6→`sytest1347`、
+  G5→`systeststatic1347`、G2/G7→`cloud1347`、G3/G8(upgrade_01/02，本次重新加回)→`up1347`。
+  `release_info` 非-upgrade 組故意留空（不帶 `--current_release`）— 走 email 安裝路徑,自動裝
+  tenant 目前在 STG 的最新 build,owner 2026-09-11 明確要求。
+- **REG**（`AUSTIN-FED-SYSTEST`）：原 REG2 那 6 組 tenant **1457**/fed 排程原樣搬過來（`--dc=systest1457`
+  等不變,只換 HOSTNAME + branch 改回 `main`）— 1457 iter1 continue 跑,只是從 REG2 換到 REG。
+  G3/G8(upgrade)在 1457 上仍缺，因為 1457 沒有 develop-142 build（2026-09-09 owner 已定案，見下方
+  1457 章節）。
+- **LOCAL2**：無 job 層 default 需要改（default 本來就是 1119/qa，跟 1457 無關）；之後手動觸發
+  LOCAL2 一律用 1347（chapter lock `r142-iter5-1347`），不要再手動打 1457。
+- **chapter lock**：`grs_jenkins.py chapter show` → `r142-iter5-1347`（tenant 1347, env
+  `boomskope_nonprod_stg.json`）。舊 1457 chapter（若有）已由此覆蓋。
+
+尚未實測 G3/G8 在 1347 是否真有 develop-142 build 可供 upgrade 起跳 — 第一次觸發後看結果，別假設。
+
+## tenant 1457（nscauto7.fed.boomskope.com）— r142 iter1 continuation，現搬到 REG（2026-09-11）
+
+沿用 2026-09-09 已驗證的 6-dc-group 排程（`systest1457`/`systest1457cloud`/`systest1457static`/
+`sys1457`），2026-09-11 從 REG2 搬到 REG（`AUSTIN-FED-SYSTEST`），內容不變，只有 VM + branch(回main)。
+G3(upgrade_01)/G8(upgrade_02) 仍缺 — 1457 沒有 develop-142 build（只到 141.1.0.2817），等 fed 的
+release channel 補上 142 才能重加。
+
 ## dc 衝突分組（tenant 1334, owner 2026-09-09）
 
 **MSI exit 1603 可能是 dc 衝突**（同一台 VM/tenant 在短時間內用同一個 dc 重複
