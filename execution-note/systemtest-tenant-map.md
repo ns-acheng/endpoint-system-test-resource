@@ -138,6 +138,11 @@ owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，�
 
 尚未實測 G3/G8 在 1347 是否真有 develop-142 build 可供 upgrade 起跳 — 第一次觸發後看結果，別假設。
 
+**2026-09-11 手動 smoke test 發現**：`test_overlap_02_flags_off_parity` 在 `cloud1347`（以及 1457 的
+`systest1457cloud`，同一 cloud dc family）上 positive control 失敗 —— 找不到 `clients3.google.com`
+的 'Tunneling flow' 行，owner 判定這個 tenant/dc 組合不滿足這個 case 的前提。已從 REG2(1347)/REG(1457)
+的 G7 cron 排程 `-k` 清單移除，其餘 5 個 overlap case 不受影響。
+
 ## tenant 1457（nscauto7.fed.boomskope.com）— r142 iter1 continuation，現搬到 REG（2026-09-11）
 
 沿用 2026-09-09 已驗證的 6-dc-group 排程（`systest1457`/`systest1457cloud`/`systest1457static`/
