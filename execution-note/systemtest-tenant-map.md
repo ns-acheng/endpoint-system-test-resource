@@ -143,6 +143,8 @@ owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，�
 的 'Tunneling flow' 行，owner 判定這個 tenant/dc 組合不滿足這個 case 的前提。已從 REG2(1347)/REG(1457)
 的 G7 cron 排程 `-k` 清單移除，其餘 5 個 overlap case 不受影響。
 
+**2026-09-12 LOCAL2 加入 iter5**：LOCAL2 排程從 git44 2026-09-10 設的 tenant 1457 process-health（L1-L6，hourly 22-03點）整份換成 iter5/1347（G1-G5+G7/G8，跟 REG2 同組內容，7 個 daily slot，時 0-6 點，刻意跟 REG2 同 dc-family 的時段錯開避免撞車），iterations=5(非-upgrade)/3(upgrade)，release_info pin `--current_release=release-142`。已用 coord.py 通知 git44。
+
 **2026-09-12 overlap 整組移除**：REG2 build #134（bundled）與 #136（isolated 重跑）都在
 `test_overlap_06_concurrent_classification` 炸在同一個網域——`clients1.google.com` 在 tenant
 1347/`cloud1347` 上完全零 tunnel-first marker（其他 6 個候選網域正常），兩次獨立重現，排除
