@@ -143,6 +143,13 @@ owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，�
 的 'Tunneling flow' 行，owner 判定這個 tenant/dc 組合不滿足這個 case 的前提。已從 REG2(1347)/REG(1457)
 的 G7 cron 排程 `-k` 清單移除，其餘 5 個 overlap case 不受影響。
 
+**2026-09-12 overlap 整組移除**：REG2 build #134（bundled）與 #136（isolated 重跑）都在
+`test_overlap_06_concurrent_classification` 炸在同一個網域——`clients1.google.com` 在 tenant
+1347/`cloud1347` 上完全零 tunnel-first marker（其他 6 個候選網域正常），兩次獨立重現，排除
+cross-test cache 理論。根因：`_OVLP06_CANDIDATE_DOMAINS` 這組網域池 2026-09-04 只在 tenant
+1334/REG6 上實測過，從未在 1347 上重新驗證。owner 裁決：不只 overlap_06，**整個 overlap 組
+(overlap_01/04/05/06/08) 從 REG2(1347)/REG(1457) 排程整組移除**，不再排入未來測試。
+
 ## tenant 1457（nscauto7.fed.boomskope.com）— r142 iter1 continuation，現搬到 REG（2026-09-11）
 
 沿用 2026-09-09 已驗證的 6-dc-group 排程（`systest1457`/`systest1457cloud`/`systest1457static`/
