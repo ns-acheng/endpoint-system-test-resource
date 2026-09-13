@@ -159,6 +159,10 @@ cross-test cache 理論。根因：`_OVLP06_CANDIDATE_DOMAINS` 這組網域池 2
 G3(upgrade_01)/G8(upgrade_02) 仍缺 — 1457 沒有 develop-142 build（只到 141.1.0.2817），等 fed 的
 release channel 補上 142 才能重加。
 
+**2026-09-13 排程停用（owner 指示）**：REG 的 cron trigger spec 已清空（只留一行說明），
+不再自動跑。手動觸發（`grs_jenkins.py trigger reg ...`）仍可用。REG2(1347/iter5)、
+LOCAL2 排程不受影響，繼續照常跑。
+
 ## dc 衝突分組（tenant 1334, owner 2026-09-09）
 
 **MSI exit 1603 可能是 dc 衝突**（同一台 VM/tenant 在短時間內用同一個 dc 重複
