@@ -118,9 +118,19 @@ owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，�
 | dc（含別名） | AD group | 用途 | 實測 bound steering config（`nsdiag -f`/log） |
 |---|---|---|---|
 | `sysstatic1347`、`systeststatic1347`、`systeststatic` | systeststatic | non-DSE | `systest static`（default mode `all`） |
-| `sytest1347`、`sytest1347mac` | systest | DSE | `systest` |
+| `systest1347`、`systest1347mac`（**正確拼法，見下方 ⚠️**） | systest | DSE | `systest` |
 | `up1347`、`up1347mac` | upsystest | upgrade 專用（UPGRADE-01/02） | — |
 | `cloud1347`、`cloud1347mac` | cloud | cloud steering（OVLP/STEER-05/**STEER-01** 系列用） | `systestcloud`（已是 cloud mode，build 59 實測） |
+
+**⚠️ `sytest1347` 是打錯字、已修正為 `systest1347`（2026-09-14，owner 抓到）**：這個
+chapter 從 2026-09-11 建立起，G2/G3/G5 排程用的就是少一個 `s` 的 `sytest1347`——這串**完全
+沒對到 tenant 1347 上任何 OU/config**，client 全部落到 tenant 全域共用的
+`Default tenant config`（實測 build 128：`Config:: Default tenant config.`），不是預期
+的專屬 `systest` config。正確拼法 `systest1347`（對齊 AD group 名稱 `systest`，跟
+`systeststatic1347`/`cloud1347`/`up1347` 同一套命名規則）已實測（REG build 60）：
+`Config:: systest.` / `Steering Config:: systest.`，跟 tenant 1457 的 `systest1457`→
+`systest` 是同一個 pattern。REG2/LOCAL2 的 G2/G3/G5 已修正並套用（PR 無需要，純 cron
+patch）。**MAC2 用的 `sytest1347mac` 大概率同一個 typo，已通知 git44 一併確認。**
 
 **⚠️ STEER-01 只能綁 cloud 家族 dc（2026-09-14，owner）**：STEER-01 的 Cloud Apps
 Only 前提（PR 472，`acheng/git-steer01-query-only-fix`）已改成**純查詢**——只讀
