@@ -115,12 +115,26 @@ case（見上一版本記錄），該方向已放棄，不要再往這個 tenant
 owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，見
 `golden_regression/test_environment/boomskope_nonprod_stg.json`/`staging.json`）：
 
-| dc（含別名） | AD group | 用途 |
-|---|---|---|
-| `sysstatic1347`、`systeststatic1347`、`systeststatic` | systeststatic | non-DSE |
-| `sytest1347`、`sytest1347mac` | systest | DSE |
-| `up1347`、`up1347mac` | upsystest | upgrade 專用（UPGRADE-01/02） |
-| `cloud1347`、`cloud1347mac` | cloud | cloud steering（OVLP/STEER-05 系列用） |
+| dc（含別名） | AD group | 用途 | 實測 bound steering config（`nsdiag -f`/log） |
+|---|---|---|---|
+| `sysstatic1347`、`systeststatic1347`、`systeststatic` | systeststatic | non-DSE | `systest static`（default mode `all`） |
+| `sytest1347`、`sytest1347mac` | systest | DSE | `systest` |
+| `up1347`、`up1347mac` | upsystest | upgrade 專用（UPGRADE-01/02） | — |
+| `cloud1347`、`cloud1347mac` | cloud | cloud steering（OVLP/STEER-05/**STEER-01** 系列用） | `systestcloud`（已是 cloud mode，build 59 實測） |
+
+**⚠️ STEER-01 只能綁 cloud 家族 dc（2026-09-14，owner）**：STEER-01 的 Cloud Apps
+Only 前提（PR 472，`acheng/git-steer01-query-only-fix`）已改成**純查詢**——只讀
+`nsdiag -f` 的 `traffic_mode`，不是 cloud 就直接 FAIL，不會再自己動手改+還原。這代表
+它**只能在已經是 cloud mode 的 config 上跑**：`cloud1347`（bound `systestcloud`，已驗
+證是 cloud）可以；`systeststatic1347`（bound `systest static`，預設 `all`）不行——舊
+code 在 static 上會自己把它切成 cloud、teardown 再切回去，但 restore 走
+`retry_function`（吞例外回 `None`），失敗時 log 照樣印「已還原」，把共用的 `systest
+static` config 卡在 cloud mode（build 57 abort 事故根因）。REG2/LOCAL2 的 G4(static)
+排程已把 `test_steer_01` 移到 G1(cloud)，跟 `test_steer_05_fast` 同組；G4 只留
+`stress_07`/`stress_08`（兩個都不要求特定 mode）。同一個 tenant 換家族綁的 config
+名字不一定一樣（1457 的 `cloud` 家族落在共用的 `Default tenant config`，1347 的
+`cloud1347` 卻是專屬的 `systestcloud`）——**不要跨 tenant 假設 config 名字**，每次要
+用 `nsdiag -f`/log 實測，別複製這張表的名字去猜別的 tenant。
 
 **Jenkins 現況（2026-09-11 排定，`grs_groovy_lint.py patch-trigger` 直推 live）：**
 - **REG2**（`W11-26H1-AUSTIN-SYS-07`）：8 組 cron slot 全部指向 1347/stg，G1/G4/G6→`sytest1347`、
@@ -144,6 +158,11 @@ owner 給的 dc 家族表（`.env` tenants map 已確認：`karthik` = 1347，�
 的 G7 cron 排程 `-k` 清單移除，其餘 5 個 overlap case 不受影響。
 
 **2026-09-12 LOCAL2 加入 iter5**：LOCAL2 排程從 git44 2026-09-10 設的 tenant 1457 process-health（L1-L6，hourly 22-03點）整份換成 iter5/1347（G1-G5+G7/G8，跟 REG2 同組內容，7 個 daily slot，時 0-6 點，刻意跟 REG2 同 dc-family 的時段錯開避免撞車），iterations=5(非-upgrade)/3(upgrade)，release_info pin `--current_release=release-142`。已用 coord.py 通知 git44。
+
+**2026-09-14 test_steer_01 從 G4 搬到 G1（REG2＋LOCAL2 都改）**：見上面 STEER-01 那條 ⚠️。
+`grs_groovy_lint.py patch-trigger` 直推 live，POST 200 + read-back 內容核對通過；REG2/
+LOCAL2 各自的 verify-build 因為當時 job 正在跑舊排程的 build 排進 queue，等現有 build
+跑完會自動起。搭配 code 修復 PR 472。
 
 **2026-09-12 overlap 整組移除**：REG2 build #134（bundled）與 #136（isolated 重跑）都在
 `test_overlap_06_concurrent_classification` 炸在同一個網域——`clients1.google.com` 在 tenant
