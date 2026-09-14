@@ -164,6 +164,17 @@ static` config 卡在 cloud mode（build 57 abort 事故根因）。REG2/LOCAL2 
 LOCAL2 各自的 verify-build 因為當時 job 正在跑舊排程的 build 排進 queue，等現有 build
 跑完會自動起。搭配 code 修復 PR 472。
 
+## chapter r142-iter20-1347（2026-09-14，取代 r142-iter5-1347）
+
+PR 472 merge 後，owner 開新 chapter：非-upgrade 組（G1-G5）`iterations` 5→20；upgrade
+組（G7/G8）**維持 iterations=5，不跟著漲**（owner明確要求：25-30min/iter，若也衝
+20 會單次跑到 ~14h，超過 8h cron 週期造成排隊）。REG2 的 `timeout=`（manual per-slot
+Jenkins timeout，小時）已用 `db.py timeout`（release-142 樣本、median steady-state、
+每組只算一次 install overhead、×1.5 headroom）重新算過並套用：
+G1=7h、G2=8h、G3=7h、G4=4h、G5=6h、G7=4h、G8=4h。LOCAL2 沒有手動 `timeout` 參數
+（self-runner 依 `iterations` 自算 poll timeout，不用改）。`grs_jenkins.py chapter show`
+現在只有 `r142-iter20-1347`（global，tenant=1347，env=boomskope_nonprod_stg.json）。
+
 **2026-09-12 overlap 整組移除**：REG2 build #134（bundled）與 #136（isolated 重跑）都在
 `test_overlap_06_concurrent_classification` 炸在同一個網域——`clients1.google.com` 在 tenant
 1347/`cloud1347` 上完全零 tunnel-first marker（其他 6 個候選網域正常），兩次獨立重現，排除
