@@ -49,7 +49,7 @@ TLS-key）不對 = 整個 case 白跑。
 | STRESS-08 | LOCAL-untested | **1119** systest | **1334** systest<br>mac:1334 systeststatic | 雙tenant 141已證|
 | STRESS-11 | LOCAL-untested | ? | **1331** systest <br>mac:1334 systest| DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143 |
 | STRESS-13 | ? | 未實測 | **1334** systest1334 | CPA-only→用1334 |
-| STRESS-26 | LOCAL-only | **1119** systest | 1331/1334 systest<br>**1331** systest1331 | flood塞爆SSH；must use localtest |
+| STRESS-26 | LOCAL-only | **1119** systest | 1331/1334 systest<br>**1331** systest1331<br>mac:**1347** systest1347mac | flood塞爆SSH；must use localtest |
 | UPGRADE-01 | REG-only(failclose需VM外下config) | 1118/1119 systeststatic| **1334** systeststatic<br>**1331** systeststatic<br>**1334** stg1334up(upgrade專用dc) | 需DSE=FALSE |
 | UPGRADE-02 | REG-only(code-gated) | 1118(watchdog=false) | **1334** systest(137 baseline)<br>**1334** stg1334up(upgrade專用dc) | reboot類 |
 | FC-03 | REG-only(code-gated) | 1118 | **1334** systest | reboot類 |
