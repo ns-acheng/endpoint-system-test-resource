@@ -65,6 +65,26 @@ TLS-key）不對 = 整個 case 白跑。
 REG-02 lane 常用 tenant 1118 或 1331 `dc=systest`；watchdog=false；groovy 與 REG
 byte-identical，patch 需兩邊同步。
 
+## Mac port 已確認不可行（architecture gap，別再排進 backlog）
+
+**2026-10-05 判定**，查過 code 跟 mac 自己的架構後確認，不是「步驟要調整」而是「被測的東西在 mac 上根本不存在」：
+
+- **STRESS-04**（Watchdog Kill Loop）：整個 spec 的 8 個 step 裡 6 個（1/3/4/6/7/8）圍繞 Windows
+  獨立的 `stAgentSvcMon.exe` watchdog process（監測+重啟主程式、watchdog 自己的 CPU/mem、單獨殺
+  watchdog、57s monitor-delay-start blind window）。Mac 只有 launchd 層級的 auto-start，沒有第二個
+  獨立 process 可以單獨殺/監測 —— 硬 port 等於拆成完全不同的小測試，不是 STRESS-04 了。
+- **UPGRADE-02**（Legacy Monitor MSI-kill + reboot retry）：被測功能是 Windows MSI 安裝程序
+  （`msiexec.exe`）中途被殺後，`stAgentSvcMon.exe`（Legacy Monitor）在下次開機時偵測到裝一半、自動
+  重試安裝。Mac 裝的是 `.pkg`（`installer` 指令），沒有 `msiexec` process，也沒有 Legacy Monitor
+  這種「開機重試裝一半」的機制 —— mac.py 全文搜尋不到任何對應物。Reboot 本身不是問題（POWER-04
+  已用 SSH-mode 證明可行），問題是被測功能本身在 mac 架構上不存在。
+
+兩者都**不是**「LOCAL-only / REG-only(code-gated)」那種機制限制，是 feature 本身的平台差異，不會隨
+mac client 以後的版本而解決。未來排 mac port backlog 時跳過，別重複花時間重新調查。
+
+**STEER-07**（On/Off-Prem Detection via Host-File Block）：不是不可行，是 **owner 已經在 spec 裡明寫
+Windows-only**（2026-10-05 新 case，Source 欄位："reuses STRESS-26's hosts-file mechanism...
+Windows-only"）—— 不要自己加 mac 版本，這是 owner 的 scope 決定，不是技術限制。
 
 ## Jenkins lane ↔ VM ↔ tenant（目前實際用法）
 
