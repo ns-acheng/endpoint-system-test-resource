@@ -65,6 +65,17 @@ TLS-key）不對 = 整個 case 白跑。
 REG-02 lane 常用 tenant 1118 或 1331 `dc=systest`；watchdog=false；groovy 與 REG
 byte-identical，patch 需兩邊同步。
 
+**Tenant 1340（nsclientauto9）dc 對照（owner 2026-10-06）**：
+- group `systest`（DSE-on）：`systest1340`, `systest1340mac`, `sys1340`, `sys1340mac`
+- group `systeststatic`（non-DSE）：`systeststatic1340`, `systeststatic1340mac`
+
+驗證過（LOCAL1 build 28,dc=sys1340）：`nsdiag -f` 讀到
+`OnPremDetection:: On-Premises.`，`nssteering.json` **沒有** `onprem_labels`
+override——跟 tenant 1347 不同（1347 的 `onprem_labels[0]` 指向打不通的
+`http://10.136.220.10`，會蓋掉 `update_client_config` 寫進 `nsconfig.json`
+`onpremcheck` 的欄位，導致 on-prem 偵測永遠偵測不到）。**STEER-07 類（依賴
+on-prem 偵測真的生效的 case）優先用 1340，不要用 1347。**
+
 ## Mac port 已確認不可行（architecture gap，別再排進 backlog）
 
 **2026-10-05 判定**，查過 code 跟 mac 自己的架構後確認，不是「步驟要調整」而是「被測的東西在 mac 上根本不存在」：
