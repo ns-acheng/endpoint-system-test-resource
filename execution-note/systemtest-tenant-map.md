@@ -46,7 +46,7 @@ TLS-key）不對 = 整個 case 白跑。
 | STRESS-05 | BOTH(設計相容,LOCAL未證) | **1119** systest | 1331/1334 systest<br>**1334** systest1334<br>mac:**1347** systest1347mac | 雙lane刻意設計<br>mac走MAC2-SSH驗證PASS(develop-143,build35) |
 | STRESS-06 | LOCAL-untested | 1118 systest<br>**1119** systest | 1331/1334 systest<br>**1334** systest1334<br>mac:1334 systeststatic<br>mac:1347 systeststatic1347mac | LOCAL已證 |
 | STRESS-07 | LOCAL-untested | N/A(qa無NPA) | **1334** systeststatic<br>**1347** systeststatic | NPA+CPA+TLS-key |
-| STRESS-08 | LOCAL-untested | **1119** systest | **1334** systest<br>mac:1334 systeststatic | 雙tenant 141已證|
+| STRESS-08 | LOCAL-untested | **1119** systest | **1334** systest<br>mac:**1457** sys1457staticmac | 雙tenant 141已證；mac MAC2-SSH驗證PASS(develop-143,build47)；tenant 1334 non-DSE enrollment目前不穩，mac暫用1457 |
 | STRESS-11 | LOCAL-untested | ? | **1331** systest <br>mac:1334 systest| DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143 |
 | STRESS-13 | ? | 未實測 | **1334** systest1334 | CPA-only→用1334 |
 | STRESS-26 | LOCAL-only | **1119** systest | 1331/1334 systest<br>**1331** systest1331<br>mac:**1347** systest1347mac | flood塞爆SSH；must use localtest |
