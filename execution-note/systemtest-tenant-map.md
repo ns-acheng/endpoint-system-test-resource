@@ -51,7 +51,7 @@ TLS-key）不對 = 整個 case 白跑。
 | STRESS-13 | ? | 未實測 | **1334** systest1334 | CPA-only→用1334 |
 | STRESS-26 | LOCAL-only | **1119** systest | 1331/1334 systest<br>**1331** systest1331<br>mac:**1347** systest1347mac | flood塞爆SSH；must use localtest |
 | STRESS-27 | ? | ? | mac:**1347** systeststatic1347mac | MAC2-only |
-| UPGRADE-01 | REG-only(failclose需VM外下config) | 1118/1119 systeststatic| **1334** systeststatic<br>**1331** systeststatic<br>**1334** stg1334up(upgrade專用dc) | 需DSE=FALSE |
+| UPGRADE-01 | REG-only(failclose需VM外下config) | 1118/1119 systeststatic| **1334** systeststatic<br>**1331** systeststatic<br>**1334** stg1334up(upgrade專用dc)<br>mac:**1457** sys1457staticmac | 需DSE=FALSE（但code實測DSE/non-DSE皆可,見shared push helper）；mac MAC2-SSH驗證PASS(develop-143,build48,PR508) |
 | UPGRADE-02 | REG-only(code-gated) | 1118(watchdog=false) | **1334** systest(137 baseline)<br>**1334** stg1334up(upgrade專用dc) | reboot類 |
 | FC-03 | REG-only(code-gated) | 1118 | **1334** systest | reboot類 |
 | FC-04 | LOCAL-untested | 1118 | 1334或1331 systeststatic(DNS-Security×DSE)<br>mac:1347 systest1347mac | - |
