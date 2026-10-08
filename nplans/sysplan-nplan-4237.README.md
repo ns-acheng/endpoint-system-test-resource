@@ -24,3 +24,36 @@
   fallback, and AV interop — this sysplan deliberately does NOT repeat those; it covers
   the cross-component systemic angle (NSClient-driven lifecycle, upgrade independence,
   crash/reboot recovery, version-skew compatibility) that the functional plan doesn't.
+
+## Correction, 2026-10-08 (live DEM Agent found running, tenant 1340/sys1340mac, build 54)
+
+With the DEM Agent actually enabled and running (`netskope-dem-agent` process confirmed
+live via `ps`/`launchctl`, injecting app-probe events), a second live check against
+`nsdebuglog.log` on the same VM (grs-mac-ssh, 192.168.64.3) overturned two assumptions
+baked into the first draft of SYS-4237-01/02/03/13:
+
+1. The OLD in-process DEM module (`m_demMgr`/`nsDemTaskMgr`, the one `ch16_dem.md`
+   documents) was **not replaced** by the new standalone agent — both now run
+   simultaneously. Confirmed by `nsdebuglog.log` lines 31-35: `stAgentSvc.cpp:72 "init
+   m_demMgr"`, `nsDemTaskMgr.cpp:131 "DEM init nsDemTaskMgr"`,
+   `stAgentSvc.cpp:97 "register DEM module callbacks"` — all fired at NSClient's own
+   startup, same as before this refactor.
+2. The standalone agent's traffic is **not uniformly decoupled** from NSClient's tunnel.
+   `nsdebuglog.log` line 3477 (`tunnel.cpp:1336`) shows NSClient's own tunnel actively
+   steering the standalone agent's app-probe HTTP traffic ("Tunneling flow from addr
+   ... process: netskope-dem-agent to host: udemy.com ... to nsProxy"), repeating every
+   ~5 minutes. Only the Polaris event-receiver connection is explicitly bypassed from the
+   tunnel: line 3502 (`demMgr.cpp:701`) `"DEM Bypassing connection to polaris event
+   receiver... process netskope-dem-agent"`. So app-probe traffic currently appears
+   tunnel-dependent while GEF/Polaris event posting bypasses it — the opposite of a
+   blanket "DEM keeps working when NSClient is disabled/disconnected" guarantee.
+
+Raw evidence saved: `C:\tmp\nplan-4237\nsdebuglog_dem_lines_tenant1340_build54_20261008.txt`
+(446 lines, every "dem"-matching line from `nsdebuglog.log` with ORIGINAL file line
+numbers preserved as a prefix).
+
+SYS-4237-01, -02, -03, and -13's `Objective / Risk` (and -02/-03's `Failure Indicators`)
+were revised in place to cite this evidence instead of the original unverified
+assumption. No case was deleted or renumbered -- the hypotheses they test are still the
+right hypotheses; the text now reflects what has actually been observed versus what
+still needs checking per traffic class.

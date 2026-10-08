@@ -1,0 +1,447 @@
+31: 2026/10/08 08:55:42.140484 stAgentNE p45240 t5639 info stAgentSvc.cpp:72 stAgentService init m_demMgr
+32: 2026/10/08 08:55:42.140486 stAgentNE p45240 t5639 info nsDemTaskMgr.cpp:131 DEM init nsDemTaskMgr
+35: 2026/10/08 08:55:42.140504 stAgentNE p45240 t5639 info stAgentSvc.cpp:97 stAgentService register DEM module callbacks
+36: 2026/10/08 08:55:42.140995 stAgentNE p45240 t5639 error demUtils.cpp:149 dem::Utils readLaunchdProgramPath: failed to read /Library/LaunchDaemons/com.netskope.dem-agent.plist: /Library/LaunchDaemons/com.netskope.dem-agent.plist: cannot open file
+37: 2026/10/08 08:55:42.141028 stAgentNE p45240 t5639 warn demUtils.cpp:212 dem::Utils DEM agent is not installed, skipping registration of DEM module callbacks
+89: 2026/10/08 08:55:42.168215 stAgentNE p45240 t5639 info config.cpp:2285 Config DEM client status data report enabled=1, heartbeat enabled=1, event forwarder=events.stg.boomskope.com, disable legacy client status=0
+307: 2026/10/08 08:55:47.168711 stAgentNE p45240 t12803 info config.cpp:5675 Config enableDemClientStatus is in enabled state, not to accept any change
+509: 2026/10/08 08:55:59.090161 stAgentNE p45240 t12803 info nsDemTaskMgr.cpp:679 DEM Failed to get Active User Session ID
+557: 2026/10/08 08:56:00.371568 stAgentNE p45240 t12803 info config.cpp:5675 Config enableDemClientStatus is in enabled state, not to accept any change
+584: 2026/10/08 08:56:00.384852 stAgentNE p45240 t12803 info nsTaskScheduler.cpp:52 DEM registerTask id 1, interval: 60s, run now: yes
+585: 2026/10/08 08:56:00.384871 stAgentNE p45240 t12803 info nsTaskScheduler.cpp:66 DEM start task scheduler thread...
+586: 2026/10/08 08:56:00.384937 stAgentNE p45240 t17675 info nsTaskScheduler.cpp:138 DEM task scheduler thread is running
+587: 2026/10/08 08:56:00.384949 stAgentNE p45240 t12803 info nsTaskScheduler.cpp:52 DEM registerTask id 2, interval: 60s, run now: yes
+592: 2026/10/08 08:56:00.385032 stAgentNE p45240 t12803 info clientStatusHandler.cpp:430 clientStatusHandler client status message: {    "client_status": {        "type": "Event",        "timestamp": "1791449760",        "tenant_id": "1340",        "client_version": "143.100.100.10363",        "service_name": "Internet Security",        "dem_feature_enabled": "0",        "status": "Disabled",        "has_error": "0",        "status_v2": "Disabled",        "device_classification_status": "not configured",        "device_classification_custom_status": "not configured",        "device_classification_custom_status_id": "0",        "host_info": {            "last_hostinfo_update_timestamp": "1791449742",            "hostname": "Managed’s Virtual Machine",            "os": "Mac",            "os_version": "15.7.7",            "device_make": "Apple",            "device_model": "VirtualMac2,1",            "serialNumber": "ZFQY**XYHG",            "nsdeviceuid": "8A76EAB6-6296-*******31-9DBC84F2B8CA",            "managementID": "50DCC3EF6AD85EAAAC56451AD340113C",            "macAddresses": [                "3A:BE:D*:**:B5:10"            ],            "steeringConfig": "systest",            "clientConfig": "systest"        },        "onprem_status": {            "status": "on-prem",            "method": "HTTP",            "domain": "http:\/\/httpbin.org",            "match_ip": "200 OK received"        },        "event": "Device Posture Change",        "event_details": "device classification : not configured",        "actor": "System",        "pop_pinned": "No",        "npa_status": "Disabled"    }}
+635: 2026/10/08 08:56:02.566008 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+649: 2026/10/08 08:56:02.566020 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 1
+655: 2026/10/08 08:56:03.601720 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+676: 2026/10/08 08:56:04.117836 stAgentNE p45240 t12803 info demMgr.cpp:848 DEM Subscription is Enterprise
+677: 2026/10/08 08:56:04.117842 stAgentNE p45240 t12803 info nsDemTask.cpp:1454 DEM loaddemconfig
+678: 2026/10/08 08:56:04.117852 stAgentNE p45240 t12803 info fileUtil.cpp:68 nsUtils failed to open file for reading: /Library/Application Support/Netskope/STAgent/data/dem/dem.json, err:2
+679: 2026/10/08 08:56:04.117858 stAgentNE p45240 t12803 info nsTaskScheduler.cpp:52 DEM registerTask id 3, interval: 3600s, run now: yes
+770: 2026/10/08 08:56:06.387824 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:746 DEM getDemConfig downloaded successfully, status code: 200, msg:{"demServiceEnabled":true,"demAgentEnabled":true,"networkProbe":{"id":4318,"name":"default_network_probe_tenant_1340","networkPathDeviceHealthCollection":true,"processInfoCollection":false,"frequency":5}}
+771: 2026/10/08 08:56:06.388443 stAgentNE p45240 t17675 info nsDemConfig.cpp:40 nsDemConfig Process Info Collection: false Network Path Device Health Collection: true Frequency: 5 DEM Service Enabled: true DEM Agent Enabled: true AppProbes Cfg:
+772: 2026/10/08 08:56:06.388476 stAgentNE p45240 t17675 info demMgr.cpp:87 DEM refreshDEMConfig
+825: 2026/10/08 08:56:06.853392 stAgentNE p45240 t12803 info config.cpp:5675 Config enableDemClientStatus is in enabled state, not to accept any change
+939: 2026/10/08 08:56:08.486940 stAgentNE p45240 t17959 info nsTaskScheduler.cpp:52 DEM registerTask id 4, interval: 60s, run now: yes
+953: 2026/10/08 08:56:08.499967 stAgentNE p45240 t17959 info RouteCtrlCollectConfig.cpp:115 DEM nsgatewayIP=45.250.161.140
+954: 2026/10/08 08:56:08.499969 stAgentNE p45240 t17959 info demMgr.cpp:295 DEM Start DEM route control collection tasks, sessId 501
+955: 2026/10/08 08:56:08.499972 stAgentNE p45240 t17959 info nsDemTaskMgr.cpp:294 DEM startDpRouteCtxCollect  ctx->event_forwarder_host = events.stg.boomskope.com
+956: 2026/10/08 08:56:08.499974 stAgentNE p45240 t17959 info nsDemTaskMgr.cpp:1570 DEM set event_forwarder_host_dp to events.stg.boomskope.com
+957: 2026/10/08 08:56:08.499977 stAgentNE p45240 t17959 info nsDemTaskMgr.cpp:377 RTCTL start DEM tunnel rtt task 5, PostFrequency 300s, sess 501
+958: 2026/10/08 08:56:08.499979 stAgentNE p45240 t17959 info nsTaskScheduler.cpp:52 DEM registerTask id 5, interval: 300s, run now: no
+959: 2026/10/08 08:56:08.499980 stAgentNE p45240 t17959 info nsDemTaskMgr.cpp:386 RTCTL start DEM trace route task 6, frequency 300, sess 501
+960: 2026/10/08 08:56:08.499981 stAgentNE p45240 t17959 info nsTaskScheduler.cpp:52 DEM registerTask id 6, interval: 300s, run now: no
+961: 2026/10/08 08:56:08.499982 stAgentNE p45240 t17959 info nsTraceRoute.cpp:78 RTCTL start DEM trace route thread...
+962: 2026/10/08 08:56:08.499996 stAgentNE p45240 t17959 info demMgr.cpp:301 DEM Starting sample async
+963: 2026/10/08 08:56:08.500017 stAgentNE p45240 t22023 info nsTraceRoute.cpp:133 RTCTL DEM trace route thread is running...
+996: 2026/10/08 08:56:09.444631 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+1012: 2026/10/08 08:56:09.444649 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 4
+1017: 2026/10/08 08:56:10.235705 stAgentNE p45240 t12803 info demMgr.cpp:848 DEM Subscription is Enterprise
+1018: 2026/10/08 08:56:10.235708 stAgentNE p45240 t12803 info nsDemTask.cpp:1454 DEM loaddemconfig
+1019: 2026/10/08 08:56:10.235737 stAgentNE p45240 t12803 info nsDemConfig.cpp:40 nsDemConfig Process Info Collection: false Network Path Device Health Collection: true Frequency: 5 DEM Service Enabled: true DEM Agent Enabled: true AppProbes Cfg:
+1609: 2026/10/08 09:01:02.531359 stAgentNE p45240 t23047 info nsTaskScheduler.cpp:52 DEM registerTask id 7, interval: 60s, run now: yes
+1611: 2026/10/08 09:01:02.533214 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+1615: 2026/10/08 09:01:03.640945 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"32013668-70e5-40fb-95a8-46252468890e","_service_id":"service-de...
+1617: 2026/10/08 09:01:03.640963 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 7
+1618: 2026/10/08 09:01:08.001487 stAgentNE p45240 t22023 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+1636: 2026/10/08 09:01:08.658128 stAgentNE p45240 t17675 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 241959 microseconds, min 241700, max 242608, stddev 257, samples 10
+1637: 2026/10/08 09:01:08.658385 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+1638: 2026/10/08 09:01:08.658413 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+1641: 2026/10/08 09:01:09.753619 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+1643: 2026/10/08 09:01:11.453787 stAgentNE p45240 t16387 info nsTaskScheduler.cpp:52 DEM registerTask id 8, interval: 60s, run now: yes
+1649: 2026/10/08 09:01:12.541239 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+1665: 2026/10/08 09:01:12.541257 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 8
+1669: 2026/10/08 09:01:17.030215 stAgentNE p45240 t12803 info clientStatusHandler.cpp:430 clientStatusHandler client status message: {    "client_status": {        "type": "Event",        "timestamp": "1791449768",        "tenant_id": "1340",        "client_version": "143.100.100.10363",        "service_name": "Internet Security",        "dem_feature_enabled": "5",        "status": "Enabled",        "has_error": "0",        "status_v2": "Enabled",        "device_classification_status": "not configured",        "device_classification_custom_status": "not configured",        "device_classification_custom_status_id": "0",        "host_info": {            "last_hostinfo_update_timestamp": "1791449761",            "hostname": "Managed’s Virtual Machine",            "os": "Mac",            "os_version": "15.7.7",            "device_make": "Apple",            "device_model": "VirtualMac2,1",            "serialNumber": "ZFQY**XYHG",            "nsdeviceuid": "8A76EAB6-6296-*******31-9DBC84F2B8CA",            "managementID": "50DCC3EF6AD85EAAAC56451AD340113C",            "macAddresses": [                "3A:BE:D*:**:B5:10"            ],            "steeringConfig": "systest",            "clientConfig": "systest"        },        "onprem_status": {            "status": "on-prem",            "method": "HTTP",            "domain": "http:\/\/httpbin.org",            "match_ip": "200 OK received"        },        "event": "Tunnel Up",        "actor": "System",        "pop_pinned": "No",        "npa_status": "Disabled"    }}
+1723: 2026/10/08 09:01:45.323604 stAgentNE p45240 t22023 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+1724: 2026/10/08 09:01:45.325540 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+1725: 2026/10/08 09:01:45.325574 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+1728: 2026/10/08 09:01:46.399340 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+2254: 2026/10/08 09:06:02.546045 stAgentNE p45240 t23047 info nsTaskScheduler.cpp:52 DEM registerTask id 9, interval: 60s, run now: yes
+2256: 2026/10/08 09:06:02.546978 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+2260: 2026/10/08 09:06:03.626953 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"64e77ede-2425-4d33-be20-2f3da1d5f30d","_service_id":"service-de...
+2262: 2026/10/08 09:06:03.626969 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 9
+2263: 2026/10/08 09:06:08.000648 stAgentNE p45240 t22023 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+2281: 2026/10/08 09:06:08.640045 stAgentNE p45240 t17675 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 241926 microseconds, min 241425, max 242730, stddev 333, samples 10
+2282: 2026/10/08 09:06:08.640280 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+2283: 2026/10/08 09:06:08.640311 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+2286: 2026/10/08 09:06:09.635834 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+2312: 2026/10/08 09:06:12.574926 stAgentNE p45240 t16387 info nsTaskScheduler.cpp:52 DEM registerTask id 10, interval: 60s, run now: yes
+2317: 2026/10/08 09:06:13.625594 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+2333: 2026/10/08 09:06:13.625615 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:570 DEM finish task 10
+2377: 2026/10/08 09:06:44.832479 stAgentNE p45240 t22023 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+2378: 2026/10/08 09:06:44.833227 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+2379: 2026/10/08 09:06:44.833264 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+2382: 2026/10/08 09:06:45.722618 stAgentNE p45240 t17675 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+2672: 2026/10/08 09:08:52.235969 stAgentNE p46350 t3587 info stAgentSvc.cpp:72 stAgentService init m_demMgr
+2673: 2026/10/08 09:08:52.235971 stAgentNE p46350 t3587 info nsDemTaskMgr.cpp:131 DEM init nsDemTaskMgr
+2676: 2026/10/08 09:08:52.235981 stAgentNE p46350 t3587 info stAgentSvc.cpp:97 stAgentService register DEM module callbacks
+2677: 2026/10/08 09:08:52.236061 stAgentNE p46350 t3587 debug demUtils.cpp:268 dem::Utils DEM module has been registered in NSClient callbacks
+2716: 2026/10/08 09:08:52.248315 stAgentNE p46350 t3587 info config.cpp:2285 Config DEM client status data report enabled=1, heartbeat enabled=1, event forwarder=events.stg.boomskope.com, disable legacy client status=0
+2953: 2026/10/08 09:08:53.420281 stAgentNE p46350 t11271 info nsDemTaskMgr.cpp:679 DEM Failed to get Active User Session ID
+3077: 2026/10/08 09:08:59.034064 stAgentNE p46350 t11271 info config.cpp:5675 Config enableDemClientStatus is in enabled state, not to accept any change
+3150: 2026/10/08 09:09:02.214647 stAgentNE p46350 t11271 info demMgr.cpp:848 DEM Subscription is Enterprise
+3151: 2026/10/08 09:09:02.214658 stAgentNE p46350 t11271 info nsDemTask.cpp:1454 DEM loaddemconfig
+3152: 2026/10/08 09:09:02.214669 stAgentNE p46350 t11271 info fileUtil.cpp:68 nsUtils failed to open file for reading: /dem.json, err:2
+3153: 2026/10/08 09:09:02.214677 stAgentNE p46350 t11271 info nsTaskScheduler.cpp:52 DEM registerTask id 1, interval: 3600s, run now: yes
+3154: 2026/10/08 09:09:02.214679 stAgentNE p46350 t11271 info nsTaskScheduler.cpp:66 DEM start task scheduler thread...
+3155: 2026/10/08 09:09:02.214719 stAgentNE p46350 t17415 info nsTaskScheduler.cpp:138 DEM task scheduler thread is running
+3156: 2026/10/08 09:09:02.218335 stAgentNE p46350 t11271 info demSvcHelper.cpp:200 dem::DemSvcHelper DEM service was already unregistered
+3305: 2026/10/08 09:09:04.345346 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:746 DEM getDemConfig downloaded successfully, status code: 200, msg:{"demServiceEnabled":true,"demAgentEnabled":true,"networkProbe":{"id":4318,"name":"default_network_probe_tenant_1340","networkPathDeviceHealthCollection":true,"processInfoCollection":false,"frequency":5}}
+3306: 2026/10/08 09:09:04.345834 stAgentNE p46350 t17415 info nsDemConfig.cpp:40 nsDemConfig Process Info Collection: false Network Path Device Health Collection: true Frequency: 5 DEM Service Enabled: true DEM Agent Enabled: true AppProbes Cfg:
+3307: 2026/10/08 09:09:04.345869 stAgentNE p46350 t17415 info demMgr.cpp:87 DEM refreshDEMConfig
+3308: 2026/10/08 09:09:04.368087 stAgentNE p46350 t17415 info demSvcHelper.cpp:152 dem::DemSvcHelper registering DEM service
+3313: 2026/10/08 09:09:04.405110 stAgentNE p46350 t17415 info demSvcHelper.cpp:155 dem::DemSvcHelper DEM service is now registered
+3411: 2026/10/08 09:09:05.069099 stAgentNE p46350 t19219 info nsTaskScheduler.cpp:52 DEM registerTask id 2, interval: 60s, run now: yes
+3412: 2026/10/08 09:09:05.069111 stAgentNE p46350 t19219 info nsTaskScheduler.cpp:52 DEM registerTask id 3, interval: 60s, run now: yes
+3425: 2026/10/08 09:09:05.080978 stAgentNE p46350 t19219 info RouteCtrlCollectConfig.cpp:115 DEM nsgatewayIP=45.250.161.140
+3426: 2026/10/08 09:09:05.080980 stAgentNE p46350 t19219 info demMgr.cpp:295 DEM Start DEM route control collection tasks, sessId 501
+3427: 2026/10/08 09:09:05.080984 stAgentNE p46350 t19219 info nsDemTaskMgr.cpp:294 DEM startDpRouteCtxCollect  ctx->event_forwarder_host = events.stg.boomskope.com
+3428: 2026/10/08 09:09:05.080986 stAgentNE p46350 t19219 info nsDemTaskMgr.cpp:1570 DEM set event_forwarder_host_dp to events.stg.boomskope.com
+3429: 2026/10/08 09:09:05.080989 stAgentNE p46350 t19219 info nsDemTaskMgr.cpp:377 RTCTL start DEM tunnel rtt task 4, PostFrequency 300s, sess 501
+3430: 2026/10/08 09:09:05.080991 stAgentNE p46350 t19219 info nsTaskScheduler.cpp:52 DEM registerTask id 4, interval: 300s, run now: no
+3431: 2026/10/08 09:09:05.080992 stAgentNE p46350 t19219 info nsDemTaskMgr.cpp:386 RTCTL start DEM trace route task 5, frequency 300, sess 501
+3432: 2026/10/08 09:09:05.080994 stAgentNE p46350 t19219 info nsTaskScheduler.cpp:52 DEM registerTask id 5, interval: 300s, run now: no
+3433: 2026/10/08 09:09:05.080995 stAgentNE p46350 t19219 info nsTraceRoute.cpp:78 RTCTL start DEM trace route thread...
+3434: 2026/10/08 09:09:05.081014 stAgentNE p46350 t19219 info demMgr.cpp:301 DEM Starting sample async
+3436: 2026/10/08 09:09:05.081043 stAgentNE p46350 t22279 info nsTraceRoute.cpp:133 RTCTL DEM trace route thread is running...
+3468: 2026/10/08 09:09:05.548542 stAgentNE p46350 t3587 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.21:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+3469: 2026/10/08 09:09:05.569888 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57929, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.21:443 to nsProxy
+3470: 2026/10/08 09:09:05.623241 stAgentNE p46350 t3587 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 136.243.171.217:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+3471: 2026/10/08 09:09:05.625868 stAgentNE p46350 t263 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.28:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+3472: 2026/10/08 09:09:05.627266 stAgentNE p46350 t263 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+3473: 2026/10/08 09:09:05.632236 stAgentNE p46350 t263 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+3474: 2026/10/08 09:09:05.641289 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57930, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+3475: 2026/10/08 09:09:05.642013 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57931, process: netskope-dem-agent to host: 123formbuilder.com, addr: 136.243.171.217:443 to nsProxy
+3476: 2026/10/08 09:09:05.642360 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57932, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.28:443 to nsProxy
+3477: 2026/10/08 09:09:05.643524 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57933, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+3478: 2026/10/08 09:09:05.714570 stAgentNE p46350 t3587 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+3479: 2026/10/08 09:09:05.747966 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57934, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+3482: 2026/10/08 09:09:06.083820 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+3498: 2026/10/08 09:09:06.083824 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 2
+3499: 2026/10/08 09:09:06.354198 stAgentNE p46350 t3587 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+3500: 2026/10/08 09:09:06.362264 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57935, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+3501: 2026/10/08 09:09:06.883898 stAgentNE p46350 t3587 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 103.219.78.238:443 interface en0, hostname events.stg.boomskope.com, is not bound, local 0.0.0.0:0
+3502: 2026/10/08 09:09:06.904324 stAgentNE p46350 t3587 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+3847: 2026/10/08 09:13:59.130345 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 6, interval: 60s, run now: yes
+3849: 2026/10/08 09:13:59.131518 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+3853: 2026/10/08 09:14:00.233552 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"ffd785a5-b165-47e7-9aa8-62dfbf206dfb","_service_id":"service-de...
+3855: 2026/10/08 09:14:00.233560 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 6
+3861: 2026/10/08 09:14:04.155817 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 7, interval: 60s, run now: yes
+3865: 2026/10/08 09:14:05.000599 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+3884: 2026/10/08 09:14:05.248342 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+3900: 2026/10/08 09:14:05.248375 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 7
+3902: 2026/10/08 09:14:06.257711 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 253438 microseconds, min 251631, max 265798, stddev 4146, samples 10
+3903: 2026/10/08 09:14:06.258065 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+3904: 2026/10/08 09:14:06.258110 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+3907: 2026/10/08 09:14:07.287199 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+3911: 2026/10/08 09:14:08.915233 stAgentNE p46350 t11271 info clientStatusHandler.cpp:430 clientStatusHandler client status message: {    "client_status": {        "type": "Event",        "timestamp": "1791450545",        "tenant_id": "1340",        "client_version": "143.100.100.10363",        "service_name": "Internet Security",        "dem_feature_enabled": "5",        "status": "Enabled",        "has_error": "0",        "status_v2": "Enabled",        "device_classification_status": "not configured",        "device_classification_custom_status": "not configured",        "device_classification_custom_status_id": "0",        "host_info": {            "last_hostinfo_update_timestamp": "1791449761",            "hostname": "Managed’s Virtual Machine",            "os": "Mac",            "os_version": "15.7.7",            "device_make": "Apple",            "device_model": "VirtualMac2,1",            "serialNumber": "ZFQY**XYHG",            "nsdeviceuid": "8A76EAB6-6296-*******31-9DBC84F2B8CA",            "managementID": "50DCC3EF6AD85EAAAC56451AD340113C",            "macAddresses": [                "3A:BE:D*:**:B5:10"            ],            "steeringConfig": "systest",            "clientConfig": "systest"        },        "onprem_status": {            "status": "on-prem",            "method": "HTTP",            "domain": "http:\/\/httpbin.org",            "match_ip": "200 OK received"        },        "event": "User Enabled",        "actor": "User",        "pop_pinned": "No",        "npa_status": "Disabled"    }}
+3927: 2026/10/08 09:14:42.736630 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+3928: 2026/10/08 09:14:42.737117 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+3929: 2026/10/08 09:14:42.737141 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+3932: 2026/10/08 09:14:43.802228 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+3946: 2026/10/08 09:15:04.665254 stAgentNE p46350 t79107 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+3947: 2026/10/08 09:15:04.667448 stAgentNE p46350 t79107 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+3948: 2026/10/08 09:15:04.684950 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57976, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+3949: 2026/10/08 09:15:04.686557 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57977, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+3950: 2026/10/08 09:15:04.730486 stAgentNE p46350 t79371 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.105:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+3951: 2026/10/08 09:15:04.737167 stAgentNE p46350 t79371 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+3952: 2026/10/08 09:15:04.748894 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57978, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.105:443 to nsProxy
+3953: 2026/10/08 09:15:04.751167 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57979, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+3954: 2026/10/08 09:15:04.753225 stAgentNE p46350 t79107 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+3955: 2026/10/08 09:15:04.761203 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57980, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+3957: 2026/10/08 09:15:05.018821 stAgentNE p46350 t79107 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+3958: 2026/10/08 09:15:05.045444 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57981, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+3959: 2026/10/08 09:15:05.203822 stAgentNE p46350 t79107 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+3960: 2026/10/08 09:15:05.467536 stAgentNE p46350 t79107 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+3961: 2026/10/08 09:15:05.492515 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:57983, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+3963: 2026/10/08 09:15:06.017223 stAgentNE p46350 t79371 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4068: 2026/10/08 09:18:59.134997 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 8, interval: 60s, run now: yes
+4070: 2026/10/08 09:18:59.136136 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+4074: 2026/10/08 09:19:00.111235 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"3818cb06-e895-4946-83f9-03d03974bea4","_service_id":"service-de...
+4076: 2026/10/08 09:19:00.111260 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 8
+4078: 2026/10/08 09:19:04.766888 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 9, interval: 60s, run now: yes
+4081: 2026/10/08 09:19:05.002009 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+4102: 2026/10/08 09:19:05.812294 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+4118: 2026/10/08 09:19:05.812309 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 9
+4120: 2026/10/08 09:19:06.822043 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 252384 microseconds, min 251451, max 253808, stddev 757, samples 10
+4121: 2026/10/08 09:19:06.822267 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4122: 2026/10/08 09:19:06.822296 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4125: 2026/10/08 09:19:07.837295 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+4167: 2026/10/08 09:19:40.373330 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+4168: 2026/10/08 09:19:40.374054 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4169: 2026/10/08 09:19:40.374096 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4172: 2026/10/08 09:19:41.396944 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+4178: 2026/10/08 09:20:04.702492 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+4179: 2026/10/08 09:20:04.704126 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+4180: 2026/10/08 09:20:04.721914 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58009, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+4181: 2026/10/08 09:20:04.724101 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58010, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+4182: 2026/10/08 09:20:04.783957 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.142.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+4183: 2026/10/08 09:20:04.788731 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+4184: 2026/10/08 09:20:04.788807 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 136.243.171.217:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+4185: 2026/10/08 09:20:04.802648 stAgentNE p46350 t131851 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.106:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+4186: 2026/10/08 09:20:04.807119 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58011, process: netskope-dem-agent to host: udemy.com, addr: 104.16.142.237:443 to nsProxy
+4187: 2026/10/08 09:20:04.809351 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58012, process: netskope-dem-agent to host: 123formbuilder.com, addr: 136.243.171.217:443 to nsProxy
+4188: 2026/10/08 09:20:04.811546 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58013, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+4189: 2026/10/08 09:20:04.814399 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58014, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.106:443 to nsProxy
+4190: 2026/10/08 09:20:05.243905 stAgentNE p46350 t131851 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4191: 2026/10/08 09:20:05.508363 stAgentNE p46350 t132099 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+4192: 2026/10/08 09:20:05.522309 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58016, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+4193: 2026/10/08 09:20:06.039217 stAgentNE p46350 t131851 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4297: 2026/10/08 09:23:59.121783 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 10, interval: 60s, run now: yes
+4299: 2026/10/08 09:23:59.122891 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+4303: 2026/10/08 09:24:00.137314 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"44c95ae8-10d0-4867-a123-d54a9705c391","_service_id":"service-de...
+4305: 2026/10/08 09:24:00.137319 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 10
+4306: 2026/10/08 09:24:05.001975 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+4325: 2026/10/08 09:24:05.300839 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 11, interval: 60s, run now: yes
+4330: 2026/10/08 09:24:06.332618 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+4346: 2026/10/08 09:24:06.332635 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 11
+4348: 2026/10/08 09:24:07.344982 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 251839 microseconds, min 250749, max 254394, stddev 1023, samples 10
+4349: 2026/10/08 09:24:07.345135 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4350: 2026/10/08 09:24:07.345155 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4353: 2026/10/08 09:24:08.411318 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+4366: 2026/10/08 09:24:41.123310 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+4367: 2026/10/08 09:24:41.124018 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4368: 2026/10/08 09:24:41.124057 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4371: 2026/10/08 09:24:42.101993 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+4378: 2026/10/08 09:25:04.726822 stAgentNE p46350 t261643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.142.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+4379: 2026/10/08 09:25:04.728316 stAgentNE p46350 t261643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+4380: 2026/10/08 09:25:04.747328 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58037, process: netskope-dem-agent to host: udemy.com, addr: 104.16.142.237:443 to nsProxy
+4381: 2026/10/08 09:25:04.748382 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58038, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+4382: 2026/10/08 09:25:04.790832 stAgentNE p46350 t261643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 136.243.171.217:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+4383: 2026/10/08 09:25:04.795345 stAgentNE p46350 t261643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+4384: 2026/10/08 09:25:04.809039 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58039, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+4385: 2026/10/08 09:25:04.811221 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58040, process: netskope-dem-agent to host: 123formbuilder.com, addr: 136.243.171.217:443 to nsProxy
+4386: 2026/10/08 09:25:04.841770 stAgentNE p46350 t261643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.46:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+4387: 2026/10/08 09:25:04.858892 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58041, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.46:443 to nsProxy
+4388: 2026/10/08 09:25:04.861829 stAgentNE p46350 t260679 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+4389: 2026/10/08 09:25:04.869959 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58042, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+4390: 2026/10/08 09:25:05.263162 stAgentNE p46350 t260679 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4391: 2026/10/08 09:25:05.533563 stAgentNE p46350 t260679 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+4392: 2026/10/08 09:25:05.554551 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58044, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+4393: 2026/10/08 09:25:06.106454 stAgentNE p46350 t261643 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4573: 2026/10/08 09:28:59.129415 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 12, interval: 60s, run now: yes
+4575: 2026/10/08 09:28:59.130537 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+4579: 2026/10/08 09:29:00.170537 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"e19ed6f2-babd-4cfc-85a7-be16ae80299c","_service_id":"service-de...
+4581: 2026/10/08 09:29:00.170555 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 12
+4583: 2026/10/08 09:29:05.002104 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+4602: 2026/10/08 09:29:05.858849 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 13, interval: 60s, run now: yes
+4607: 2026/10/08 09:29:06.822300 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+4623: 2026/10/08 09:29:06.822321 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 13
+4625: 2026/10/08 09:29:07.836401 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 252429 microseconds, min 250803, max 258417, stddev 2051, samples 10
+4626: 2026/10/08 09:29:07.836710 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4627: 2026/10/08 09:29:07.836744 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4630: 2026/10/08 09:29:08.821478 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+4659: 2026/10/08 09:29:44.096474 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+4660: 2026/10/08 09:29:44.097185 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4661: 2026/10/08 09:29:44.097217 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4664: 2026/10/08 09:29:45.180887 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+4672: 2026/10/08 09:30:04.736964 stAgentNE p46350 t233995 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+4673: 2026/10/08 09:30:04.757158 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58065, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+4674: 2026/10/08 09:30:04.810843 stAgentNE p46350 t195595 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+4675: 2026/10/08 09:30:04.818736 stAgentNE p46350 t195595 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+4676: 2026/10/08 09:30:04.819483 stAgentNE p46350 t195595 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.142.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+4677: 2026/10/08 09:30:04.835005 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58066, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+4678: 2026/10/08 09:30:04.835183 stAgentNE p46350 t233995 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.106:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+4679: 2026/10/08 09:30:04.837051 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58067, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+4680: 2026/10/08 09:30:04.837436 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58068, process: netskope-dem-agent to host: udemy.com, addr: 104.16.142.237:443 to nsProxy
+4681: 2026/10/08 09:30:04.843242 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58069, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.106:443 to nsProxy
+4682: 2026/10/08 09:30:05.090096 stAgentNE p46350 t195595 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+4683: 2026/10/08 09:30:05.115657 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58070, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+4684: 2026/10/08 09:30:05.278051 stAgentNE p46350 t195595 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4685: 2026/10/08 09:30:05.539155 stAgentNE p46350 t195595 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+4686: 2026/10/08 09:30:05.560643 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58072, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+4688: 2026/10/08 09:30:06.105856 stAgentNE p46350 t195595 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4822: 2026/10/08 09:33:59.073285 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 14, interval: 60s, run now: yes
+4824: 2026/10/08 09:33:59.074409 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+4828: 2026/10/08 09:34:00.008342 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"66a37bf8-c619-47f1-af3d-ed0b2cd98a0f","_service_id":"service-de...
+4830: 2026/10/08 09:34:00.008367 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 14
+4831: 2026/10/08 09:34:05.000874 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+4854: 2026/10/08 09:34:06.877538 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 15, interval: 60s, run now: yes
+4860: 2026/10/08 09:34:07.836931 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+4876: 2026/10/08 09:34:07.836934 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 15
+4877: 2026/10/08 09:34:08.854048 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 299462 microseconds, min 251343, max 712922, stddev 47421, samples 10
+4878: 2026/10/08 09:34:08.854265 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4879: 2026/10/08 09:34:08.854295 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4882: 2026/10/08 09:34:09.901836 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+4895: 2026/10/08 09:34:45.763385 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+4896: 2026/10/08 09:34:45.764110 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+4897: 2026/10/08 09:34:45.764147 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+4900: 2026/10/08 09:34:46.807643 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+4906: 2026/10/08 09:35:04.764913 stAgentNE p46350 t266507 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+4907: 2026/10/08 09:35:04.765395 stAgentNE p46350 t266507 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+4908: 2026/10/08 09:35:04.765458 stAgentNE p46350 t266507 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.142.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+4909: 2026/10/08 09:35:04.786259 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58097, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+4910: 2026/10/08 09:35:04.786368 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58098, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+4911: 2026/10/08 09:35:04.786919 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58099, process: netskope-dem-agent to host: udemy.com, addr: 104.16.142.237:443 to nsProxy
+4912: 2026/10/08 09:35:04.836252 stAgentNE p46350 t346371 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+4913: 2026/10/08 09:35:04.857594 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58100, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+4914: 2026/10/08 09:35:04.881012 stAgentNE p46350 t346371 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.46:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+4915: 2026/10/08 09:35:04.898212 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58101, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.46:443 to nsProxy
+4916: 2026/10/08 09:35:04.977105 stAgentNE p46350 t346371 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+4917: 2026/10/08 09:35:05.005395 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58102, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+4918: 2026/10/08 09:35:05.563130 stAgentNE p46350 t266507 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+4919: 2026/10/08 09:35:05.564279 stAgentNE p46350 t266507 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+4920: 2026/10/08 09:35:05.575586 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58104, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+4921: 2026/10/08 09:35:06.578473 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58104, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+4922: 2026/10/08 09:35:07.389704 stAgentNE p46350 t266507 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5069: 2026/10/08 09:38:59.088511 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 16, interval: 60s, run now: yes
+5071: 2026/10/08 09:38:59.089754 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+5075: 2026/10/08 09:39:00.118074 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"c10d6650-f7e7-43c9-8403-8d03bde83de2","_service_id":"service-de...
+5077: 2026/10/08 09:39:00.118082 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 16
+5079: 2026/10/08 09:39:05.000566 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+5098: 2026/10/08 09:39:07.426728 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 17, interval: 60s, run now: yes
+5104: 2026/10/08 09:39:08.408654 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+5120: 2026/10/08 09:39:08.408669 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 17
+5121: 2026/10/08 09:39:09.422397 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 524257 microseconds, min 252605, max 1744439, stddev 48804, samples 9
+5122: 2026/10/08 09:39:09.422607 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5123: 2026/10/08 09:39:09.422639 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5126: 2026/10/08 09:39:10.465157 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+5132: 2026/10/08 09:39:40.053526 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+5133: 2026/10/08 09:39:40.054518 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5134: 2026/10/08 09:39:40.054575 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5137: 2026/10/08 09:39:41.098761 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+5162: 2026/10/08 09:40:04.784721 stAgentNE p46350 t321035 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+5163: 2026/10/08 09:40:04.785915 stAgentNE p46350 t324935 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+5164: 2026/10/08 09:40:04.804583 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58127, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+5165: 2026/10/08 09:40:04.804886 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58128, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+5166: 2026/10/08 09:40:04.853186 stAgentNE p46350 t324935 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+5167: 2026/10/08 09:40:04.857123 stAgentNE p46350 t324935 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+5168: 2026/10/08 09:40:04.869796 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58129, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+5169: 2026/10/08 09:40:04.871326 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58130, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+5170: 2026/10/08 09:40:04.872396 stAgentNE p46350 t324935 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.106:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+5171: 2026/10/08 09:40:04.874251 stAgentNE p46350 t321035 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+5172: 2026/10/08 09:40:04.880614 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58131, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.106:443 to nsProxy
+5173: 2026/10/08 09:40:04.882322 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58132, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+5174: 2026/10/08 09:40:05.569658 stAgentNE p46350 t321035 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+5175: 2026/10/08 09:40:05.577815 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58133, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+5176: 2026/10/08 09:40:05.826746 stAgentNE p46350 t321035 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5177: 2026/10/08 09:40:07.081726 stAgentNE p46350 t321035 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5303: 2026/10/08 09:43:59.097525 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 18, interval: 60s, run now: yes
+5305: 2026/10/08 09:43:59.098652 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+5309: 2026/10/08 09:44:00.065062 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"c09ede99-b3d1-47e7-a2be-8219f6cb9612","_service_id":"service-de...
+5311: 2026/10/08 09:44:00.065070 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 18
+5312: 2026/10/08 09:44:05.000643 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+5331: 2026/10/08 09:44:08.153980 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 19, interval: 60s, run now: yes
+5337: 2026/10/08 09:44:09.283004 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+5353: 2026/10/08 09:44:09.283022 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 19
+5354: 2026/10/08 09:44:10.293130 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 251897 microseconds, min 251161, max 252703, stddev 488, samples 10
+5355: 2026/10/08 09:44:10.293197 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5356: 2026/10/08 09:44:10.293204 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5359: 2026/10/08 09:44:11.303230 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+5369: 2026/10/08 09:44:40.418076 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+5370: 2026/10/08 09:44:40.418901 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5371: 2026/10/08 09:44:40.418934 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5374: 2026/10/08 09:44:41.437405 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+5385: 2026/10/08 09:45:04.793730 stAgentNE p46350 t517643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+5386: 2026/10/08 09:45:04.794641 stAgentNE p46350 t351491 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+5387: 2026/10/08 09:45:04.794917 stAgentNE p46350 t351491 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+5388: 2026/10/08 09:45:04.814392 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58154, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+5389: 2026/10/08 09:45:04.815105 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58155, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+5390: 2026/10/08 09:45:04.815285 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58156, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+5391: 2026/10/08 09:45:04.864665 stAgentNE p46350 t351491 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 136.243.171.217:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+5392: 2026/10/08 09:45:04.864718 stAgentNE p46350 t351491 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+5393: 2026/10/08 09:45:04.868174 stAgentNE p46350 t517643 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.46:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+5394: 2026/10/08 09:45:04.886494 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58157, process: netskope-dem-agent to host: 123formbuilder.com, addr: 136.243.171.217:443 to nsProxy
+5395: 2026/10/08 09:45:04.887849 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58158, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.46:443 to nsProxy
+5396: 2026/10/08 09:45:04.888248 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58159, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+5398: 2026/10/08 09:45:05.587885 stAgentNE p46350 t351491 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+5399: 2026/10/08 09:45:05.614844 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58160, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+5400: 2026/10/08 09:45:05.664077 stAgentNE p46350 t351491 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5401: 2026/10/08 09:45:06.422820 stAgentNE p46350 t517643 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5544: 2026/10/08 09:48:59.082950 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 20, interval: 60s, run now: yes
+5546: 2026/10/08 09:48:59.084020 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+5550: 2026/10/08 09:49:00.073711 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"2e13fbf4-ebb5-4a12-9cf5-081fe8af9b04","_service_id":"service-de...
+5552: 2026/10/08 09:49:00.073719 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 20
+5553: 2026/10/08 09:49:05.001660 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+5574: 2026/10/08 09:49:08.679249 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 21, interval: 60s, run now: yes
+5579: 2026/10/08 09:49:09.684583 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+5595: 2026/10/08 09:49:09.684601 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 21
+5596: 2026/10/08 09:49:10.696499 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 251964 microseconds, min 251508, max 252428, stddev 267, samples 10
+5597: 2026/10/08 09:49:10.696723 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5598: 2026/10/08 09:49:10.696757 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5601: 2026/10/08 09:49:11.733706 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+5607: 2026/10/08 09:49:39.979272 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+5608: 2026/10/08 09:49:39.980014 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5609: 2026/10/08 09:49:39.980052 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5612: 2026/10/08 09:49:40.974814 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+5640: 2026/10/08 09:50:04.816388 stAgentNE p46350 t495431 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+5641: 2026/10/08 09:50:04.817170 stAgentNE p46350 t495431 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+5642: 2026/10/08 09:50:04.833019 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58187, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+5643: 2026/10/08 09:50:04.833079 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58188, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+5644: 2026/10/08 09:50:04.844994 stAgentNE p46350 t503375 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+5645: 2026/10/08 09:50:04.853025 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58189, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+5646: 2026/10/08 09:50:04.877622 stAgentNE p46350 t503375 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+5647: 2026/10/08 09:50:04.891972 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58190, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+5648: 2026/10/08 09:50:04.906636 stAgentNE p46350 t495431 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.105:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+5649: 2026/10/08 09:50:04.906660 stAgentNE p46350 t495431 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+5650: 2026/10/08 09:50:04.914872 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58191, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.105:443 to nsProxy
+5651: 2026/10/08 09:50:04.914915 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58192, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+5652: 2026/10/08 09:50:05.350608 stAgentNE p46350 t495431 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5653: 2026/10/08 09:50:05.650064 stAgentNE p46350 t495431 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+5654: 2026/10/08 09:50:05.669106 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58194, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+5655: 2026/10/08 09:50:06.190588 stAgentNE p46350 t495431 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5739: 2026/10/08 09:53:59.078808 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 22, interval: 60s, run now: yes
+5741: 2026/10/08 09:53:59.079928 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+5746: 2026/10/08 09:54:00.147458 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"48e596bd-e6aa-437e-859f-2e02e38b9ae0","_service_id":"service-de...
+5748: 2026/10/08 09:54:00.147475 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 22
+5764: 2026/10/08 09:54:05.001581 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+5796: 2026/10/08 09:54:09.806338 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 23, interval: 60s, run now: yes
+5801: 2026/10/08 09:54:10.821031 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+5817: 2026/10/08 09:54:10.821048 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 23
+5818: 2026/10/08 09:54:11.836536 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 254225 microseconds, min 251346, max 263006, stddev 4372, samples 10
+5819: 2026/10/08 09:54:11.836746 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5820: 2026/10/08 09:54:11.836774 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5823: 2026/10/08 09:54:12.834995 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+5830: 2026/10/08 09:54:40.309378 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+5831: 2026/10/08 09:54:40.310101 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+5832: 2026/10/08 09:54:40.310138 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+5835: 2026/10/08 09:54:41.353432 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+5842: 2026/10/08 09:55:04.835674 stAgentNE p46350 t396299 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+5843: 2026/10/08 09:55:04.836516 stAgentNE p46350 t396299 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.143.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+5844: 2026/10/08 09:55:04.836864 stAgentNE p46350 t470603 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+5845: 2026/10/08 09:55:04.844314 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58217, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+5846: 2026/10/08 09:55:04.845045 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58218, process: netskope-dem-agent to host: udemy.com, addr: 104.16.143.237:443 to nsProxy
+5847: 2026/10/08 09:55:04.845530 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58219, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+5848: 2026/10/08 09:55:04.900860 stAgentNE p46350 t396299 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+5849: 2026/10/08 09:55:04.909342 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58220, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+5850: 2026/10/08 09:55:04.928452 stAgentNE p46350 t396299 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.28:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+5851: 2026/10/08 09:55:04.931469 stAgentNE p46350 t470603 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+5852: 2026/10/08 09:55:04.936814 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58221, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.28:443 to nsProxy
+5853: 2026/10/08 09:55:04.939374 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58222, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+5858: 2026/10/08 09:55:05.363897 stAgentNE p46350 t396299 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5859: 2026/10/08 09:55:05.647509 stAgentNE p46350 t396299 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+5860: 2026/10/08 09:55:05.661838 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58224, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+5862: 2026/10/08 09:55:06.179194 stAgentNE p46350 t396299 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+5950: 2026/10/08 09:58:59.087617 stAgentNE p46350 t32007 info nsTaskScheduler.cpp:52 DEM registerTask id 24, interval: 60s, run now: yes
+5952: 2026/10/08 09:58:59.088754 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1190 DEM Post DEM url: https://events.stg.boomskope.com:443/v1/devicehealth
+5957: 2026/10/08 09:59:00.209461 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1223 DEM postDemDeviceHealthEvent successfully, status code: 200, msg:{"_gef_meta":{"_event_id":"0b724e51-92da-404c-a739-aeb379b7ad2f","_service_id":"service-de...
+5959: 2026/10/08 09:59:00.209478 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 24
+5960: 2026/10/08 09:59:05.001252 stAgentNE p46350 t22279 info nsTraceRoute.cpp:223 RTCTL DEM TraceRoute begin: target 45.250.161.140, maxhops 64, probesPerHop 3, timeout 1000 ms
+5983: 2026/10/08 09:59:10.506825 stAgentNE p46350 t14339 info nsTaskScheduler.cpp:52 DEM registerTask id 25, interval: 60s, run now: yes
+5988: 2026/10/08 09:59:11.513057 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1030 DEM PostDemClientStatus successfully, status code: 200, msg:{
+6004: 2026/10/08 09:59:11.513075 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:570 DEM finish task 25
+6005: 2026/10/08 09:59:12.515579 stAgentNE p46350 t17415 info nsDemTask.cpp:374 RTCTL Tunnel RTT Event: rtt 252986 microseconds, min 251519, max 262776, stddev 3272, samples 10
+6006: 2026/10/08 09:59:12.515653 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+6007: 2026/10/08 09:59:12.515659 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+6012: 2026/10/08 09:59:13.465717 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TunnelRTT event to GEF successfully, sess: 501, status code: 200
+6026: 2026/10/08 09:59:38.292509 stAgentNE p46350 t22279 info nsTraceRouteMac.cpp:92 RTCTL DEM TraceRoute completed!
+6027: 2026/10/08 09:59:38.293294 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:770 RTCTL postRouteControlEvent isPolaris=0
+6028: 2026/10/08 09:59:38.293340 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:1577 DEM get receiver_fqdn from event_forwarder_host_dp = events.stg.boomskope.com
+6031: 2026/10/08 09:59:39.336447 stAgentNE p46350 t17415 info nsDemTaskMgr.cpp:821 RTCTL Post TraceRoute event to GEF successfully, sess: 501, status code: 200
+6038: 2026/10/08 10:00:04.835034 stAgentNE p46350 t422471 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 141.193.213.20:443 interface en0, hostname 1010data.com, is not bound, local 0.0.0.0:0
+6039: 2026/10/08 10:00:04.843334 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58243, process: netskope-dem-agent to host: 1010data.com, addr: 141.193.213.20:443 to nsProxy
+6040: 2026/10/08 10:00:04.896733 stAgentNE p46350 t464151 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 104.16.142.237:443 interface en0, hostname udemy.com, is not bound, local 0.0.0.0:0
+6041: 2026/10/08 10:00:04.904984 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58244, process: netskope-dem-agent to host: udemy.com, addr: 104.16.142.237:443 to nsProxy
+6042: 2026/10/08 10:00:04.920525 stAgentNE p46350 t422471 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 74.112.186.157:443 interface en0, hostname box.com, is not bound, local 0.0.0.0:0
+6043: 2026/10/08 10:00:04.928425 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58245, process: netskope-dem-agent to host: box.com, addr: 74.112.186.157:443 to nsProxy
+6044: 2026/10/08 10:00:04.949493 stAgentNE p46350 t422471 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.232.158:443 interface en0, hostname 123formbuilder.com, is not bound, local 0.0.0.0:0
+6045: 2026/10/08 10:00:04.957367 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58246, process: netskope-dem-agent to host: 123formbuilder.com, addr: 148.251.232.158:443 to nsProxy
+6046: 2026/10/08 10:00:04.986378 stAgentNE p46350 t464151 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 148.251.196.27:443 interface en0, hostname 123apps.com, is not bound, local 0.0.0.0:0
+6047: 2026/10/08 10:00:04.994333 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58247, process: netskope-dem-agent to host: 123apps.com, addr: 148.251.196.27:443 to nsProxy
+6048: 2026/10/08 10:00:05.182124 stAgentNE p46350 t464151 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 99.86.182.106:443 interface en0, hostname 123rf.com, is not bound, local 0.0.0.0:0
+6049: 2026/10/08 10:00:05.210135 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58248, process: netskope-dem-agent to host: 123rf.com, addr: 99.86.182.106:443 to nsProxy
+6050: 2026/10/08 10:00:05.363762 stAgentNE p46350 t464151 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
+6051: 2026/10/08 10:00:05.657640 stAgentNE p46350 t464151 info AppProxyProvider.mm:521 main Open flow TCP netskope-dem-agent[{length = 20, bytes = 0x7374e2c5c91ad56e85dd25171ffaa7794956d205}] remote: 85.10.159.60:443 interface en0, hostname careweb.nl, is not bound, local 0.0.0.0:0
+6052: 2026/10/08 10:00:05.671882 stAgentNE p46350 t18959 info tunnel.cpp:1336 nsTunnel TLS [sessId 501] Tunneling flow from addr: 192.168.64.3:58250, process: netskope-dem-agent to host: careweb.nl, addr: 85.10.159.60:443 to nsProxy
+6053: 2026/10/08 10:00:06.189712 stAgentNE p46350 t464151 info demMgr.cpp:701 DEM Bypassing connection to polaris event receiver: ip 103.219.78.238, process netskope-dem-agent
