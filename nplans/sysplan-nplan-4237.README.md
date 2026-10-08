@@ -57,3 +57,41 @@ were revised in place to cite this evidence instead of the original unverified
 assumption. No case was deleted or renumbered -- the hypotheses they test are still the
 right hypotheses; the text now reflects what has actually been observed versus what
 still needs checking per traffic class.
+
+## Rewrite, 2026-10-08 (owner: cap 9, critical-only, match master schema)
+
+Owner changed scope: cap to 9 cases, drop all P2 and the proxy case, pick MUST-HAVE
+critical cases only, rename IDs `DEM-01`..`DEM-09` (matching the house convention used
+by other suites, e.g. `STRESS-01`/`STEER-01`), and switch columns to the EXACT schema
+already used by the master baseline workbooks (`system_test_new.xlsx` /
+`Windows_System_Test_Plan_Enhance.xlsx`): `Test ID | Test Item | Category | Detailed
+Explanation | Execution Steps | Pass Criteria | Failure Impact | IMF/Escalation
+Correlation | Source` -- no custom columns (the previous `Priority`/`Platforms`/
+`Objective-Risk`/`Failure Indicators` columns from the first two drafts are gone).
+
+The 9 surviving cases (all P0/critical, all macOS, all carrying forward the live-log
+corrections above):
+
+| ID | Covers |
+|---|---|
+| DEM-01 | NSClient-triggered start (not self-starting) |
+| DEM-02 | Continuity when NSClient disabled (per traffic class) |
+| DEM-03 | Continuity when NSClient tunnel disconnects |
+| DEM-04 | Crash/recovery -- no orphan/duplicate |
+| DEM-05 | No auto-start at boot; waits for NSClient |
+| DEM-06 | Uninstall removes DEM completely (known gap) |
+| DEM-07 | DEM-only upgrade has zero NSClient impact |
+| DEM-08 | NSClient upgrade doesn't orphan/crash DEM |
+| DEM-09 | Tenant-ID integrity on BOTH DEM code paths during config rotation |
+
+Dropped (P2 / proxy / lower-priority, available in git history at commit `1588888` if
+needed later): the old SYS-4237-10 (heterogeneous version pairing), -11 (repeated-cycle
+stress), -12 (UI schema rendering), -14 (proxy path), -15 (Direct Internet Access dual
+path), and all `-V2` disruption variants.
+
+**IMF/Escalation Correlation column is `-` for 8 of 9 rows** -- this skill has no
+incident database, so it is left honestly blank rather than fabricated, even though the
+master schema's column is populated for most rows in sibling suites. DEM-09 is the one
+exception: it cites `ENG-637576` because that is a REAL bug already documented in
+`ch16_dem.md`, used as the historical analog for the NEW cross-component risk, not an
+invented reference.
