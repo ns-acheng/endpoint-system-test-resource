@@ -47,7 +47,8 @@ TLS-key）不對 = 整個 case 白跑。
 | STRESS-06 | LOCAL-untested | 1118 systest<br>**1119** systest | 1331/1334 systest<br>**1334** systest1334<br>mac:1334 systeststatic<br>mac:1347 systeststatic1347mac | LOCAL已證 |
 | STRESS-07 | LOCAL-untested | N/A(qa無NPA) | **1334** systeststatic<br>**1347** systeststatic | NPA+CPA+TLS-key |
 | STRESS-08 | LOCAL-untested | **1119** systest | **1334** systest<br>mac:**1457** sys1457staticmac | 雙tenant 141已證；mac MAC2-SSH驗證PASS(develop-143,build47)；tenant 1334 non-DSE enrollment目前不穩，mac暫用1457 |
-| STRESS-11 | LOCAL-untested | ? | **1331** systest <br>mac:1334 systest| DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143 |
+| STRESS-11 | LOCAL-untested | ? | **1331** systest <br>mac:1334 systest| DNS-Security+DSE+web/all+blockDnsTCP=false<br>crash ENG-1180143<br>REG build146確認1331真實PASS(assert_dns_security_applied+DNS Mode marker兩邊都=1) |
+| STEER-06 | LOCAL-untested | ? | **1331** systest1331 | DNS Security on/off toggle<br>REG build147/148確認1331真實PASS；**tenant 1340(systest1340)push API回Success但client端nssteering.json永遠讀0,不要用1340跑這個case**，見下方「tenant 1340 DNS Security push 不落地」 |
 | STRESS-13 | ? | 未實測 | **1334** systest1334 | CPA-only→用1334 |
 | STRESS-26 | LOCAL-only | **1119** systest | 1331/1334 systest<br>**1331** systest1331<br>mac:**1347** systest1347mac | flood塞爆SSH；must use localtest |
 | STRESS-27 | ? | ? | mac:**1347** systeststatic1347mac | MAC2-only |
@@ -259,6 +260,28 @@ enroll，或該 dc 當下正被別的 lane/case 佔用）——不是產品安�
 
 這兩個 dc 是**同一個 tenant 的不同 per-user config**，綁到不同的 steering config。
 STRESS-07 用錯燒了 6 輪。**絕不可自行改寫 owner 給的 `--dc` 值**（[[grs_coding]]）。
+
+## tenant 1340 DNS Security push 不落地 (2026-10-08, STEER-06/STRESS-11)
+
+**tenant 1340(systest1340)上，無論 API 怎麼送（`update_dns_security_on_prem_off_prem`
+的 shared helper、`set_dse_steeringconfig`、或 owner 瀏覽器 DevTools 原封不動複製出來的
+exact payload）、無論 token 用 live session token 還是 steering_method 用即時讀的值，
+server 端 `_create_save_ou_config_data` 讀回來都已經是 `dns_on_prem=1`/`dns_off_prem=1`
+（API 層確實收下了），但 client 端 `nssteering.json` 的 `steer_dns_on_prem`/`off_prem`
+永遠停在 0，連 restart stAgentSvc、連 owner 自己在 tenant UI 手動改+真的觸發一次
+`nsdiag -u`「Configuration update is available... Synchronization successful」（非平常的
+"Already up to date"）都救不回來（REG build 140-144 連續重現）。排除項：devconfig.json
+（確認沒用）、我們自己的讀取邏輯（`read_dns_security_state()` 直接 SFTP 讀同一份檔案，
+欄位沒搬錯）、traffic mode（build 138/140 測過 onprem/offprem_steering_method 強制讀
+live"3"仍一樣失敗）。結論：這是 **tenant 1340 本身的 server→client config 派送斷在某處**，
+不是測試程式碼或 payload 內容的問題。
+
+**換成 tenant 1331 / dc=systest1331，同一套 push+`-u`+read-back 機制立刻正常**：REG
+build 146(STRESS-11)/147/148(STEER-06) 三個都在 1331 上拿到真實的 `steer_dns_on_prem=1`
+`off_prem=1`，而且有獨立第二證據佐證（`grep_dns_mode_markers` 從 nsdebuglog 讀到
+`DNS Mode markers observed: [1, 1]`，tunnelMgr 自己 evaluate 出來的 runtime 值，不是
+同一個檔案）。**STEER-06/STRESS-11 一律用 1331，不要用 1340**，除非之後有人在 1340
+上找到真因並修掉。
 
 ## DNS Security 開關 API —— 只有一個是對的
 
