@@ -95,3 +95,31 @@ master schema's column is populated for most rows in sibling suites. DEM-09 is t
 exception: it cites `ENG-637576` because that is a REAL bug already documented in
 `ch16_dem.md`, used as the historical analog for the NEW cross-component risk, not an
 invented reference.
+
+## Gap-check + merge, 2026-10-09/12 (owner-supplied requirement list)
+
+Owner supplied 6 explicit requirements and asked for a gap-check against the 9 cases
+above: (1) frequent process-liveness checks during test runs, (2) NSClient service
+start/stop, (3) no-crash check scanning the client log/crash-dump folder, (4) stress
+test at max configured app-probe count, (5) disable/enable NSClient during active app
+probing, (6) app probing switching between stAgent and DEM Agent, both directions.
+
+Gap-check result: only (2) and (5) were partially covered by the 9-case draft; (1),
+(3), (4), (6) had no corresponding case. Rather than add up to 6 new cases (which would
+have pushed past the cap), each gap was folded into the MOST THEMATICALLY RELATED
+existing case as an additional step/assertion, since each pairing shares one setup +
+one coherent pass/fail judgement:
+
+| Gap | Folded into | Why that pairing |
+|---|---|---|
+| (2) clean service start/stop | DEM-01 (was: start-only + reboot) | Same hypothesis ("DEM only starts via an NSClient trigger") checked at a 3rd trigger moment (clean stop/restart), not a new hypothesis |
+| (5) enable-side resume + (6) stAgent<->DEM Agent handoff | DEM-02 (was: disable-continuity only) | All three are "which component currently does app-probing, and does it hand off cleanly" -- one setup, two directions, one case |
+| (1) frequent process-liveness + (3) crash-dump folder scan | DEM-04 (was: crash/recovery process-count only) | All three are continuous-health signals best verified from ONE sampler run spanning the whole case, not separate passes |
+| (4) max app-probe count stress | **New: DEM-08** | Genuinely new scale/config dimension -- no existing case's pass criteria could absorb it without diluting that case's own hypothesis |
+
+Net effect: merging DEM-05 (reboot-only) into DEM-01, and DEM-07+DEM-08 (the two
+upgrade-direction cases) into one DEM-06, made room so that adding ONE new case for
+gap (4) still landed BELOW the original 9-case count. Final: **8 cases, `DEM-01`..`DEM-08`**,
+full coverage of the 6 owner-supplied requirements plus everything the prior gap-check
+pass had already covered. Nothing was dropped silently -- every merge is noted in each
+surviving case's `Detailed Explanation`.
