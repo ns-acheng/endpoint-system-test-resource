@@ -123,3 +123,36 @@ gap (4) still landed BELOW the original 9-case count. Final: **8 cases, `DEM-01`
 full coverage of the 6 owner-supplied requirements plus everything the prior gap-check
 pass had already covered. Nothing was dropped silently -- every merge is noted in each
 surviving case's `Detailed Explanation`.
+
+## Refine DEM-06, 2026-10-12 (owner correction: real upgrade path, not a standalone pkg)
+
+Owner caught a design error: DEM-06's "(A)" step installed a standalone DEM Agent pkg
+directly, but that is NOT the real upgrade path -- NSClient's own installer bundle
+already carries `dem_agent.pkg` as a sibling component (confirmed live in the
+STAgent.pkg Distribution XML, client-feature-pipeline build 10363:
+`pkg-ref id="dem_agent.pkg" version="2611.0.1.0"` alongside
+`com.netskope.STAgent.pkg`). DEM-06 was rewritten to exercise NSClient's own
+auto-upgrade and a direct package reinstall instead, checking BOTH NSClient's and DEM
+Agent's status after each path. Title changed to "NSClient upgrade (auto-upgrade or
+package reinstall) carries DEM Agent correctly".
+
+## Add DEM-09, 2026-10-12 (owner-sourced case from a separate external doc)
+
+Owner found a case titled "DEM-01: thread overrun" in another document (exact source
+not re-identified by this skill -- flagged honestly rather than guessing). Content
+(50 DEM probes on a 30s schedule, 1-hour soak, monitor DEM thread CPU/queue depth,
+verify backoff-not-crash, verify no missed config callbacks) targets `ch16_dem.md`'s
+**ENG-593503** (DEM thread stack overrun crashing stAgentSvc) -- the OLD in-process
+module, not the new standalone agent. Confirmed NOT covered by any of the 8 cases
+above (DEM-08 is the closest, but that stresses the standalone agent's probe-COUNT
+scaling, not the in-process module's thread/queue safety under sustained load) and
+added as **DEM-09**. Total now **9 cases, `DEM-01`..`DEM-09`** -- back at the original
+cap, now with full thread-safety coverage of both the old and new DEM code paths
+(DEM-07 covers tenant-ID integrity on both paths; DEM-09 covers thread/crash safety
+on the old path specifically).
+
+Note: the ID `DEM-01` collides with the external doc's own numbering for this case --
+that doc appears to be a separate, cross-NPLAN baseline suite (its content has no
+standalone-agent awareness at all), not a competing version of this NPLAN-4237-scoped
+sysplan. No action taken on that collision pending owner confirmation of the other
+doc's identity.
