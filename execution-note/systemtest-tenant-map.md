@@ -69,6 +69,8 @@ byte-identical，patch 需兩邊同步。
 **Tenant 1340（nsclientauto9）dc 對照（owner 2026-10-06）**：
 - group `systest`（DSE-on）：`systest1340`, `systest1340mac`, `sys1340`, `sys1340mac`
 - group `systeststatic`（non-DSE）：`systeststatic1340`, `systeststatic1340mac`
+- group `cloud`（cloud steering，cloud 專用 case）：`cloud1340`, `cloud1340mac`
+- group `systestup`（升級專用，UPGRADE-01/02、DEM-06 用）：`up1340`, `up1340mac`
 
 驗證過（LOCAL1 build 28,dc=sys1340）：`nsdiag -f` 讀到
 `OnPremDetection:: On-Premises.`，`nssteering.json` **沒有** `onprem_labels`
