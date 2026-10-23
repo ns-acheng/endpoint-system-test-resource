@@ -69,9 +69,23 @@ if os.path.exists(out_path):
 wb.save(out_path)
 ```
 
+## Test ID rule — HARD (owner, 2026-10-23)
+
+One Test ID is one Test Item. A plan this skill writes is later merged into the complete spec, whose Windows and Mac sheets share
+one ID space: the same ID is allowed on both sheets only for the same case with the same Test Item (steps may differ per OS).
+The same ID with a different Test Item, or the same ID twice in the plan, is an ID conflict and is never accepted.
+
+- Number the cases `<PREFIX>-nn` and do not reuse a number the spec already has. Check the finished file with
+  `python <claude-resource>/grs_tools/monthly_gen.py check-ids --candidate nplans/sysplan-<nplan-id>.xlsx` (read-only; exit 1 =
+  conflicts, and it prints the next free number per prefix). The skill's "never `load_workbook()`" rule is about writing the
+  output; this check only reads the spec and the new file.
+- Report first, then decide: if the check finds a conflict, show the owner the list and the proposed new numbers before renumbering.
+  Do not edit or delete an existing spec row yourself; tag the ask `[需核准: ...]`.
+
 ## Before reporting done
 
 - [ ] Used `Workbook()`, never `load_workbook()` -- zero exceptions
+- [ ] `monthly_gen.py check-ids --candidate <file>` printed `no id conflicts` (or the owner decided each conflict)
 - [ ] Didn't overwrite an existing file
 - [ ] Every row traces to the NPLAN doc + cites a chapter; no invented IMF/ENG numbers
 - [ ] Platforms = only what the doc names; 4-10 base cases (or justify otherwise)
