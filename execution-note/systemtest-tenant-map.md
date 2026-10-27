@@ -79,6 +79,13 @@ override——跟 tenant 1347 不同（1347 的 `onprem_labels[0]` 指向打不�
 `onpremcheck` 的欄位，導致 on-prem 偵測永遠偵測不到）。**STEER-07 類（依賴
 on-prem 偵測真的生效的 case）優先用 1340，不要用 1347。**
 
+**Tenant 115615（nscsystest1）dc 對照（owner 2026-10-27）**：
+- group `systeststatic`（non-DSE，mac）：`systeststatic115615mac`。
+- 綁定的 steering config：`static-mac`（traffic_type=web、dynamic_steering=0），這是 tenant_probe 2026-10-27 讀到的唯一自訂 steering config，另一個是 `Default tenant config`。
+- **沒有 Windows 的 dc 與 steering config**，所以 Windows 案例（例如 CERT-04 的 `.enc` 路徑）暫時不能跑在這個 tenant。
+- 用途：驗證 `encryptClientConfig` 打開時 client 端是否真的產生 `.enc`（git-0001 的 Open question）。client 端 flag 還沒讀到，等 POC 的 artifact。
+- 狀態：POC。已用 tenant_map 的 `STRESS-01-POC115615`（mac2-ssh）驗證 tenant 與 dc 能裝能跑；穩定且開發完成後，再把 115615 加進標準核准名單並補真實案例。
+
 ## Mac port 已確認不可行（architecture gap，別再排進 backlog）
 
 **2026-10-05 判定**，查過 code 跟 mac 自己的架構後確認，不是「步驟要調整」而是「被測的東西在 mac 上根本不存在」：
