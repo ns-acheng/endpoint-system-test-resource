@@ -83,8 +83,8 @@ on-prem 偵測真的生效的 case）優先用 1340，不要用 1347。**
 - group `systeststatic`（non-DSE，mac）：`systeststatic115615mac`。
 - 綁定的 steering config：`static-mac`（traffic_type=web、dynamic_steering=0），這是 tenant_probe 2026-10-27 讀到的唯一自訂 steering config，另一個是 `Default tenant config`。
 - **沒有 Windows 的 dc 與 steering config**，所以 Windows 案例（例如 CERT-04 的 `.enc` 路徑）暫時不能跑在這個 tenant。
-- 用途：驗證 `encryptClientConfig` 打開時 client 端是否真的產生 `.enc`（git-0001 的 Open question）。client 端 flag 還沒讀到，等 POC 的 artifact。
-- 狀態：POC。已用 tenant_map 的 `STRESS-01-POC115615`（mac2-ssh）驗證 tenant 與 dc 能裝能跑；穩定且開發完成後，再把 115615 加進標準核准名單並補真實案例。
+- 用途：這個 tenant 是為了驗證 `encryptClientConfig` 打開時 client 端是否產生 `.enc`（CERT-04 的 `.enc` 路徑，git-0001）。CERT-04 與 CERT-03 都是 Windows 案例，需要這個 tenant 上的 **Windows dc**，目前還沒有。
+- 狀態：等 Windows dc。client 端 `encryptClientConfig` 還沒讀到；115615 尚未加進標準核准名單，也沒有任何案例對應到它。
 
 ## Mac port 已確認不可行（architecture gap，別再排進 backlog）
 
