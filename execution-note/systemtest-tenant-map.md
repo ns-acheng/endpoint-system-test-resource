@@ -147,6 +147,18 @@ Windows-only"）—— 不要自己加 mac 版本，這是 owner 的 scope 決�
   push（update_client_config），同 tenant 跨家族也可能撞 Default — 此情境目前
   無實例，碰到再驗
 
+## tenant 84535 / 84536（nscsystest1 / nscsystest2，qa）— 新增,尚未用於任何 case
+
+| 項目 | nscsystest1 | nscsystest2 |
+|---|---|---|
+| tenant 主機 | `nscsystest1.qa.boomskope.com` | `nscsystest2.qa.boomskope.com` |
+| tenant id | `84535` | `84536` |
+| env 檔 | `golden_regression/test_environment/boomskope_nonprod_qa.json`，`tenants` 的 key 是主機前綴 `nscsystest1` / `nscsystest2` | 同左 |
+
+- env 檔改動在 GRS 分支 `acheng/git-qa-tenants-nscsystest`（2026-10-30 推送，是否已合併以 `git log origin/main` 為準）。
+- **未查（不要當成已知）**：dc / AD group 家族、DSE、NPA、CPA、DNS-Security 能力、有沒有 develop-144 build。`grs_tools/tenant_map.json` 沒有這兩個 tenant 的條目，`dc-pick` 解析不到。
+- 新 trigger 的核准清單目前只有 1340 / 1331 / 1457（記錄在 `feedback_systest_approved_tenants`）；這兩個不在清單內，加入清單並用 `tenant_probe.py` 唯讀查出能力之前不排 case。
+
 ## tenant 103182 — SUPERSEDED 2026-09-11, r142 iter5 已改用 tenant 1347
 
 owner 2026-09-11："we are using new tenant to go iter 5, forget about 103182" — 103182 從未跑過任何
