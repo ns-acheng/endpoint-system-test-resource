@@ -9,7 +9,6 @@ Checks: /healthz (200 + latency), a page timing each, the service state, and whe
 sha of origin/main (update_report_vm.py moves it). Ssh account: REPORT_VM_USER / REPORT_VM_PASS (see update_report_vm.py).
 """
 
-import io
 import os
 import sys
 import time
@@ -18,7 +17,6 @@ import urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import update_report_vm as uv  # noqa: E402
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 NEW = f"http://{uv.HOST}:{uv.PORT}"
 PAGES = ("/report/143", "/report/144", "/report/145", "/query")
 
