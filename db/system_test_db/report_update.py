@@ -82,6 +82,7 @@ def main(argv):
     s.add_argument("--ticket", help="ticket number, for example ENG-1455025")
     s.add_argument("--words", help="the exact typed words for the cell (only when no ticket number was given)")
     s.add_argument("--no-link", action="store_true", help="write the cell only, do not touch the database link")
+    s.add_argument("--link-only", action="store_true", help="link the runs to the ticket only; the verdict cell is not written (a second ticket on a run)")
     lv = sub.add_parser("live", help="read the verdict cells of the live page")
     lv.add_argument("--release", required=True, help="bare release number, for example 145")
     lv.add_argument("--wait", type=int, default=31, help="seconds to wait first for the 30 s page cache (default 31)")
@@ -99,6 +100,12 @@ def main(argv):
                 if r.returncode != 0:
                     print((r.stdout + r.stderr).strip()[-300:])
                     return 1
+        if a.link_only:
+            if not a.ticket or a.no_link:
+                print("REFUSED: --link-only needs --ticket and cannot be combined with --no-link")
+                return 2
+            print("verdict cell not written (--link-only); the link shows in the Tickets table and the gate rows of the run")
+            return 0
         print("cells written:", ", ".join(f"{k} = {value!r}" for k in write_verdicts(VERDICTS, a.lane, a.build, value)))
         print("next: commit and push crash_verdicts.json, run update_report_vm.py, then report_update.py live")
         return 0

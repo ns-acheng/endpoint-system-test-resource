@@ -43,6 +43,23 @@ def test_write_verdicts_keeps_the_other_entries(tmp_path):
     assert json.loads(p.read_text(encoding="utf-8")) == {"LOCAL1:184": "duplicated", "MAC2:361": "ENG-1455025", "MAC2:362": "ENG-1455025"}
 
 
+def test_link_only_links_and_leaves_the_cell_alone(tmp_path, monkeypatch):
+    p = tmp_path / "v.json"
+    p.write_text(json.dumps({"MAC2:363": "ENG-1455025"}), encoding="utf-8")
+    calls = []
+
+    class Done:
+        returncode = 0
+        stdout = stderr = ""
+
+    monkeypatch.setattr(ru, "VERDICTS", str(p))
+    monkeypatch.setattr(ru.subprocess, "run", lambda cmd, **kw: calls.append(cmd) or Done())
+    assert ru.main(["set", "--lane", "MAC2", "--build", "363", "--ticket", "ENG-1457084", "--link-only"]) == 0
+    assert json.loads(p.read_text(encoding="utf-8")) == {"MAC2:363": "ENG-1455025"}
+    assert len(calls) == 1 and "ENG-1457084" in calls[0] and "363" in calls[0]
+    assert ru.main(["set", "--lane", "MAC2", "--build", "363", "--words", "x y z", "--link-only"]) == 2  # no ticket, nothing linked
+
+
 def test_crash_rows_reads_lane_build_and_verdict():
     page = (
         "<h2>Crash / BSOD dumps</h2><table><tr><th>gate</th><th>t</th><th>lane</th><th>build</th><th>dt</th><th>v</th><th>detail</th><th>verdict</th></tr>"
