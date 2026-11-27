@@ -130,6 +130,23 @@ def no_data_rows(roster, shown_names, ncols, platform=None):
     return out
 
 
+def no_data_datasets(names, n_points):
+    """One empty legend entry per monitored process that has no point in a trend chart, so every monitored process is named in every
+    chart (the human, 2026-11-27: "all proc must be in chart"). Dashed grey marker, all points null: no line, no 0."""
+    return [
+        {
+            "label": f"{name} (no data)",
+            "data": [None] * n_points,
+            "borderColor": "#64748b",
+            "backgroundColor": "#64748b",
+            "borderDash": [4, 4],
+            "pointRadius": 0,
+            "spanGaps": True,
+        }
+        for name in names
+    ]
+
+
 def monitored_card(roster, seen, platform=None):
     """The card that lists EVERY process the sampler is configured to monitor, also those with no data in this release, so that
     everybody can see what is monitored (the human, 2026-11-27: "show all proc name in report even they do not have any data").
@@ -2128,6 +2145,11 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
     labels = [r[0] for r in res]
     avg_cpu = [_f(r[1]) for r in res]
     worst_cpu = [_f(r[2]) for r in res]
+    # every monitored process is a bar slot, the ones with no data as an empty slot named "(no data)" (null, never a 0 bar)
+    _bar_no_data = [r[0] for r in no_data_rows(_roster, set(labels), len(c3), platform)]
+    labels += [f"{n} (no data)" for n in _bar_no_data]
+    avg_cpu += [None] * len(_bar_no_data)
+    worst_cpu += [None] * len(_bar_no_data)
 
     # Cross-version trend: one Chart.js line dataset per process, x-axis =
     # sorted distinct major versions seen (140, 141, 142, ...). A gap (process
@@ -2156,7 +2178,14 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
         """A series with a single measured version has no line to draw: show it as a large dot, or it is invisible."""
         return 7 if sum(v is not None for v in data) == 1 else 3
 
-    def _version_datasets(by_key, processes):
+    def _no_data_datasets(names, first_index, n_points):
+        return no_data_datasets(names, n_points)
+
+    _roster_all = _roster or {}
+    _roster_win = list(_roster_all.get("windows") or [])
+    _roster_mac = list(_roster_all.get("mac") or [])
+
+    def _version_datasets(by_key, processes, no_data=()):
         return [
             {
                 "label": proc,
@@ -2168,14 +2197,17 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
                 "tension": 0.25,
             }
             for i, proc in enumerate(processes)
-        ]
+        ] + _no_data_datasets(no_data, len(processes), len(_version_labels))
 
     # _heavy_processes / _light_processes computed earlier (right after
     # res_by_version query) so the threshold value is available to the HTML
     # f-string above; reused here for the actual per-group dataset split.
     version_labels = [f"R{v}" for v in _version_labels]
     version_worst_heavy_datasets = _version_datasets(_worst_by_key, _heavy_processes)
-    version_worst_light_datasets = _version_datasets(_worst_by_key, _light_processes)
+    # a monitored process with no point in this chart goes to the light chart as an empty legend entry
+    version_worst_light_datasets = _version_datasets(
+        _worst_by_key, _light_processes, [n for n in _roster_win if n not in _version_processes_all]
+    )
 
     # mac trend: own version axis (R143+) and one dataset list per metric.
     _mac_versions = sorted({r[0] for r in res_by_version_mac if r[0] is not None})
@@ -2194,13 +2226,13 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
                 "tension": 0.25,
             }
             for i, proc in enumerate(_mac_procs)
-        ]
+        ] + _no_data_datasets([n for n in _roster_mac if n not in _mac_procs], len(_mac_procs), len(_mac_versions))
 
     mac_version_labels = [f"R{v}" for v in _mac_versions]
     mac_worst_datasets = _mac_datasets(_mac_worst)
 
     # memory trend datasets: one line per process; a missing version stays null (not measured), never 0
-    def _mem_datasets(mem_rows, versions, by_idx, procs):
+    def _mem_datasets(mem_rows, versions, by_idx, procs, no_data=()):
         by_key = {(r[0], r[1]): float(r[by_idx]) for r in mem_rows if r[by_idx] is not None}
         return [
             {
@@ -2213,7 +2245,7 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
                 "tension": 0.25,
             }
             for i, proc in enumerate(procs)
-        ]
+        ] + _no_data_datasets(no_data, len(procs), len(versions))
 
     _mem_versions = sorted({r[0] for r in mem_by_version})
     _mem_peak_by_proc = {}
@@ -2225,6 +2257,9 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
     _mem_light = sorted(q for q, v in _mem_peak_by_proc.items() if v < _HEAVY_MEM_MB)
     _mem_mac_versions = sorted({r[0] for r in mem_by_version_mac})
     _mem_mac_procs = sorted({r[1] for r in mem_by_version_mac})
+    # monitored processes without a point in the memory charts: empty legend entries (the light chart on Windows)
+    _mem_win_no_data = [n for n in _roster_win if n not in _mem_peak_by_proc]
+    _mem_mac_no_data = [n for n in _roster_mac if n not in _mem_mac_procs]
 
     # Embed chart data as real JSON, not Python list repr — decouples the JS from
     # Python's str() format (e.g. None vs null, quote style) and is injection-safe.
@@ -2243,11 +2278,15 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
         mem_version_labels=json.dumps([f"R{v}" for v in _mem_versions]),
         mem_avg_heavy_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 3, _mem_heavy)),
         mem_worst_heavy_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 4, _mem_heavy)),
-        mem_avg_light_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 3, _mem_light)),
-        mem_worst_light_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 4, _mem_light)),
+        mem_avg_light_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 3, _mem_light, _mem_win_no_data)),
+        mem_worst_light_datasets=json.dumps(_mem_datasets(mem_by_version, _mem_versions, 4, _mem_light, _mem_win_no_data)),
         mem_mac_version_labels=json.dumps([f"R{v}" for v in _mem_mac_versions]),
-        mem_mac_avg_datasets=json.dumps(_mem_datasets(mem_by_version_mac, _mem_mac_versions, 3, _mem_mac_procs)),
-        mem_mac_worst_datasets=json.dumps(_mem_datasets(mem_by_version_mac, _mem_mac_versions, 4, _mem_mac_procs)),
+        mem_mac_avg_datasets=json.dumps(
+            _mem_datasets(mem_by_version_mac, _mem_mac_versions, 3, _mem_mac_procs, _mem_mac_no_data)
+        ),
+        mem_mac_worst_datasets=json.dumps(
+            _mem_datasets(mem_by_version_mac, _mem_mac_versions, 4, _mem_mac_procs, _mem_mac_no_data)
+        ),
     )
 
 

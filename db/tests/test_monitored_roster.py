@@ -95,5 +95,24 @@ def test_no_data_rows_follow_the_platform_filter_and_a_missing_roster():
     assert report.no_data_rows(None, set(), 3) == []
 
 
+def test_a_trend_chart_gets_an_empty_legend_entry_for_each_process_it_lacks():
+    sets = report.no_data_datasets(["keystone", "shuttle-launcher"], 3)
+    assert [s["label"] for s in sets] == ["keystone (no data)", "shuttle-launcher (no data)"]
+    assert all(s["data"] == [None, None, None] and s["pointRadius"] == 0 for s in sets)  # null, never a 0 line
+    assert report.no_data_datasets([], 3) == []
+
+
+def test_the_report_builder_wires_the_empty_entries_into_every_chart_family():
+    src = open(os.path.join(os.path.dirname(report.__file__), "report.py"), encoding="utf-8").read()
+    for needle in (
+        "version_worst_light_datasets = _version_datasets(",  # windows cpu
+        "] + _no_data_datasets([n for n in _roster_mac if n not in _mac_procs]",  # mac cpu
+        "_mem_win_no_data = ",  # windows memory
+        "_mem_mac_no_data = ",  # mac memory
+        "labels += [f\"{n} (no data)\" for n in _bar_no_data]",  # the per-process bar chart
+    ):
+        assert needle in src, needle
+
+
 def test_the_source_of_the_roster_is_shown():
     assert "origin/main aaaaaaaa, synced 2026-11-27" in report.monitored_card(ROSTER, {})
