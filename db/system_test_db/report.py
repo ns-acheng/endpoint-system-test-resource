@@ -113,6 +113,23 @@ def table(
     return f'<table class="{cls}"><thead><tr>{th}</tr></thead><tbody>{"".join(trs)}</tbody></table>'
 
 
+def no_data_rows(roster, shown_names, ncols, platform=None):
+    """Rows for the per-process table: one for each roster process the release has no row for, "no data" in every cell, so the table
+    itself names every monitored process (the human, 2026-11-27: "show all proc name in report even they do not have any data").
+    shown_names: the process names the table already has; ncols: its column count; [] when there is no roster."""
+    if not roster:
+        return []
+    out = []
+    for pf in ("windows", "mac"):
+        if platform and platform != pf:
+            continue
+        for name in roster.get(pf) or []:
+            if name not in shown_names:
+                out.append([name] + ["no data"] * (ncols - 1))
+                shown_names = set(shown_names) | {name}
+    return out
+
+
 def monitored_card(roster, seen, platform=None):
     """The card that lists EVERY process the sampler is configured to monitor, also those with no data in this release, so that
     everybody can see what is monitored (the human, 2026-11-27: "show all proc name in report even they do not have any data").
@@ -1247,7 +1264,10 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
     )
     import monitored  # noqa: E402  (a file of this folder; sys.path already holds it)
 
-    monitored_html = monitored_card(monitored.load(), {(r[0], r[1]): (r[2], r[3]) for r in _seen_rows}, platform)
+    _roster = monitored.load()
+    monitored_html = monitored_card(_roster, {(r[0], r[1]): (r[2], r[3]) for r in _seen_rows}, platform)
+    # the per-process table names every monitored process too: the ones with no row in this release get "no data" cells
+    res_table_rows = list(res) + no_data_rows(_roster, {r[0] for r in res}, len(c3), platform)
 
     # 3b. resource peaks per process ACROSS versions (140 up through the
     # current release's major), feeding the trend line chart below the
@@ -2041,7 +2061,8 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
     demAgentSvc.exe is observe-only: it is measured against the line but never fails a run. Runs made before the gate was unified were gated
     at 140 or 240 per test; <em>worst_sustained_s</em> here is restated against {CPU_GATE} (a run whose highest reading is under {CPU_GATE} has 0 s above it).
   </div>
-  {table(c3, res)}
+  {table(c3, res_table_rows)}
+  <p class="foot">Rows with "no data" are processes the sampler is configured to monitor that no sampled test of this release saw running; the full roster with gates is in the Monitored processes card below the chart.</p>
   <div class="chart-wrap"><canvas id="cpuChart"></canvas></div>
 </div>
 

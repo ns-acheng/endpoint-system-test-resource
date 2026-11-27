@@ -84,5 +84,16 @@ def test_a_missing_roster_says_so_instead_of_an_empty_card():
     assert "missing or unreadable" in report.monitored_card(None, {})
 
 
+def test_the_per_process_table_gets_a_no_data_row_for_each_roster_process_it_lacks():
+    out = report.no_data_rows(ROSTER, {"stAgentSvc.exe"}, 4)
+    assert [r[0] for r in out] == ["shuttle.exe", "sovin.exe", "Netskope Client", "keystone"]
+    assert out[0] == ["shuttle.exe", "no data", "no data", "no data"]
+
+
+def test_no_data_rows_follow_the_platform_filter_and_a_missing_roster():
+    assert [r[0] for r in report.no_data_rows(ROSTER, set(), 3, platform="mac")] == ["Netskope Client", "keystone"]
+    assert report.no_data_rows(None, set(), 3) == []
+
+
 def test_the_source_of_the_roster_is_shown():
     assert "origin/main aaaaaaaa, synced 2026-11-27" in report.monitored_card(ROSTER, {})
