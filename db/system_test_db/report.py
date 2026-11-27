@@ -371,6 +371,40 @@ def _load_crash_verdicts():
     return _crash_verdicts_cache["data"]
 
 
+_DUMP_PATH_RE = re.compile(r"'[^']+\.(?:ips|dmp)'")
+
+
+def dedup_dump_paths(rows, lane_i=2, build_i=3, detail_i=6):
+    """The crash table lists the dump files a run saw. A crash report left by an earlier run of the same lane shows up again in the
+    next run's bundle, so the same path is listed under several builds. Walk each lane from the oldest build to the newest, keep a
+    path under the first build that lists it and drop it from the later ones (mac2 build 362 listed five paths of build 361).
+    Returns new rows; the detail text outside the path list is kept, and a row with no new path says so."""
+    out = [list(r) for r in rows]
+
+    def build_no(i):
+        b = str(out[i][build_i])
+        return int(b) if b.isdigit() else 0
+
+    seen = set()
+    for i in sorted(range(len(out)), key=lambda i: (str(out[i][lane_i]), build_no(i))):
+        detail = str(out[i][detail_i])
+        found = list(_DUMP_PATH_RE.finditer(detail))
+        if not found:
+            continue
+        lane = str(out[i][lane_i])
+        kept = [m.group(0) for m in found if (lane, m.group(0)) not in seen]
+        for m in found:
+            seen.add((lane, m.group(0)))
+        if len(kept) == len(found):
+            continue
+        start, end = found[0].start(), found[-1].end()
+        text = detail[:start] + ", ".join(kept) + detail[end:]
+        if not kept:
+            text += " -- every path is already listed under an earlier build of this lane"
+        out[i][detail_i] = text
+    return out
+
+
 _TESTNAME_CASE_RE = re.compile(r"^test_([a-z0-9]+)_(\d+)_")
 
 
@@ -1724,6 +1758,9 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
     # the verdict is the last (right-most) column; blank unless crash_verdicts.json names "<lane>:<build>"
     crash_bd  = [[r[i] for i in _CRASH_IDX] + [_verdicts.get(f"{r[2]}:{r[3]}", "")]
                  for r in gate_bd if r[0] in _CRASH_TYPES]
+    # the same dump path under two builds of one lane is listed once, under the first build (detail is column 6 here)
+    _dd = dedup_dump_paths(crash_bd, lane_i=2, build_i=3, detail_i=6)
+    crash_bd = _dd
     ncrash_bd = [[r[i] for i in _NCRASH_IDX] for r in gate_bd if r[0] not in _CRASH_TYPES]
     # triggered_by is column 1 in both projected tables; detail is column 6 in crash table.
     _cw_crash  = {1: "word-break:break-all", 6: "min-width:260px;word-break:break-word", 7: "min-width:90px"}
