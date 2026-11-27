@@ -35,12 +35,14 @@ LIVE = os.environ.get("REPORT_URL", "http://10.136.218.74:8080")
 
 def cell_value(ticket, words):
     """The text of the verdict cell: a ticket number, or the requester's words verbatim. Raises ValueError for anything else."""
-    if bool(ticket) == bool(words):
-        raise ValueError("give exactly one of --ticket (a ticket number) or --words (the exact words that were typed to you)")
-    if ticket:
-        if not TICKET_RE.match(ticket):
-            raise ValueError(f"'{ticket}' is not a ticket number like ENG-1455025; a verdict cell holds a ticket number or typed words only")
-        return ticket
+    tickets = [ticket] if isinstance(ticket, str) else list(ticket or [])
+    if bool(tickets) == bool(words):
+        raise ValueError("give exactly one of --ticket (one or more ticket numbers) or --words (the exact words that were typed to you)")
+    if tickets:
+        for t in tickets:
+            if not TICKET_RE.match(t):
+                raise ValueError(f"'{t}' is not a ticket number like ENG-1455025; a verdict cell holds ticket numbers or typed words only")
+        return ", ".join(tickets)
     text = words.strip()
     if len(text) < 3 or "\n" in text:
         raise ValueError("--words must be one line of the exact typed words, 3 characters or more")
@@ -79,7 +81,7 @@ def main(argv):
     s = sub.add_parser("set", help="link the runs to a ticket and write the verdict cell")
     s.add_argument("--lane", required=True, help="the lane as the crash table shows it: MAC2, LOCAL1, LOCAL2, REG ...")
     s.add_argument("--build", required=True, nargs="+", type=int)
-    s.add_argument("--ticket", help="ticket number, for example ENG-1455025")
+    s.add_argument("--ticket", nargs="+", help="one or more ticket numbers, for example ENG-1455025; several go into the cell as a comma list")
     s.add_argument("--words", help="the exact typed words for the cell (only when no ticket number was given)")
     s.add_argument("--no-link", action="store_true", help="write the cell only, do not touch the database link")
     s.add_argument("--link-only", action="store_true", help="link the runs to the ticket only; the verdict cell is not written (a second ticket on a run)")
@@ -94,12 +96,13 @@ def main(argv):
             print("REFUSED:", e)
             return 2
         if a.ticket and not a.no_link:
-            for b in a.build:
-                r = subprocess.run([sys.executable, DB, "issue", "set", a.ticket, "--build", str(b), "--job", a.lane], capture_output=True, text=True)
-                print(f"link {a.lane}:{b} -> {a.ticket}: exit {r.returncode}")
-                if r.returncode != 0:
-                    print((r.stdout + r.stderr).strip()[-300:])
-                    return 1
+            for t in a.ticket:
+                for b in a.build:
+                    r = subprocess.run([sys.executable, DB, "issue", "set", t, "--build", str(b), "--job", a.lane], capture_output=True, text=True)
+                    print(f"link {a.lane}:{b} -> {t}: exit {r.returncode}")
+                    if r.returncode != 0:
+                        print((r.stdout + r.stderr).strip()[-300:])
+                        return 1
         if a.link_only:
             if not a.ticket or a.no_link:
                 print("REFUSED: --link-only needs --ticket and cannot be combined with --no-link")

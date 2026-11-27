@@ -20,6 +20,12 @@ def test_text_that_is_not_a_ticket_number_is_refused(bad):
         ru.cell_value(bad, None)
 
 
+def test_several_ticket_numbers_make_a_comma_list_and_one_bad_one_refuses_all():
+    assert ru.cell_value(["ENG-1457084", "ENG-1457169"], None) == "ENG-1457084, ENG-1457169"
+    with pytest.raises(ValueError):
+        ru.cell_value(["ENG-1457084", "see the other ticket"], None)
+
+
 def test_typed_words_are_kept_exactly_and_must_be_one_line():
     assert ru.cell_value(None, "  duplicated ") == "duplicated"
     with pytest.raises(ValueError):
