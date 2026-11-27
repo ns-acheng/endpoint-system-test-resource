@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EPAIS: how we study, generate, implement, dispatch and test (manager review)</title>
+<style>
+:root{--bg:#05081a;--bg2:#0a1628;--card:#111827;--card2:#1a2235;--border:rgba(255,255,255,.08);--border2:rgba(0,199,230,.2);
+--fg:#f0f4ff;--muted:#94a3b8;--accent:#0052cc;--cyan:#00c7e6;--grad:linear-gradient(135deg,#0052cc 0%,#00c7e6 100%);
+--pass:#10b981;--fail:#ef4444;--warn:#f59e0b;--pass-bg:rgba(16,185,129,.12);--fail-bg:rgba(239,68,68,.12);--warn-bg:rgba(245,158,11,.12);
+--pass-border:rgba(16,185,129,.3);--fail-border:rgba(239,68,68,.3);--warn-border:rgba(245,158,11,.3);--radius:12px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--fg);font-size:16px;line-height:1.6}
+code,.mono{font-family:'JetBrains Mono',Consolas,monospace;font-size:.92em}
+.topbar{background:rgba(5,8,26,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{font-size:17px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tag{font-size:13px;padding:2px 10px;border-radius:999px;background:rgba(0,199,230,.1);border:1px solid var(--border2);color:var(--cyan);font-weight:600}
+.nav{display:flex;gap:8px;margin-left:16px;flex-wrap:wrap}
+.nav a{font-size:13px;padding:3px 11px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-weight:600}
+.nav a:hover{color:var(--cyan);border-color:var(--border2);background:rgba(0,199,230,.08)}
+.page{max-width:1500px;margin:0 auto;padding:24px 28px 56px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card.hero{background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 100%);border-color:var(--border2)}
+h1{font-size:28px;font-weight:700}
+h2{font-size:17px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--cyan);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:16px;font-weight:600;margin:14px 0 8px}
+p{margin-bottom:8px}.muted{color:var(--muted)}.foot{color:var(--muted);font-size:14px;margin-top:8px}
+.part{font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:30px 0 10px;font-weight:700}
+.badge{display:inline-block;padding:2px 11px;border-radius:999px;font-weight:600;font-size:12.5px;letter-spacing:.3px;margin:0 2px}
+.badge.pass{background:var(--pass-bg);color:var(--pass);border:1px solid var(--pass-border)}
+.badge.fail{background:var(--fail-bg);color:var(--fail);border:1px solid var(--fail-border)}
+.badge.warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)}
+.badge.info{background:rgba(0,199,230,.1);color:var(--cyan);border:1px solid var(--border2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.kpi{padding:14px 16px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+.kpi .value{font-size:30px;font-weight:700;margin-top:4px;font-family:'JetBrains Mono',Consolas,monospace;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi .delta{font-size:13px;color:var(--muted)}
+/* flow blocks */
+.flow{display:flex;flex-wrap:wrap;gap:34px 38px;margin:14px 0 6px;align-items:stretch}
+.blk{flex:1 1 190px;max-width:260px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;position:relative;box-shadow:var(--shadow)}
+.blk::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;background:var(--grad)}
+.blk .n{font-family:'JetBrains Mono',Consolas,monospace;font-size:12px;color:var(--cyan);font-weight:700;letter-spacing:.6px}
+.blk h4{font-size:15px;margin:2px 0 6px}
+.blk p{font-size:13.5px;color:var(--muted);margin:0 0 6px}
+.blk .out{font-size:12.5px;border-top:1px dashed var(--border);padding-top:6px;margin-top:6px;color:var(--fg)}
+.blk:not(:last-child)::after{content:'\2192';position:absolute;right:-30px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:24px;font-weight:700}
+.blk.warn::before{background:var(--warn)}.blk.fail::before{background:var(--fail)}.blk.ok::before{background:var(--pass)}
+.lane{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;align-items:center;margin:8px 0}
+.lane .who{font-weight:700;color:var(--cyan);font-size:14px;text-align:right}
+.lane .flow{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:8px}
+thead tr{background:rgba(255,255,255,.03)}
+th{text-align:left;padding:9px 14px;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;overflow-wrap:anywhere}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+td:first-child{font-weight:600;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.grid2,.grid3{grid-template-columns:1fr}.lane{grid-template-columns:1fr}.lane .who{text-align:left}.blk:not(:last-child)::after{display:none}}
+.callout{border-left:3px solid var(--cyan);background:rgba(0,199,230,.06);padding:10px 14px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:10px 0;font-size:14.5px}
+.callout.warn{border-color:var(--warn);background:var(--warn-bg)}.callout.bad{border-color:var(--fail);background:var(--fail-bg)}
+ul{margin:6px 0 8px 20px}li{margin:3px 0;font-size:14.5px}
+.bar{height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin:4px 0 10px}.bar>i{display:block;height:100%;background:var(--grad)}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="logo">GRS</span><span class="tag">EPAIS review</span>
+<div class="nav"><a href="#p1">Part 1 &middot; How EPAIS was built</a><a href="#study">Study</a><a href="#poc">Assumption &amp; POC</a><a href="#gen">Generate</a><a href="#impl">Implement</a><a href="#dispatch">Dispatch</a><a href="#status">Status</a><a href="#lessons">Lessons</a><a href="#p2">Part 2 &middot; GRS</a></div></div>
+<div class="page">
+
+<div class="card hero">
+<h1>EPAIS (Endpoint AI Security): how we study, generate, implement, dispatch and test</h1>
+<p class="muted">Review pack for management. Part 1 follows one critical feature from the first document to a result on a lane. Part 2 explains how GRS tests the client and what makes a new feature (EPAIS, DEM agent) quick to pick up. Feature build under test: 10603 (Windows msi, mac pkg). Page state: 2026-11-09 evening.</p>
+<div class="kpi-row">
+<div class="kpi"><div class="label">Planned cases</div><div class="value">30</div><div class="delta">EPAIS-01..30, Windows and mac</div></div>
+<div class="kpi"><div class="label">New drafts</div><div class="value">15</div><div class="delta">EPAIS-31..45, workbook v4</div></div>
+<div class="kpi"><div class="label">Live PASS records</div><div class="value">6</div><div class="delta">Win 01, 04, 05, 06; mac 05, 06</div></div>
+<div class="kpi"><div class="label">Platforms</div><div class="value">2</div><div class="delta">Windows, macOS</div></div>
+<div class="kpi"><div class="label">Agents</div><div class="value">4</div><div class="delta">git, git44, git22, klin</div></div>
+<div class="kpi"><div class="label">Rule</div><div class="value">1:1</div><div class="delta">one case, one run</div></div>
+</div></div>
+
+<div class="part" id="p1">Part 1 &mdash; how EPAIS was built</div>
+
+<div class="card">
+<h2>The whole pipeline in one picture</h2>
+<div class="flow">
+<div class="blk"><div class="n">1 &middot; READ</div><h4>Documents</h4><p>NPLAN files, MVP test plan (E2E rows), PR notes in the feature folder.</p><div class="out">says what it <b>should</b> do</div></div>
+<div class="blk"><div class="n">2 &middot; STUDY</div><h4>Observe the product</h4><p>Read the client's own debug log, files, folders and the tenant API on a real VM.</p><div class="out">facts tagged observed / inferred / sample</div></div>
+<div class="blk warn"><div class="n">3 &middot; ASSUME</div><h4>Name the unknowns</h4><p>Every open question is written down as an assumption, never as a pass criterion.</p><div class="out">becomes a POC question</div></div>
+<div class="blk"><div class="n">4 &middot; POC</div><h4>Prove one fact</h4><p>One small run per question. Read first; a write on a VM needs a plan and the owner's go.</p><div class="out">raw evidence lines</div></div>
+<div class="blk"><div class="n">5 &middot; GENERATE</div><h4>Cases + steps</h4><p>Skill builds a fresh workbook: goal, steps, pass criteria with fact ids, automation.</p><div class="out">sysplan xlsx</div></div>
+<div class="blk"><div class="n">6 &middot; IMPLEMENT</div><h4>Code on a branch</h4><p>GRS SystemTest module, unit tests, gate, plain push.</p><div class="out">branch + head sha</div></div>
+<div class="blk"><div class="n">7 &middot; DISPATCH</div><h4>Run on a lane</h4><p>git22 triggers Jenkins, one case per run, tenant and dc from the map.</p><div class="out">build number</div></div>
+<div class="blk ok"><div class="n">8 &middot; REPORT</div><h4>Result of record</h4><p>Results DB and the HTML report; failure text goes back to the author.</p><div class="out">PASS record = job, build, tenant, dc, client version</div></div>
+</div>
+<div class="callout">Definition of done for a case: <b>code on main AND one live PASS record per planned platform</b>. Gate OK or unit tests passing is only the precondition.</div>
+</div>
+
+<div class="card" id="study">
+<h2>Flow 1 &middot; Study: document versus what the product really does</h2>
+<div class="flow">
+<div class="blk"><div class="n">S1</div><h4>Manifest</h4><p>List every file in scope before reading anything.</p></div>
+<div class="blk"><div class="n">S2</div><h4>Read the product</h4><p>Raw <code>epais.log</code>, the data folder, <code>nsdiag</code>, policy files, tenant API.</p></div>
+<div class="blk"><div class="n">S3</div><h4>Fact table</h4><p>One row per fact: id (F1..F41), quote, strength tag, platform, build.</p></div>
+<div class="blk"><div class="n">S4</div><h4>Independent audit</h4><p>A second agent re-derives each behaviour fact from the raw log with its own regex.</p></div>
+<div class="blk ok"><div class="n">S5</div><h4>Study gate</h4><p>A task cannot leave study until the checklist has no FAIL line.</p><div class="out">facts become usable</div></div>
+</div>
+<table><thead><tr><th>Tag</th><th>Meaning</th><th>May a pass criterion rest on it?</th></tr></thead><tbody>
+<tr><td><span class="badge pass">observed</span></td><td>Seen in a log line, a file or an API answer on a real client</td><td>Yes</td></tr>
+<tr><td><span class="badge warn">sample</span></td><td>Seen n times; n must be 5 or more for a timing or count claim</td><td>Only with n &ge; 5</td></tr>
+<tr><td><span class="badge fail">inferred / doc</span></td><td>A document claim or a reading, not seen on a client</td><td>No: it becomes a needs-POC row</td></tr></tbody></table>
+<p class="foot">Where a document and the study disagree, the study wins and the disagreement is listed. Example found: the tenant shows one rule where the document describes a Prompt rule and a Tool Use rule.</p>
+</div>
+
+<div class="card" id="poc">
+<h2>Flow 2 &middot; Assumption to POC: how a guess becomes a fact</h2>
+<div class="flow">
+<div class="blk warn"><div class="n">A</div><h4>Assumption</h4><p>"The mac client cannot get a policy."</p></div>
+<div class="blk"><div class="n">B</div><h4>Plan (shown first)</h4><p>Before / Steps / Changes / UNDO, written to a file before any run.</p></div>
+<div class="blk"><div class="n">C</div><h4>Read-only run</h4><p>Look at state: log, folder, ACL, API GET.</p></div>
+<div class="blk fail"><div class="n">D</div><h4>Write POC</h4><p>Needs the owner's go in his latest message; a hook blocks the run otherwise.</p></div>
+<div class="blk ok"><div class="n">E</div><h4>Evidence</h4><p>Raw lines saved next to the plan; the assumption is closed or turned into a case.</p></div>
+</div>
+<table><thead><tr><th>Question</th><th>First guess</th><th>What the POC showed</th></tr></thead><tbody>
+<tr><td>Why does the mac client load 0 rules?</td><td>A mac problem</td><td>The tenant stack decides: stg tenants answer 404 "No tenant policy in force", the QA stack tenant 1136 delivers (mac 131&rarr;145&rarr;151 rules; Windows 154&ndash;162). Same endpoint on both OS.</td></tr>
+<tr><td>Does mac load a local policy?</td><td>Unknown</td><td>Yes: a persisted policy under <code>policy/&lt;fingerprint&gt;</code> loads at start, and the first network fetch about 11 s later replaces it.</td></tr>
+<tr><td>Is the EPAIS folder closed to the test account?</td><td>Assumed yes</td><td>Listing is denied; one SYSTEM FullControl entry. Also found: the SSH account could change the ACL (self-protection is off on test VMs).</td></tr>
+<tr><td>Does the block chain work?</td><td>From documents</td><td>Observed on Windows with a local policy (agent lineage only); not observed on mac (no agent-classified process in the 11 s window).</td></tr></tbody></table>
+<div class="callout warn">One POC changed a shared VM without an announcement (an ACL write). The cost was about 40 minutes of VM state and a lot of owner attention. The fix is a hook: <b>no VM write and no tenant write without a plan file and the owner's words</b> (workflow issue WI-0082).</div>
+</div>
+
+<div class="card" id="gen">
+<h2>Flow 3 &middot; Generate system tests from the study</h2>
+<div class="flow">
+<div class="blk"><div class="n">G1</div><h4>Inputs</h4><p>Feature folder, our study, architecture chapters.</p></div>
+<div class="blk"><div class="n">G2</div><h4>Candidates</h4><p>Each serves a goal: G1 regression guard, G2 corner case, G3 baseline guard.</p></div>
+<div class="blk"><div class="n">G3</div><h4>Evaluate</h4><p>Value, possible (named probe/helper), blockers. Not automatable &rarr; not written.</p></div>
+<div class="blk"><div class="n">G4</div><h4>Independent reviewer</h4><p>A fresh agent keeps or drops each row.</p></div>
+<div class="blk"><div class="n">G5</div><h4>IDs + workbook</h4><p>Fresh xlsx, <code>check-ids</code> against the spec, steps short.</p><div class="out">sysplan-epais-new-v4.xlsx</div></div>
+</div>
+<div class="grid2"><div>
+<h3>What the review of our first plan found</h3>
+<p class="muted">Execution steps per case (median):</p>
+<div>Whole Windows suite (125 rows): 6<div class="bar"><i style="width:60%"></i></div></div>
+<div>EPAIS plan (9 rows): 3<div class="bar"><i style="width:30%"></i></div></div>
+<p class="foot">Cause: the first plan was built only from idle-client facts, so every case was an observation, not a scenario (baseline &rarr; act &rarr; verify &rarr; restore &rarr; back to baseline).</p>
+</div><div>
+<h3>What we did about it</h3>
+<ul><li>Step table per case added (5&ndash;10 steps, each step names its helper).</li>
+<li>Coverage matrix of the MVP test plan against our cases; 22 E2E rows were not referenced at all.</li>
+<li>15 new cases drafted (EPAIS-31..45): 2 are <span class="badge pass">keep</span> (36 logs with the daemon stopped, 38 selectors), the rest are <span class="badge warn">needs-POC</span> because their pass fact is not observed yet.</li>
+<li>Evidence rule applied per assertion, not per case.</li></ul>
+</div></div>
+</div>
+
+<div class="card" id="impl">
+<h2>Flow 4 &middot; Implement and check</h2>
+<div class="flow">
+<div class="blk"><div class="n">I1</div><h4>Branch</h4><p>From the latest main, agent id in the name, scope set for git operations.</p></div>
+<div class="blk"><div class="n">I2</div><h4>Case module</h4><p><code>tests/SystemTest/test_epais_*.py</code>, Windows and mac versions, iteration recorder.</p></div>
+<div class="blk"><div class="n">I3</div><h4>Helper + unit test</h4><p>Pure helpers get unit tests; live-only code is proved by the live run.</p></div>
+<div class="blk"><div class="n">I4</div><h4>Gate</h4><p>One command: rebase, scope, audit, compile, lint, unit suite (about 1650 tests).</p></div>
+<div class="blk"><div class="n">I5</div><h4>Review + plain push</h4><p>Peer review; never a force push; a rebased branch goes under a new name.</p></div>
+</div>
+<table><thead><tr><th>Piece built for EPAIS</th><th>What it unlocks</th></tr></thead><tbody>
+<tr><td><code>epais_policy_summary</code></td><td>Reads a delivered policy file: counts, action tallies, rules for one OS. Written by git22 as a coding test; reviewed: ship with four small nits, all fixed.</td></tr>
+<tr><td>SYSTEM write verbs + <code>written_file</code></td><td>Write a file into the EPAIS folder as SYSTEM and always remove it; path guard on two layers. A reviewer found four path forms that bypassed the guard; fixes are in progress.</td></tr>
+<tr><td>mac <code>with_local_policy</code></td><td>Places a policy, restarts the daemon, restores; the 11 s window is written down as a constant with its evidence.</td></tr></tbody></table>
+</div>
+
+<div class="card" id="dispatch">
+<h2>Flow 5 &middot; Dispatch: who does what, in what order</h2>
+<div class="lane"><div class="who">Planner (git)</div><div class="flow">
+<div class="blk"><div class="n">P1</div><h4>Goal + branch + tenant</h4><p>Sends the validation request: what to prove, which branch, suggested tenant.</p></div>
+<div class="blk"><div class="n">P2</div><h4>Queue per agent</h4><p>Each agent holds a standing list and takes its next item itself.</p></div></div></div>
+<div class="lane"><div class="who">Runner (git22)</div><div class="flow">
+<div class="blk"><div class="n">R1</div><h4>Pick lane + dc</h4><p><code>dc-pick</code> reads the tenant map; refuses disallowed tenants and config conflicts.</p></div>
+<div class="blk"><div class="n">R2</div><h4>Trigger</h4><p>One case per run; feature build passed as <code>--build_url</code>; mac without <code>--current_release</code>.</p></div>
+<div class="blk ok"><div class="n">R3</div><h4>Report</h4><p>The only reporter of Jenkins results: build, verdict lines, client version.</p></div></div></div>
+<div class="lane"><div class="who">Study / POC (git44, klin)</div><div class="flow">
+<div class="blk"><div class="n">W1</div><h4>Windows POC &amp; helper</h4><p>klin owns Windows POC; git44 builds shared helpers and mac code.</p></div>
+<div class="blk"><div class="n">M1</div><h4>mac POC</h4><p>git and git44 on the mac guest through SSH.</p></div>
+<div class="blk"><div class="n">F1</div><h4>Failure loop</h4><p>Assertion text &rarr; author decides: case bug, product finding, or environment.</p></div></div></div>
+<table><thead><tr><th>Channel</th><th>Used for</th></tr></thead><tbody>
+<tr><td>Coord bus</td><td>Agent-to-agent messages and build wake-ups; each message is an open request until answered.</td></tr>
+<tr><td>Board (ai_chat)</td><td>Human-readable thread with klin and the owner; live update in the page.</td></tr>
+<tr><td>Kanban</td><td>One task per work item with stage gates (study &rarr; poc &rarr; design &rarr; validate).</td></tr>
+<tr><td>Hooks</td><td>Mechanical rules: one test per run, no force push, no VM write without a plan, answer the owner every turn.</td></tr></tbody></table>
+<div class="callout">Hard rules that shape dispatch: <b>one test case per Jenkins run</b>; only the runner triggers builds; results are reported once, by the runner.</div>
+</div>
+
+<div class="card" id="status">
+<h2>Where we are (evidence of record)</h2>
+<table><thead><tr><th>Case</th><th>Windows</th><th>mac</th><th>Note</th></tr></thead><tbody>
+<tr><td>01 policy applied</td><td><span class="badge pass">PASS</span> tenant 1136, twice; latest build 353</td><td><span class="badge warn">queued</span></td><td>health check of the lane VM after a failed case</td></tr>
+<tr><td>04, 05, 06</td><td><span class="badge pass">PASS</span></td><td>05, 06 <span class="badge pass">PASS</span></td><td>mac 05, 06 passed on the mac guest</td></tr>
+<tr><td>02, 08, 30</td><td><span class="badge warn">queued after 01</span></td><td>30: waiting for fetch-interval sample</td><td>each runs right after a fresh 01</td></tr>
+<tr><td>36 logs while daemon stopped</td><td><span class="badge fail">FAIL (case bug)</span></td><td><span class="badge warn">queued</span></td><td>case bug: the recovery list was fixed, not built from the baseline (fixed, re-run queued). The watchdog process was absent because tenant 1136 does not enable the watchdog flag; that part needs a stg tenant that delivers a policy. Also a product finding: the supervisor service restarts a stopped EPAIS daemon after about 24 s, so a 5 minute hold cannot be kept</td></tr>
+<tr><td>45 footprint, 35 self-protect, 38 selectors</td><td>code ready</td><td>45 ready</td><td>first live runs queued</td></tr>
+<tr><td>07 upgrade, 33</td><td colspan="2"><span class="badge info">held</span></td><td>needs two feature builds; upgrade tests are given up for now</td></tr></tbody></table>
+</div>
+
+<div class="card" id="lessons">
+<h2>What went wrong and what we changed (honest list)</h2>
+<table><thead><tr><th>Problem</th><th>Cost</th><th>Change</th></tr></thead><tbody>
+<tr><td>First plan too thin (median 3 steps versus 6)</td><td>Cases that observe but never exercise the product</td><td>Step review, coverage matrix, 15 new drafts</td></tr>
+<tr><td>Cause stated before the evidence (mac versus the tenant stack; a missing provisioner line that was only an old branch)</td><td>About 2 hours, three wrong messages</td><td>A cause needs a log or code line in the same turn</td></tr>
+<tr><td>VM write without announcement</td><td>About 40 minutes of VM state</td><td>Plan-and-go hook</td></tr>
+<tr><td>Same build read by three agents; agents idle between batches</td><td>Duplicate effort and idle capacity</td><td>Single reporter; standing queues per agent</td></tr>
+<tr><td>Hooks that contradict each other</td><td>About 25 blocked turns</td><td>Recorded as a workflow issue; rule-conflict test is the next hook</td></tr></tbody></table>
+<p class="foot">Recorded as WI-0086 in the workflow-issue ledger.</p>
+</div>
+
+<div class="part" id="p2">Part 2 &mdash; how GRS tests the client</div>
+
+<div class="card">
+<h2>Flow 6 &middot; From a trigger to a stored result</h2>
+<div class="flow">
+<div class="blk"><div class="n">1</div><h4>Trigger</h4><p>Jenkins lane (REG, REG2 for reboot-class cases; LOCAL lanes; MAC2-SSH for the mac guest). Params: branch, case, tenant, dc, release or <code>build_url</code>.</p></div>
+<div class="blk"><div class="n">2</div><h4>Target VM</h4><p>Lane resolves the VM; SSH preflight fails fast on a dead VM.</p></div>
+<div class="blk"><div class="n">3</div><h4>Install client</h4><p><code>test_01_install_client</code> via <code>check_client_installation</code>: install, enroll by invite, verify with <code>nsdiag</code>.</p></div>
+<div class="blk"><div class="n">4</div><h4>Case body</h4><p>Baseline, act, verify, restore, baseline again; probes read logs, files, services, the tenant API.</p></div>
+<div class="blk"><div class="n">5</div><h4>Gates</h4><p>Health gates (memory, handles, crash dumps, reboot count) run around every case.</p></div>
+<div class="blk"><div class="n">6</div><h4>Artifacts</h4><p>Client logs and config are zipped and archived with the build.</p></div>
+<div class="blk ok"><div class="n">7</div><h4>Results DB + report</h4><p>Ingested into PostgreSQL; the HTML report (this page's style) shows runs per release.</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Good points of GRS &mdash; why a new feature is quick to pick up</h2>
+<div class="grid3">
+<div class="blk" style="max-width:none"><h4>1 &middot; One case, one run</h4><p>A failure points at one case. Lanes queue; there is no wall of "deselected" noise.</p></div>
+<div class="blk" style="max-width:none"><h4>2 &middot; Tenant and dc by tool</h4><p><code>dc-pick</code> reads a map of validated combinations and refuses unapproved tenants. No hand-written params.</p></div>
+<div class="blk" style="max-width:none"><h4>3 &middot; Install is part of the case</h4><p>Every case begins from a verified client, so a result always carries the client version.</p></div>
+<div class="blk" style="max-width:none"><h4>4 &middot; Feature builds are a parameter</h4><p>A feature build installs by URL on Windows and mac without touching the code.</p></div>
+<div class="blk" style="max-width:none"><h4>5 &middot; Iterations</h4><p>Repeat the whole scenario N times to prove stability; the recorder stores each iteration.</p></div>
+<div class="blk" style="max-width:none"><h4>6 &middot; Safe restore</h4><p>Config guard journals changes and restores them; the install-state check catches orphaned installs.</p></div>
+<div class="blk" style="max-width:none"><h4>7 &middot; Privileged helpers</h4><p>A SYSTEM task runner reads (and now writes under a path guard) folders the SSH account cannot reach.</p></div>
+<div class="blk" style="max-width:none"><h4>8 &middot; Results of record</h4><p>DB plus HTML report, comparable across releases and platforms.</p></div>
+<div class="blk" style="max-width:none"><h4>9 &middot; Mechanical rules</h4><p>Gate and hooks enforce the habits (scope, DCO, no force push, evidence first), so new agents do not need to remember them.</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Recipe: pick up a new feature (EPAIS, DEM agent, the next one)</h2>
+<div class="flow">
+<div class="blk"><div class="n">1</div><h4>Read</h4><p>Feature folder: NPLAN, PR notes, existing sysplan.</p></div>
+<div class="blk"><div class="n">2</div><h4>Study</h4><p>Find the log lines, files, services, API; write facts with tags.</p></div>
+<div class="blk"><div class="n">3</div><h4>Name unknowns</h4><p>Each open question is a POC with a plan file.</p></div>
+<div class="blk"><div class="n">4</div><h4>Generate</h4><p>Run the feature skill; accept only automatable rows with evidence.</p></div>
+<div class="blk"><div class="n">5</div><h4>Copy a shape</h4><p>Start from a neighbour case (CERT, PROTECT, STEER) with the same baseline-act-restore shape.</p></div>
+<div class="blk"><div class="n">6</div><h4>Gate + dispatch</h4><p>Gate OK, push, send goal + branch + tenant to the runner.</p></div>
+</div>
+<table><thead><tr><th>Question</th><th>EPAIS</th><th>DEM agent</th></tr></thead><tbody>
+<tr><td>What is observed?</td><td>Daemon <code>epais.exe</code> / <code>com.netskope.epais</code>, policy file, <code>epais.log</code>, <code>nsdiag -o</code> bundle entry</td><td>Agent tunnel, DEM probes and their logs; same method: log first, document second</td></tr>
+<tr><td>Where is the truth about a state?</td><td>Tenant stack decides policy delivery (stg 404, QA delivers)</td><td>Tenant and build decide; check delivery before blaming the OS</td></tr>
+<tr><td>Privileged access?</td><td>SYSTEM task runner; mac root task runner</td><td>Same helpers are reusable</td></tr>
+<tr><td>Typical shape</td><td>Policy change &rarr; fetch &rarr; loaded fingerprint</td><td>Disconnect / reconnect cycle and iterations</td></tr></tbody></table>
+<p class="foot">Source files for every statement on this page sit in <code>claude-resource/task_docs</code> (epais, epais_plan_v3, epais_steps_review, epais_new_cases, epais_poc_queue, epais_policy_summary). Numbers come from those files and from the Jenkins builds cited by the runner.</p>
+</div>
+
+</div>
+</body>
+</html>

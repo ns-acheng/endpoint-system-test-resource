@@ -1,0 +1,2189 @@
+{
+ "source_release": "release-144",
+ "target_release": "release-144-final",
+ "generated_by": "db.py final (rules: final_rules.json)",
+ "policy": "PASS rows are always kept. A non-PASS row is kept only with concrete product evidence (measured value, named list, dump, gate_ticket); setup, config-sync, probe, installer and by-design-wait noise is filtered; anything ambiguous is filtered. A NULL build keys every null-build row of its job+test.",
+ "snapshot_note": "Point-in-time copy. Re-run `db.py final <N> --apply --redo` after more builds finish.",
+ "counts": {
+  "non_pass_rows": 196,
+  "kept": 59,
+  "gate_tickets_seen": 30
+ },
+ "by_rule": {
+  "filter:baseline-missing": 1,
+  "filter:by-design-relaunch": 6,
+  "filter:client-not-enabled": 11,
+  "filter:config-not-applied": 5,
+  "filter:config-sync-lag": 4,
+  "filter:guard-refused": 2,
+  "filter:harness-exception": 2,
+  "filter:precondition": 4,
+  "filter:probe-broken": 8,
+  "filter:skipped-marker": 7,
+  "filter:superseded-by-rerun": 82,
+  "filter:teardown-recovery": 1,
+  "filter:tray-icon-start": 4,
+  "keep:dump-or-ticket": 4,
+  "keep:long-lived-broke": 2,
+  "keep:main-never-passed": 2,
+  "keep:mem-gate": 3,
+  "keep:respawn": 1,
+  "keep:skip": 16,
+  "keep:tunnel-not-connected": 2,
+  "keep:ui-not-running": 1,
+  "keep:unresolved-failure": 28
+ },
+ "null_build_conflicts": [],
+ "overrides": {
+  "keep": [],
+  "filter": []
+ },
+ "keep": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 93,
+   "test_name": "test_cert_04_user_cert_corruption_self_heal_win",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: CERT-04 iter 1 step-9: tunnel not CONNECTED within 120s after BOTH cert files were corrupted"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 247,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_win",
+   "rule": "ui-not-running",
+   "reason": "client UI not running after the run: AssertionError: [CFG-01 iter 1 no-crash] stAgentUI.exe not running"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 277,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_win",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: [CFG-01 iter 1 no-crash] stAgentUI.exe not running"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 323,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_win",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: [CFG-01 iter 1 no-crash] stAgentUI.exe not running"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 228,
+   "test_name": "test_dem_02_app_probe_continuity_mac",
+   "rule": "respawn",
+   "reason": "service did not respawn: AssertionError: [DEM-02] iter 1: step3: netskope-dem-agent did not respawn within 30s after kill -9"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 554,
+   "test_name": "test_epais_02_unchanged_policy_is_uptodate_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS-02: no second fetch summary within 400 s of the applied one (one poll interval is ~30..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 358,
+   "test_name": "test_epais_03_policy_delivery_mac",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS baseline failed: nsconfig.json root epais.enabled is not \"true\" after 180 s -- nsconf..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 374,
+   "test_name": "test_epais_04_data_folder_closed_to_the_test_account_win",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: EPAIS baseline failed: nsconfig.json root epais.enabled is not \"true\" after 180 s -- nsconf..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 555,
+   "test_name": "test_epais_08_delivered_vocabulary_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: SystemTaskError: SYSTEM read of 'C:\\\\ProgramData\\\\Netskope\\\\epais\\\\policy\\\\fingerprint' failed: MethodInvoc..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 557,
+   "test_name": "test_epais_08_delivered_vocabulary_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: no delivered policy appeared within 120 s: C:\\ProgramData\\Netskope\\epais\\policy holds nothi..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 320,
+   "test_name": "test_epais_09_agent_identified_and_file_read_blocked_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 316,
+   "test_name": "test_epais_10_truncated_policy_rejected_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 319,
+   "test_name": "test_epais_11_rule_missing_action_rejects_document_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 321,
+   "test_name": "test_epais_12_block_report_carries_policy_and_provenance_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 322,
+   "test_name": "test_epais_13_agent_child_carries_the_agent_identity_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 339,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: golden_regression.common.platforms.system_task.SystemTaskError: SYSTEM read of 'C:\\\\ProgramData\\\\Netskope\\\\..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 340,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS: no line holding 'Identified agent 99000001' in daemon section ('142.0.0.1173', '2026..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 342,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "rule": "main-never-passed",
+   "reason": "on origin/main and no PASS anywhere in this release: a test that exists but has never passed must be visible: AssertionError: EPAIS: no line holding 'Identified agent 99000001' in daemon section ('142.0.0.1173', '2026..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_15_agent_include_exclude_and_no_agent_selectors_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 343,
+   "test_name": "test_epais_16_network_connect_blocked_by_address_win",
+   "rule": "main-never-passed",
+   "reason": "on origin/main and no PASS anywhere in this release: a test that exists but has never passed must be visible: AssertionError: EPAIS: no line holding 'Identified agent 99000001' in daemon section ('142.0.0.1173', '2026..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_17_agent_file_read_write_delete_blocked_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 324,
+   "test_name": "test_epais_17_no_process_term_mac",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS-17 iter 1: step 3: no 'policy match ... process_type=AGENT_PARENT' line; 1627 new lin..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_18_file_path_placeholders_and_match_types_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_19_agent_registry_write_blocked_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_23_alert_and_user_alert_actions_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 328,
+   "test_name": "test_epais_23_alert_and_user_alert_mac",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS-23 iter 1: step 3: missing: ['action=block policy match for user_alert target']; samp..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_24_default_action_applies_when_no_rule_matches_logged_only_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/nsclientqe/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 3..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 318,
+   "test_name": "test_epais_25_first_match_wins_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/Users/admin/grs/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/conftest.py', 338, \"..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 378,
+   "test_name": "test_epais_30_poll_interval_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: EPAIS-30: fetch gaps outside 300 +/- 5 s at [(0, 20.1)]; median=300.9s max=301.1s (all gaps..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 360,
+   "test_name": "test_epais_38_ai_tool_selector_blocks_helper_in_agent_only_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: the start times and epais.log are not on one clock, or a start time is missing: loaded 1794..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 367,
+   "test_name": "test_epais_38_ai_tool_selector_blocks_helper_in_agent_only_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [EPAIS-38 iter 1/1] step 8: C:\\grs_poc38\\git.exe ran inside the agent with the path-only rule"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 352,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: RuntimeError: push_traffic_mode_dse_safe failed all 6 attempt(s); last error: [SystemTest] DSE-dispatch: st..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 354,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Config update command failed. nsdiag -u output: configuration update is available. synchronizing..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 355,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Config update command failed. nsdiag -u output: configuration update is available. synchronizing..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 356,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 358,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: FC-04 step-5: mode change made during FailClose did not converge after recovery (want 'all'..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 454,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 455,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 456,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [FC-04 step-1] DNS Security present but DISABLED in the client config (steer_dns_on_prem=0,..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 457,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 458,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 579,
+   "test_name": "test_inst_01_email_storm_remove_cycle_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: MSI architecture could not be read from NSClient_addon-nsclientauto9.stg.boomskope.com_1340..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 160,
+   "test_name": "test_ipc_01_service_restart_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 235,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_mac",
+   "rule": "long-lived-broke",
+   "reason": "existing connection broke on a rule change: AssertionError: [STEER-01] step-4 FAIL: long-lived connection broke during/after steering rule change (RST/..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 236,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_mac",
+   "rule": "long-lived-broke",
+   "reason": "existing connection broke on a rule change: AssertionError: [STEER-01] step-4 FAIL: long-lived connection broke during/after steering rule change (RST/..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 162,
+   "test_name": "test_steer_07_onprem_offprem_config_selection_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 56,
+   "test_name": "test_stress_01_connection_storm_mac",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('C:\\\\git\\\\nsclient_golden_regression_suite\\\\golden_regression\\\\tests\\\\SystemTest\\\\conftest.py', 233, \"Skip..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 589,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: pre-flight failclose cleanup failed: disable failclose: nsconfig fail_close='true', expecte..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 321,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/test_stress_p0.py', 1812, \"Skipped: ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 322,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "rule": "skip",
+   "reason": "not a failure; kept as skipped: ('/nsclient_golden_regression_suite/golden_regression/tests/SystemTest/test_stress_p0.py', 1812, \"Skipped: ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 150,
+   "test_name": "test_stress_04_watchdog_kill_loop_win",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: step 5: tunnel not CONNECTED after quiet window: 'NSTUNNEL_CONNECTING'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 404,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: [step6] python.org not steered through the tunnel after nsAuxiliarySvc recovery — steering ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 269,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [step-7] re-block did not re-engage FailClose (last='forced_probe_leaked') assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 322,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 301,
+   "test_name": "test_stress_13_cert_pinned_exception_scope_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [decrypt-path] tlstest.exe BYPASSED https://jio.com while set to decrypt (verdict={'rc': 0,..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 498,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "rule": "mem-gate",
+   "reason": "memory gate exceeded (measured): AssertionError: iter 3 [cycle 2] stAgentSvc mem 201.7MB >= 200MB"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 567,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "rule": "mem-gate",
+   "reason": "memory gate exceeded (measured): AssertionError: iter 9 [cycle 1] stAgentSvc mem 200.2MB >= 200MB"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 585,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "rule": "mem-gate",
+   "reason": "memory gate exceeded (measured): AssertionError: iter 1 [cycle 2] stAgentSvc mem 233.2MB >= 200MB"
+  }
+ ],
+ "filtered": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 347,
+   "test_name": "test_cert_03_ca_tenant_cert_missing_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 349)",
+   "superseded_by_build": 349,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Expected status 201 but received 500"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 92,
+   "test_name": "test_cert_04_user_cert_corruption_self_heal_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 94)",
+   "superseded_by_build": 94,
+   "duration_s": 40.3,
+   "failure": "AssertionError: CERT-04 iter 1 step-8: pair not restored (sizes {'C:/ProgramData/netskope/stagent/data/nsusercert.p12': 2982, 'C:/ProgramData/netskope/stagen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 103,
+   "test_name": "test_cert_04_user_cert_corruption_self_heal_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.5,
+   "failure": "AssertionError: CERT-04 iter 1 precondition: backup differs from primary before the test, so a restore cannot be told apart"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 395,
+   "test_name": "test_cert_04_user_cert_corruption_self_heal_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.6,
+   "failure": "AssertionError: CERT-04 iter 1 precondition: backup differs from primary before the test, so a restore cannot be told apart"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 192,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 193)",
+   "superseded_by_build": 193,
+   "duration_s": 0.3,
+   "failure": "AssertionError: CFG-01 iter 1: no 'failed to read nsconfig.json' line: the client did not see the corrupt file"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 322,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 325)",
+   "superseded_by_build": 325,
+   "duration_s": 61.0,
+   "failure": "AssertionError: CFG-01 iter 1: no 'Restored config file from' line: the client did not restore the last-good config"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 408,
+   "test_name": "test_cfg_01_config_digest_corruption_recovery_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 443)",
+   "superseded_by_build": 443,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Windows 64-bit download link label mismatch. Expected: 'Windows Client (64-bit)', Found: 'Windows Client' (labels seen: ['Windows Client'])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 547,
+   "test_name": "test_dem_01_registration_survives_restart_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 548)",
+   "superseded_by_build": 548,
+   "duration_s": 0.0,
+   "failure": "Exception: Curl Gmail query failed after 3 attempts on INBOX. [stdout]: [stderr]: curl: (67) Login denied"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 147,
+   "test_name": "test_dem_02_app_probe_continuity_win",
+   "verdict": "FAIL",
+   "rule": "baseline-missing",
+   "reason": "no baseline to compare against",
+   "superseded_by_build": null,
+   "duration_s": 410.9,
+   "failure": "AssertionError: [DEM-02] iter 1: step1: no 'Running N app probe(s)' line in C:\\ProgramData\\Netskope\\DEM\\demAgentSvc.log within 420s -- baseline not established"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 148,
+   "test_name": "test_dem_02_app_probe_continuity_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 149)",
+   "superseded_by_build": 149,
+   "duration_s": 50.7,
+   "failure": "AssertionError: [DEM-02] iter 1: step2: demAgentSvc.exe not running while NSClient is disabled"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 314,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 64.9,
+   "failure": "Skipped: DEM-04 requires netskope-dem-agent running on this tenant/VM, still not up after waiting 60s (standalone DEM agent is bundled only in specific featu..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 246,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 64.5,
+   "failure": "Skipped: DEM-04 requires netskope-dem-agent running on this tenant/VM, still not up after waiting 60s (standalone DEM agent is bundled only in specific featu..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 247,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 64.5,
+   "failure": "Skipped: DEM-04 requires netskope-dem-agent running on this tenant/VM, still not up after waiting 60s (standalone DEM agent is bundled only in specific featu..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 250,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 64.2,
+   "failure": "Skipped: DEM-04 requires netskope-dem-agent running on this tenant/VM, still not up after waiting 60s (standalone DEM agent is bundled only in specific featu..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 96,
+   "test_name": "test_dns_02_non_dns_tcp_on_dns_ports_tunneled_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 100)",
+   "superseded_by_build": 100,
+   "duration_s": 122.7,
+   "failure": "AssertionError: [step-2] port 53: no 'Tunneling flow ... portquiz.net ... to app-fw' line in the log window (http='200')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 98,
+   "test_name": "test_dns_02_non_dns_tcp_on_dns_ports_tunneled_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 100)",
+   "superseded_by_build": 100,
+   "duration_s": 282.8,
+   "failure": "AssertionError: [DNS-02] 6 check(s) failed: step-2 port 53 http: BYPASSED: 2026/10/23 18:05:17.250 stAgentSvc pecc t6ec info proxyMgr.cpp:2491 CProxyMgr Bypa..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 99,
+   "test_name": "test_dns_02_non_dns_tcp_on_dns_ports_tunneled_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 100)",
+   "superseded_by_build": 100,
+   "duration_s": 213.2,
+   "failure": "AssertionError: [DNS-02] 3 check(s) failed: step-2 port 53 http: BYPASSED: 2026/10/23 18:34:16.378 stAgentSvc pecc t1918 info proxyMgr.cpp:2491 CProxyMgr Byp..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 338,
+   "test_name": "test_epais_01_policy_applied_after_restart_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 345)",
+   "superseded_by_build": 345,
+   "duration_s": 37.2,
+   "failure": "AssertionError: EPAIS-01: the post-restart section has neither 'applied new policy fingerprint' (F18) nor 'policy_client: loaded fingerprint' before its firs..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 342,
+   "test_name": "test_epais_01_policy_applied_after_restart_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 345)",
+   "superseded_by_build": 345,
+   "duration_s": 25.7,
+   "failure": "AssertionError: EPAIS-01: the post-restart section has neither 'applied new policy fingerprint' (F18) nor 'policy_client: loaded fingerprint' before its firs..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 357,
+   "test_name": "test_epais_01_policy_applied_after_restart_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 362)",
+   "superseded_by_build": 362,
+   "duration_s": 76.7,
+   "failure": "AssertionError: EPAIS: EPAISDaemon did not stop; the daemon restart never happened"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 285,
+   "test_name": "test_epais_03_policy_delivery_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 289)",
+   "superseded_by_build": 289,
+   "duration_s": 0.0,
+   "failure": "ModuleNotFoundError: No module named 'webui_v2_apis.policy.epais'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 287,
+   "test_name": "test_epais_03_policy_delivery_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 289)",
+   "superseded_by_build": 289,
+   "duration_s": 8.0,
+   "failure": "AssertionError: [EPAIS-03] iter 1: step 1: the enabled API rules and the delivered rules differ: only on the tenant [], only delivered [(('data-lineage-regis..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 292,
+   "test_name": "test_epais_03_policy_delivery_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 293)",
+   "superseded_by_build": 293,
+   "duration_s": 499.7,
+   "failure": "AssertionError: [EPAIS-03] iter 1: step 5: the API rules are not back at the start: {('QA-P2 AI Tool git.exe - Process Start', 'block'): 1, ('QA-P1 Empty age..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 251,
+   "test_name": "test_epais_05_bundle_diagnostics_not_zip_mac",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 291,
+   "test_name": "test_epais_05_bundle_diagnostics_not_zip_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 293)",
+   "superseded_by_build": 293,
+   "duration_s": 59.7,
+   "failure": "AssertionError: [EPAIS-05] iter 1: step 3: epais-diagnostics.zip is not in the bundle; entries: ['SystemInfo.log', 'ai_discovery_gef_debug.json', 'appInfo.lo..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 252,
+   "test_name": "test_epais_06_client_epais_setup_mac",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 437,
+   "test_name": "test_epais_08_delivered_vocabulary_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 438)",
+   "superseded_by_build": 438,
+   "duration_s": 135.9,
+   "failure": "AssertionError: no delivered policy appeared within 120 s: C:\\ProgramData\\Netskope\\epais\\policy holds nothing (the listing failed: SYSTEM list of 'C:\\\\Progra..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 317,
+   "test_name": "test_epais_11_rule_missing_action_rejects_document_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 321,
+   "test_name": "test_epais_12_block_chain_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 325)",
+   "superseded_by_build": 325,
+   "duration_s": 15.0,
+   "failure": "AssertionError: EPAIS-12 iter 1: step 3: block chain incomplete, missing: ['policy match with action=block event=file_write process_type=AGENT']; sample log ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 323,
+   "test_name": "test_epais_12_block_chain_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 325)",
+   "superseded_by_build": 325,
+   "duration_s": 14.7,
+   "failure": "AssertionError: EPAIS-12 iter 1: step 3: block chain incomplete, missing: ['policy match with action=block event=file_write process_type=AGENT']; 445 new lin..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 324,
+   "test_name": "test_epais_13_child_identity_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 14.7,
+   "failure": "AssertionError: EPAIS-13 iter 1: step 3: no 'Process start ... classified=AGENT_RESOURCE' line for child_tool; sample: ['2026/11/11 13:48:28.098 es_client.cp..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 326,
+   "test_name": "test_epais_13_child_identity_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 14.6,
+   "failure": "AssertionError: EPAIS-13 iter 1: step 3: no 'Process start ... classified=AGENT_RESOURCE' line for child_tool; sample: ['2026/11/11 14:07:30.102 es_client.cp..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 328,
+   "test_name": "test_epais_13_child_identity_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 15.1,
+   "failure": "AssertionError: EPAIS-13 iter 1: step 3: no 'Process start ... classified=AGENT_RESOURCE' line for child_tool; 658 new lines, 2 name child_tool: ['2026/11/11..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 315,
+   "test_name": "test_epais_17_no_process_term_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 320)",
+   "superseded_by_build": 320,
+   "duration_s": 40.9,
+   "failure": "AssertionError: EPAIS-17 iter 1: step 3: no 'policy match ... process_type=AGENT_PARENT' line; sample: ['2026/11/11 09:18:10.024 policy_worker.cpp:66 82003 4..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 317,
+   "test_name": "test_epais_17_no_process_term_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 320)",
+   "superseded_by_build": 320,
+   "duration_s": 40.6,
+   "failure": "AssertionError: EPAIS-17 iter 1: step 3: no 'policy match ... process_type=AGENT_PARENT' line; 1783 new lines, step 2 rc=0; decisive log lines: []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 319,
+   "test_name": "test_epais_17_no_process_term_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 320)",
+   "superseded_by_build": 320,
+   "duration_s": 40.0,
+   "failure": "AssertionError: EPAIS-17 iter 1: step 3: no 'policy match ... process_type=AGENT_PARENT' line; 1781 new lines, step 2 rc=0; decisive log lines: []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 286,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 288)",
+   "superseded_by_build": 288,
+   "duration_s": 1085.4,
+   "failure": "AssertionError: EPAIS-30: a fetch gap of 309.1 s exceeds 300 +/- 5 s; no need to wait the rest out (gaps so far [303.8, 303.9, 303.9, 309.1])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 303,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 60.4,
+   "failure": "Skipped: EPAIS-30: a new daemon section appeared during the wait (client restart or reinstall); gaps across a restart are not counted, rerun it against the n..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 304,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 332.2,
+   "failure": "Skipped: EPAIS-30: the daemon section disappeared from the retained log window mid-wait"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 305,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "skipped-marker",
+   "reason": "test declared itself skipped (precondition not met)",
+   "superseded_by_build": null,
+   "duration_s": 332.3,
+   "failure": "Skipped: EPAIS-30: the daemon section disappeared from the retained log window mid-wait [sections at start 1; now no section]"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 309,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 312)",
+   "superseded_by_build": 312,
+   "duration_s": 347.9,
+   "failure": "AssertionError: EPAIS-30: the daemon section was in epais.log at the start (1 section(s)) and is gone after three re-reads: the tail has 20000 lines, first [..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 311,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 312)",
+   "superseded_by_build": 312,
+   "duration_s": 771.5,
+   "failure": "AssertionError: EPAIS-30: the daemon section was in epais.log at the start (1 section(s)) and is gone after three re-reads: the tail has 1 lines, first ['EPA..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 345,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 347)",
+   "superseded_by_build": 347,
+   "duration_s": 0.0,
+   "failure": "Exception: No email found for search: win1136epais after 3 attempts (last curl: stdout='* SEARCH\\r\\n' stderr='')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 346,
+   "test_name": "test_epais_30_poll_interval_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 347)",
+   "superseded_by_build": 347,
+   "duration_s": 771.5,
+   "failure": "AssertionError: EPAIS-30: the daemon section was in epais.log at the start (1 section(s)) and is gone after three re-reads: the tail has 1 lines, first ['EPA..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 356,
+   "test_name": "test_epais_35_stop_refused_when_selfprotection_armed_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 358)",
+   "superseded_by_build": 358,
+   "duration_s": 44.4,
+   "failure": "SystemTaskError: restore failed: C:\\ProgramData\\Netskope\\epais\\config\\environment.json: SYSTEM restore of 'C:\\\\ProgramData\\\\Netskope\\\\epais\\\\config\\\\environm..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 352,
+   "test_name": "test_epais_36_logs_collected_with_daemon_stopped_win",
+   "verdict": "FAIL",
+   "rule": "teardown-recovery",
+   "reason": "teardown recovery message, not a product measurement",
+   "superseded_by_build": null,
+   "duration_s": 80.0,
+   "failure": "AssertionError: [EPAIS-36 iter 1/1] CRITICAL: recovery failed for ['stAgentSvcMon.exe'] — next test starts on a broken VM"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 354,
+   "test_name": "test_epais_36_logs_collected_with_daemon_stopped_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 366)",
+   "superseded_by_build": 366,
+   "duration_s": 0.0,
+   "failure": "Exception: Installation failed with exit code: 1603"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 359,
+   "test_name": "test_epais_36_logs_collected_with_daemon_stopped_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 366)",
+   "superseded_by_build": 366,
+   "duration_s": 30.8,
+   "failure": "AssertionError: [EPAIS-36 iter 1/1] step 4: epais-diagnostics.zip is not in the bundle; entries: ['SystemInfo.log', 'ai_discovery_gef_debug.json', 'appInfo.l..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 361,
+   "test_name": "test_epais_36_logs_collected_with_daemon_stopped_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 366)",
+   "superseded_by_build": 366,
+   "duration_s": 49.6,
+   "failure": "AssertionError: [EPAIS-36 iter 1/1] step 3: the daemon was running again when every collection ended (1 attempt(s)), so no bundle was taken with the daemon s..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 319,
+   "test_name": "test_fc_03_reboot_failclose_gateway_unreachable_win",
+   "verdict": "FAIL",
+   "rule": "config-sync-lag",
+   "reason": "backend config-sync lag",
+   "superseded_by_build": null,
+   "duration_s": 3310.6,
+   "failure": "AssertionError: enable failclose: Failclose enablement failed: Config update timestamp mismatch: got 1794787595, expected >= 1794788242 (check_timestamp=1794..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 564,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "guard-refused",
+   "reason": "run refused by a config guard",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Failed: cloud config refused: --dc='systest1457cloud' is a cloud-group dc whose steering config is shared across lanes and must stay Cloud Apps Only -- STRES..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 603,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "guard-refused",
+   "reason": "run refused by a config guard",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Failed: DSE contract violation: test_fc_04_failclose_dns_security_steering_transitions_win requires a DSE-on steering config but 'systeststatic-win' (dc='sys..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 604,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 465.9,
+   "failure": "AssertionError: FC-04 step-2b positive control FAILED: probe leaked in steady FAIL_CLOSED (15/15) — probe or traffic-mode setup is wrong, NOT a product leak:..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 605,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 611)",
+   "superseded_by_build": 611,
+   "duration_s": 498.7,
+   "failure": "RuntimeError: push_traffic_mode_dse_safe failed all 6 attempt(s); last error: [SystemTest] DSE-dispatch: steering config 'push-dse-win' not found server-side..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 607,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 611)",
+   "superseded_by_build": 611,
+   "duration_s": 299.3,
+   "failure": "RuntimeError: _patched_dse failed all 6 attempt(s); last error: [set_dse_steeringconfig 'systest'] tenant did not store the push (API / backend side, not the..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 608,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 611)",
+   "superseded_by_build": 611,
+   "duration_s": 252.7,
+   "failure": "RuntimeError: _patched_dse failed all 6 attempt(s); last error: [set_dse_steeringconfig 'systest'] tenant did not store the push (API / backend side, not the..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 609,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 610,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 611)",
+   "superseded_by_build": 611,
+   "duration_s": 0.0,
+   "failure": "AssertionError: [check_client_installation] Client is installed but not enrolled: no steering config on disk ([Errno 2] No such file or directory: 'C:/Progra..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 319,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 398)",
+   "superseded_by_build": 398,
+   "duration_s": 527.9,
+   "failure": "AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 320,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 398)",
+   "superseded_by_build": 398,
+   "duration_s": 594.0,
+   "failure": "AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 363,
+   "test_name": "test_inst_01_email_storm_remove_cycle_mac",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 2919.4,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 377,
+   "test_name": "test_inst_01_email_storm_remove_cycle_mac",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 1510.7,
+   "failure": "Exception: Client not enabled post installation"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 165,
+   "test_name": "test_inst_01_email_storm_remove_cycle_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Failed to enable client from disabled state. Success: True, Status: unknown"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 249,
+   "test_name": "test_ipc_01_service_restart_mac",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 76.5,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 344,
+   "test_name": "test_ipc_01_service_restart_mac",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 76.2,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 345,
+   "test_name": "test_ipc_01_service_restart_mac",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 73.4,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s) | last scores: Enabled-mac.png=0.178 | last screenshot: /tmp/grs_tray_evi..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 164,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Failed to enable client from disabled state. Success: True, Status: unknown"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 511,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 58.2,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 537,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 594)",
+   "superseded_by_build": 594,
+   "duration_s": 684.1,
+   "failure": "AssertionError: [cycle 5] Step 7: tray did not return to ENABLED within 45s after burst"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 366,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 369,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 370,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 371,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 372,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 373,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 374,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 375,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 378,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 379,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 380,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "config-sync-lag",
+   "reason": "backend config-sync lag",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Config update timestamp mismatch: got 1788437190, expected >= 1788437192 (check_timestamp=1788437222, tolerance=30s). Backend config may not be sy..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 381,
+   "test_name": "test_overlap_01_bypass_casb_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 382)",
+   "superseded_by_build": 382,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 283,
+   "test_name": "test_overlap_02_flags_off_parity_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 144.9,
+   "failure": "AssertionError: [iter 1] positive control failed: no 'Tunneling flow' line naming 'clients3.google.com' in the same window -- the debug-log pipeline may not ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 376,
+   "test_name": "test_overlap_02_flags_off_parity_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 384)",
+   "superseded_by_build": 384,
+   "duration_s": 0.0,
+   "failure": "assert not {'handleSNIFromSegmentPacket': ('false', 'true'), 'sendSYNToTunnelFirst': ('false', 'true')}"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 383,
+   "test_name": "test_overlap_02_flags_off_parity_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 384)",
+   "superseded_by_build": 384,
+   "duration_s": 0.0,
+   "failure": "assert not {'handleSNIFromSegmentPacket': ('false', 'true'), 'sendSYNToTunnelFirst': ('false', 'true')}"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 393,
+   "test_name": "test_overlap_05_kill_restart_classification_win",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 116.0,
+   "failure": "AssertionError: [iter 1] step 5: stAgentSvc did not restart within 30s of the kill. assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 396,
+   "test_name": "test_overlap_06_concurrent_classification_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 397)",
+   "superseded_by_build": 397,
+   "duration_s": 84.7,
+   "failure": "AssertionError: [iter 1] N=7: ['clients1.google.com', 'clients2.google.com', 'clients3.google.com', 'clients4.google.com'] did not show their own tunnel-firs..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 287,
+   "test_name": "test_overlap_08_resource_hygiene_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 401)",
+   "superseded_by_build": 401,
+   "duration_s": 498.5,
+   "failure": "AssertionError: [iter 3] peak handle count grew 23.6% across 10 bursts (baseline=631, peak=780) -- exceeds the 10% budget. assert 23.613312202852615 <= 10"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 400,
+   "test_name": "test_overlap_08_resource_hygiene_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 401)",
+   "superseded_by_build": 401,
+   "duration_s": 223.7,
+   "failure": "AssertionError: [iter 1] step 7: 'clients3.google.com' did not engage tunnel-first on the post-burst re-probe -- repeated concurrent load may have corrupted ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 274,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 78.7,
+   "failure": "AssertionError: [STEER-01 prep delete] no app named 'systest_steer01-125-181' to delete, but gone_doms ['speedtest.belwue.net', 'mirror.nforce.com', 'ftp.deb..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 289,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 89.9,
+   "failure": "AssertionError: [STEER-01 prep delete] no app named 'systest_steer01-125-181' to delete, but gone_doms ['speedtest.belwue.net', 'mirror.nforce.com', 'ftp.deb..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 310,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "harness-exception",
+   "reason": "exception in harness or API code",
+   "superseded_by_build": null,
+   "duration_s": 1186.7,
+   "failure": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 317,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 7458.1,
+   "failure": "AssertionError: [STEER-01] only 13 alive HTTPS domains found (need 30); widen the sample or check VM connectivity"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 318,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 331)",
+   "superseded_by_build": 331,
+   "duration_s": 6270.6,
+   "failure": "AssertionError: [STEER-01] step-2 SETUP FAIL: only the short fallback source #2 (ftp.debian.org) answered; it completes before the rule change, so the case c..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 308,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 12.0,
+   "failure": "AssertionError: [STEER-01] precondition FAIL: traffic_mode='all' is not Cloud Apps Only on steering config 'systest-cloud-app' (queried via nsdiag -f). STEER..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 315,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 5331.0,
+   "failure": "AssertionError: [STEER-01] only 18 alive HTTPS domains found (need 30); widen the sample or check VM connectivity"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 419,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 5533.8,
+   "failure": "AssertionError: [STEER-01] only 13 alive HTTPS domains found (need 30); widen the sample or check VM connectivity"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 311,
+   "test_name": "test_steer_05_fast_new_conn_steered_win",
+   "verdict": "FAIL",
+   "rule": "harness-exception",
+   "reason": "exception in harness or API code",
+   "superseded_by_build": null,
+   "duration_s": 47.4,
+   "failure": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 320,
+   "test_name": "test_steer_05_fast_new_conn_steered_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 332)",
+   "superseded_by_build": 332,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 302,
+   "test_name": "test_steer_07_onprem_offprem_config_selection_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 305)",
+   "superseded_by_build": 305,
+   "duration_s": 0.0,
+   "failure": "AssertionError: set_dse_steeringconfig(traffic_mode='all', 'systest') failed after 6 retries"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 311,
+   "test_name": "test_steer_07_onprem_offprem_config_selection_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 312)",
+   "superseded_by_build": 312,
+   "duration_s": 0.0,
+   "failure": "AssertionError: set_dse_steeringconfig(traffic_mode='all', 'systest') failed after 6 retries"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 55,
+   "test_name": "test_stress_01_connection_storm_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 883.0,
+   "failure": "AssertionError: storm proof-of-life: peak established conns 0 < 300 — load never materialized"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 230,
+   "test_name": "test_stress_01_connection_storm_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 39.5,
+   "failure": "AssertionError: precondition: stwatchdog not running at iter 1 start"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 178,
+   "test_name": "test_stress_01_connection_storm_win",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 432.8,
+   "failure": "AssertionError: storm proof-of-life: peak established conns 0 < 300 — load never materialized"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 387,
+   "test_name": "test_stress_02_traffic_flood_mac",
+   "verdict": "FAIL",
+   "rule": "probe-broken",
+   "reason": "measurement probe or load generator failed",
+   "superseded_by_build": null,
+   "duration_s": 1933.8,
+   "failure": "AssertionError: [step-4] only 1 under-load throughput sample(s) collected — the probe itself is broken (measurement, not product)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 242,
+   "test_name": "test_stress_03_tunnel_flapping_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 244)",
+   "superseded_by_build": 244,
+   "duration_s": 0.0,
+   "failure": "AssertionError: pre-flight failclose cleanup failed: disable failclose: nsconfig fail_close='true', expected 'false'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 159,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 163)",
+   "superseded_by_build": 163,
+   "duration_s": 0.0,
+   "failure": "AssertionError: pre-flight failclose cleanup failed: disable failclose: nsconfig fail_close='true', expected 'false'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 175,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "config-not-applied",
+   "reason": "tenant/config push not applied (tenant-side)",
+   "superseded_by_build": null,
+   "duration_s": 1983.7,
+   "failure": "AssertionError: Phase B enable failclose: enable failclose: nsconfig fail_close='false', expected 'true'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 180,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "config-not-applied",
+   "reason": "tenant/config push not applied (tenant-side)",
+   "superseded_by_build": null,
+   "duration_s": 1908.8,
+   "failure": "AssertionError: Phase B enable failclose: enable failclose: nsconfig fail_close='false', expected 'true'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 181,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "config-not-applied",
+   "reason": "tenant/config push not applied (tenant-side)",
+   "superseded_by_build": null,
+   "duration_s": 5740.8,
+   "failure": "AssertionError: Phase B enable failclose: enable failclose: nsconfig fail_close='false', expected 'true'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 483,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "config-not-applied",
+   "reason": "tenant/config push not applied (tenant-side)",
+   "superseded_by_build": null,
+   "duration_s": 1292.0,
+   "failure": "AssertionError: Phase B enable failclose: enable failclose: nsconfig fail_close='false', expected 'true'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 587,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Failed to enable client from disabled state. Success: True, Status: unknown"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 593,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "verdict": "FAIL",
+   "rule": "config-not-applied",
+   "reason": "tenant/config push not applied (tenant-side)",
+   "superseded_by_build": null,
+   "duration_s": 1664.9,
+   "failure": "AssertionError: Phase B enable failclose: enable failclose: nsconfig fail_close='false', expected 'true'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 260,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 567.8,
+   "failure": "AssertionError: [step4] launchd did not relaunch nsAuxiliarySvc within 510s (relaunch trigger interval=7min)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 356,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 762.6,
+   "failure": "AssertionError: [step4] launchd did not relaunch nsAuxiliarySvc within 690s (relaunch trigger interval=10min)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 381,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 1144.4,
+   "failure": "AssertionError: [step4] launchd did not relaunch nsAuxiliarySvc within 690s (relaunch trigger interval=10min)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 388,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 763.9,
+   "failure": "AssertionError: [step4] launchd did not relaunch nsAuxiliarySvc within 690s (relaunch trigger interval=10min)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 393,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "verdict": "FAIL",
+   "rule": "by-design-relaunch",
+   "reason": "launchd relaunch interval wait, by design",
+   "superseded_by_build": null,
+   "duration_s": 763.9,
+   "failure": "AssertionError: [step4] launchd did not relaunch nsAuxiliarySvc within 690s (relaunch trigger interval=10min)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 161,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 171)",
+   "superseded_by_build": 171,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 586,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "AssertionError: Failed to enable client from disabled state. Success: True, Status: unknown"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 590,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 597)",
+   "superseded_by_build": 597,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 591,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 597)",
+   "superseded_by_build": 597,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 592,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 597)",
+   "superseded_by_build": 597,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 322,
+   "test_name": "test_stress_05_crash_under_load_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 327)",
+   "superseded_by_build": 327,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 321,
+   "test_name": "test_stress_06_config_push_storm_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 428)",
+   "superseded_by_build": 428,
+   "duration_s": 1039.6,
+   "failure": "AssertionError: STRESS-06 last-write-wins mismatch: clientAllDisableAutoReenableDuration: expected=60 actual='-1' | allowClientDisabling: expected=0 actual='..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 185,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 186)",
+   "superseded_by_build": 186,
+   "duration_s": 719.5,
+   "failure": "AssertionError: [step-7] probes [28, 28, 0] after unblock + reconnect -- traffic did not resume after the crash/restart cycle assert False + where False = al..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 367,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 370)",
+   "superseded_by_build": 370,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 369,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_mac",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 370)",
+   "superseded_by_build": 370,
+   "duration_s": 0.0,
+   "failure": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 267,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "config-sync-lag",
+   "reason": "backend config-sync lag",
+   "superseded_by_build": null,
+   "duration_s": 624.8,
+   "failure": "Exception: Config update timestamp mismatch: got 1793407598, expected >= 1793408093 (check_timestamp=1793408123, tolerance=30s). Backend config may not be sy..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 268,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 271)",
+   "superseded_by_build": 271,
+   "duration_s": 479.7,
+   "failure": "AssertionError: [STRESS-08 mode='none'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 269,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 271)",
+   "superseded_by_build": 271,
+   "duration_s": 441.4,
+   "failure": "AssertionError: [STRESS-08 mode='none'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 270,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "config-sync-lag",
+   "reason": "backend config-sync lag",
+   "superseded_by_build": null,
+   "duration_s": 413.1,
+   "failure": "Exception: Config update timestamp mismatch: got 1793417782, expected >= 1793418048 (check_timestamp=1793418078, tolerance=30s). Backend config may not be sy..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 273,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 304)",
+   "superseded_by_build": 304,
+   "duration_s": 354.8,
+   "failure": "AssertionError: [STRESS-08 mode='none'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 275,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 304)",
+   "superseded_by_build": 304,
+   "duration_s": 153.3,
+   "failure": "AssertionError: set_dse_steeringconfig(traffic_mode='all', 'systest') failed after retries"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 276,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 304)",
+   "superseded_by_build": 304,
+   "duration_s": 363.4,
+   "failure": "AssertionError: [STRESS-08 mode='none'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 309,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 329)",
+   "superseded_by_build": 329,
+   "duration_s": 232.2,
+   "failure": "AssertionError: [STRESS-08 mode='all'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 119,
+   "test_name": "test_stress_11_dns_tcp_large_packet_win",
+   "verdict": "FAIL",
+   "rule": "superseded-by-rerun",
+   "reason": "failed, then the same test passed later on the same lane (build 226)",
+   "superseded_by_build": 226,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 408,
+   "test_name": "test_stress_27_protocol_flood_mac",
+   "verdict": "FAIL",
+   "rule": "client-not-enabled",
+   "reason": "install/enable setup failure",
+   "superseded_by_build": null,
+   "duration_s": 0.0,
+   "failure": "Exception: Client not enabled post installation"
+  }
+ ],
+ "filtered_summary": {
+  "superseded-by-rerun": {
+   "results": 82,
+   "hours": 5.2
+  },
+  "client-not-enabled": {
+   "results": 11,
+   "hours": 1.2
+  },
+  "probe-broken": {
+   "results": 8,
+   "hours": 6.2
+  },
+  "skipped-marker": {
+   "results": 7,
+   "hours": 0.3
+  },
+  "by-design-relaunch": {
+   "results": 6,
+   "hours": 1.1
+  },
+  "config-not-applied": {
+   "results": 5,
+   "hours": 3.5
+  },
+  "precondition": {
+   "results": 4,
+   "hours": 0.0
+  },
+  "config-sync-lag": {
+   "results": 4,
+   "hours": 1.2
+  },
+  "tray-icon-start": {
+   "results": 4,
+   "hours": 0.1
+  },
+  "guard-refused": {
+   "results": 2,
+   "hours": 0.0
+  },
+  "harness-exception": {
+   "results": 2,
+   "hours": 0.3
+  },
+  "baseline-missing": {
+   "results": 1,
+   "hours": 0.1
+  },
+  "teardown-recovery": {
+   "results": 1,
+   "hours": 0.0
+  }
+ },
+ "ambiguous_for_review": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 554,
+   "test_name": "test_epais_02_unchanged_policy_is_uptodate_win",
+   "reason": "AssertionError: EPAIS-02: no second fetch summary within 400 s of the applied one (one poll interval is ~300 s); the counters are [{'outcome': 'changed', 'li..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 358,
+   "test_name": "test_epais_03_policy_delivery_mac",
+   "reason": "AssertionError: EPAIS baseline failed: nsconfig.json root epais.enabled is not \"true\" after 180 s -- nsconfig.json has no root 'epais' object (the tenant has..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 555,
+   "test_name": "test_epais_08_delivered_vocabulary_win",
+   "reason": "SystemTaskError: SYSTEM read of 'C:\\\\ProgramData\\\\Netskope\\\\epais\\\\policy\\\\fingerprint' failed: MethodInvocationException: Exception calling \"Open\" with \"4\" ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 557,
+   "test_name": "test_epais_08_delivered_vocabulary_win",
+   "reason": "AssertionError: no delivered policy appeared within 120 s: C:\\ProgramData\\Netskope\\epais\\policy holds nothing and no 'fingerprint' file; the newest daemon se..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 339,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "reason": "golden_regression.common.platforms.system_task.SystemTaskError: SYSTEM read of 'C:\\\\ProgramData\\\\Netskope\\\\epais\\\\config\\\\environment.json' failed: MethodInv..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 340,
+   "test_name": "test_epais_14_username_term_scopes_to_the_enrolled_identity_win",
+   "reason": "AssertionError: EPAIS: no line holding 'Identified agent 99000001' in daemon section ('142.0.0.1173', '2026/11/16 23:09:19.217') within 120 s"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 324,
+   "test_name": "test_epais_17_no_process_term_mac",
+   "reason": "AssertionError: EPAIS-17 iter 1: step 3: no 'policy match ... process_type=AGENT_PARENT' line; 1627 new lines, step 2 rc=0; decisive log lines: []"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 328,
+   "test_name": "test_epais_23_alert_and_user_alert_mac",
+   "reason": "AssertionError: EPAIS-23 iter 1: step 3: missing: ['action=block policy match for user_alert target']; sample: ['2026/11/11 10:22:18.113 policy_engine.cpp:49..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 378,
+   "test_name": "test_epais_30_poll_interval_win",
+   "reason": "AssertionError: EPAIS-30: fetch gaps outside 300 +/- 5 s at [(0, 20.1)]; median=300.9s max=301.1s (all gaps [20.1, 300.9, 301.1, 300.9, 301.1])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 360,
+   "test_name": "test_epais_38_ai_tool_selector_blocks_helper_in_agent_only_win",
+   "reason": "AssertionError: the start times and epais.log are not on one clock, or a start time is missing: loaded 1794227829.306, starts [1794199035.547, 1794199037.004..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 367,
+   "test_name": "test_epais_38_ai_tool_selector_blocks_helper_in_agent_only_win",
+   "reason": "AssertionError: [EPAIS-38 iter 1/1] step 8: C:\\grs_poc38\\git.exe ran inside the agent with the path-only rule"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 352,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "RuntimeError: push_traffic_mode_dse_safe failed all 6 attempt(s); last error: [SystemTest] DSE-dispatch: steering config 'push-dse-win' not found server-side..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 354,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "Exception: Config update command failed. nsdiag -u output: configuration update is available. synchronizing configuration... failed to download configuration..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 355,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "Exception: Config update command failed. nsdiag -u output: configuration update is available. synchronizing configuration... failed to download configuration..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 356,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 358,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "AssertionError: FC-04 step-5: mode change made during FailClose did not converge after recovery (want 'all', got 'web') — inconsistent state after the transi..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 454,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 455,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "Exception: Config update command failed. nsdiag -u output: failed to check for configuration updates."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 456,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "AssertionError: [FC-04 step-1] DNS Security present but DISABLED in the client config (steer_dns_on_prem=0, steer_dns_off_prem=0) — the push did not take effect"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 457,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 458,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "AssertionError: [FC-04 step-1 enable] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 579,
+   "test_name": "test_inst_01_email_storm_remove_cycle_win",
+   "reason": "AssertionError: MSI architecture could not be read from NSClient_addon-nsclientauto9.stg.boomskope.com_1340_DGdhWpe5WVvDyKh91cGk_F6IczDsm6ZK46kEtlQYLMReIO2FU..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 160,
+   "test_name": "test_ipc_01_service_restart_win",
+   "reason": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 162,
+   "test_name": "test_steer_07_onprem_offprem_config_selection_win",
+   "reason": "Exception: Client not uninstalled despite waiting 60 seconds (remote)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 589,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "reason": "AssertionError: pre-flight failclose cleanup failed: disable failclose: nsconfig fail_close='true', expected 'false'"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 269,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_win",
+   "reason": "AssertionError: [step-7] re-block did not re-engage FailClose (last='forced_probe_leaked') assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 322,
+   "test_name": "test_stress_07_failclose_traffic_enforcement_win",
+   "reason": "assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 301,
+   "test_name": "test_stress_13_cert_pinned_exception_scope_win",
+   "reason": "AssertionError: [decrypt-path] tlstest.exe BYPASSED https://jio.com while set to decrypt (verdict={'rc': 0, 'steered': 6, 'bypassed': 2, 'tls_key': 6}) — the..."
+  }
+ ]
+}

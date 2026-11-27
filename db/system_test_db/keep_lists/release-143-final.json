@@ -1,0 +1,462 @@
+{
+ "source_release": "release-143",
+ "target_release": "release-143-final",
+ "generated_by": "db.py final (rules: final_rules.json)",
+ "policy": "PASS rows are always kept. A non-PASS row is kept only with concrete product evidence (measured value, named list, dump, gate_ticket); setup, config-sync, probe, installer and by-design-wait noise is filtered; anything ambiguous is filtered. A NULL build keys every null-build row of its job+test.",
+ "snapshot_note": "Point-in-time copy. Re-run `db.py final <N> --apply --redo` after more builds finish.",
+ "counts": {
+  "non_pass_rows": 190,
+  "kept": 54,
+  "gate_tickets_seen": 14
+ },
+ "by_rule": {
+  "filter:ambiguous": 2,
+  "filter:baseline-missing": 12,
+  "filter:binding-changed": 1,
+  "filter:by-design-relaunch": 18,
+  "filter:client-not-enabled": 8,
+  "filter:config-not-applied": 8,
+  "filter:config-sync-lag": 13,
+  "filter:email-verification": 2,
+  "filter:guard-refused": 6,
+  "filter:harness-exception": 3,
+  "filter:installer-fetch": 3,
+  "filter:null-build-conflict": 1,
+  "filter:onprem-detect": 6,
+  "filter:precondition": 11,
+  "filter:probe-broken": 11,
+  "filter:sampler-missing": 2,
+  "filter:skip": 17,
+  "filter:skipped-marker": 1,
+  "filter:teardown-recovery": 2,
+  "filter:traffic-mode-cloud": 1,
+  "filter:tray-icon-start": 6,
+  "filter:version-format": 1,
+  "filter:xpass-strict": 1,
+  "keep:dem-autostart": 1,
+  "keep:dem-extra-process": 2,
+  "keep:dem-probe-count": 2,
+  "keep:dem-race": 10,
+  "keep:dem-register-line": 1,
+  "keep:dump-or-ticket": 4,
+  "keep:failclose-lapsed": 1,
+  "keep:kill-fail": 4,
+  "keep:leak": 2,
+  "keep:mem-gate": 2,
+  "keep:not-steered": 6,
+  "keep:override": 2,
+  "keep:pid-changed": 1,
+  "keep:respawn": 2,
+  "keep:route-control": 1,
+  "keep:tunnel-down-under-load": 6,
+  "keep:tunnel-not-connected": 6,
+  "keep:ui-not-running": 1
+ },
+ "null_build_conflicts": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "test_name": "test_steer_01_steering_rule_update_active_connections",
+   "keepable": 1,
+   "rows": 3,
+   "forced": false
+  }
+ ],
+ "overrides": {
+  "keep": [
+   {
+    "job": "DEV/GRS-SYSTEMTEST-REG",
+    "build": null,
+    "test_name": "test_stress_08_enable_disable_steering",
+    "reason": "REG 221 (build number lost at ingest), 39/50 passed: [step5] tunnel did not reconnect within 30s after NONE->WEB. Forced: the null key also keeps one config-sync timestamp-mismatch row of the same job and test (noise, accepted)"
+   }
+  ],
+  "filter": []
+ },
+ "keep": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 80,
+   "test_name": "test_dem_01_registration_survives_restart_mac",
+   "rule": "dem-register-line",
+   "reason": "DEM module not re-registered after restart: AssertionError: [DEM-01] step3: no NEW 'DEM module has been registered' line after the restart (before=2026..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 144,
+   "test_name": "test_dem_01_registration_survives_restart_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-01: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 137,
+   "test_name": "test_dem_02_app_probe_continuity_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-02: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 145,
+   "test_name": "test_dem_02_app_probe_continuity_mac",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: [DEM-02] iter 1: step1: no 'Running N app probe(s)' line within 420s -- baseline not establ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 147,
+   "test_name": "test_dem_02_app_probe_continuity_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-02: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 69,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "respawn",
+   "reason": "service did not respawn: AssertionError: [DEM-04] step3 kill 2/2: netskope-dem-agent did not respawn within 10s via launchd KeepAlive"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 71,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 72,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 73,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 74,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 75,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 76,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-04: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 77,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "respawn",
+   "reason": "service did not respawn: AssertionError: [DEM-04] step3 kill 2/2: netskope-dem-agent did not respawn within 15s via launchd KeepAlive"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 114,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-extra-process",
+   "reason": "wrong process count after recovery: AssertionError: [DEM-04] iter 1: step4: expected exactly 1 netskope-dem-agent process after NSClient-crash ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 134,
+   "test_name": "test_dem_04_health_crash_free_mac",
+   "rule": "dem-extra-process",
+   "reason": "wrong process count after recovery: AssertionError: [DEM-04] iter 1: step4: expected exactly 1 netskope-dem-agent process after NSClient-crash ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 203,
+   "test_name": "test_dem_08_app_probe_stress_max_count_mac",
+   "rule": "dem-probe-count",
+   "reason": "admin-side probe count mismatch (measured): AssertionError: [DEM-08] iter 1: step4: 50/100 probes accepted by the create call but NOT present in the ad..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 205,
+   "test_name": "test_dem_08_app_probe_stress_max_count_mac",
+   "rule": "dem-probe-count",
+   "reason": "admin-side probe count mismatch (measured): AssertionError: [DEM-08] iter 1: step4: 50/100 probes accepted by the create call but NOT present in the ad..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 116,
+   "test_name": "test_dem_09_route_control_thread_survives_teardown_cycling_mac",
+   "rule": "route-control",
+   "reason": "route-control event missing after a baseline existed: AssertionError: [DEM-09] iter 4: step5: no NEW route-control post-to-GEF event within 360s of the cycling c..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 82,
+   "test_name": "test_dem_10_state_across_reboot_mac",
+   "rule": "dem-race",
+   "reason": "confirmed DEM agent installer registration race: AssertionError: DEM-10: netskope-dem-agent did not start -- CONFIRMED installer registration race: dem_agen..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 84,
+   "test_name": "test_dem_10_state_across_reboot_mac",
+   "rule": "dem-autostart",
+   "reason": "DEM agent autostart violation: AssertionError: [DEM-10] step3: netskope-dem-agent already running immediately after SSH recovery -- autost..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 155,
+   "test_name": "test_steer_01_steering_rule_update_active_connections",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [STEER-01] step-5 FAIL: python.org landed in nssteering.json but a new connection was NOT s..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 173,
+   "test_name": "test_steer_01_steering_rule_update_active_connections",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: [STEER-01] precondition FAIL: traffic_mode='all' is not Cloud Apps Only on steering config ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 217,
+   "test_name": "test_steer_01_steering_rule_update_active_connections",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [STEER-01] step-7 FAIL: 3/30 domains' new connections were NOT steered after simultaneous r..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 164,
+   "test_name": "test_steer_05_fast_new_conn_steered",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [STEER-05F] step-6 FAIL: after 60s grace, a new connection to python.org was NOT steered (n..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 168,
+   "test_name": "test_steer_05_fast_new_conn_steered",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [STEER-05F] step-6 FAIL: after 60s grace, a new connection to python.org was NOT steered (n..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_05_fast_new_conn_steered",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [STEER-05F] step-6 FAIL: after 60s grace, a new connection to python.org was NOT steered (n..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 467,
+   "test_name": "test_stress_01_connection_storm",
+   "rule": "ui-not-running",
+   "reason": "client UI not running after the run: AssertionError: [STRESS-01 post-storm] stAgentUI.exe not running"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 171,
+   "test_name": "test_stress_02_traffic_flood",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during sustained load (iter 1) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 257,
+   "test_name": "test_stress_02_traffic_flood",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during sustained load (iter 2) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 265,
+   "test_name": "test_stress_02_traffic_flood",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during sustained load (iter 43) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 182,
+   "test_name": "test_stress_02_traffic_flood_mac",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during sustained load (iter 2) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 196,
+   "test_name": "test_stress_02_traffic_flood_mac",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during sustained load (iter 4) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 61,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "pid-changed",
+   "reason": "client process restarted during the run: AssertionError: A cycle 46: stAgentSvc.exe PID changed 10664 -> 5920 (crash+respawn?)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": 72,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: A cycle 15: stAgentSvc.exe PID changed 3892 -> 9180 (crash+respawn?)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 478,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: tunnel stuck in non-CONNECTED state: nstunnel_connecting"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 479,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: tunnel stuck in non-CONNECTED state: nstunnel_connecting"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 480,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: tunnel stuck in non-CONNECTED state: nstunnel_connecting"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 484,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: tunnel stuck in non-CONNECTED state: nstunnel_connecting"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 486,
+   "test_name": "test_stress_03_tunnel_flapping",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: B cycle 29: tunnel not CONNECTED within 120s after NIC restore (last=nstunnel_disconnected_..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 492,
+   "test_name": "test_stress_05_crash_under_load",
+   "rule": "kill-fail",
+   "reason": "process survived a forced kill: AssertionError: [step4] stAgentSvc.exe still running after taskkill /F"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 494,
+   "test_name": "test_stress_05_crash_under_load",
+   "rule": "kill-fail",
+   "reason": "process survived a forced kill: AssertionError: [step4] stAgentSvc.exe still running after taskkill /F"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 183,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "rule": "not-steered",
+   "reason": "traffic not steered as configured: AssertionError: [step6] python.org not steered through the tunnel after nsAuxiliarySvc recovery — steering ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 142,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "rule": "kill-fail",
+   "reason": "process survived a forced kill: AssertionError: [step3] nsAuxiliarySvc still running after kill -9 (pkill stderr='')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 150,
+   "test_name": "test_stress_05_crash_under_load_mac",
+   "rule": "kill-fail",
+   "reason": "process survived a forced kill: AssertionError: [step3] nsAuxiliarySvc still running after kill -9 (pkill stderr='')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_stress_08_enable_disable_steering",
+   "rule": "override",
+   "reason": "kept by a person (overrides.keep): Exception: Config update timestamp mismatch: got 1792073695, expected >= 1792073796 (check_timestamp=179207..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG2",
+   "build": 263,
+   "test_name": "test_stress_08_enable_disable_steering",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: [step7] tunnel not CONNECTED after returning steering=ALL"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2",
+   "build": 185,
+   "test_name": "test_stress_08_enable_disable_steering_mac",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: [step1] tunnel not CONNECTED after setting steering=ALL"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 493,
+   "test_name": "test_stress_26_config_reload_race",
+   "rule": "mem-gate",
+   "reason": "memory gate exceeded (measured): AssertionError: iter 14 [cycle 1] stAgentSvc mem 207.2MB >= 200MB"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": 497,
+   "test_name": "test_stress_26_config_reload_race",
+   "rule": "mem-gate",
+   "reason": "memory gate exceeded (measured): AssertionError: iter 4 [cycle 1] stAgentSvc mem 200.1MB >= 200MB"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 161,
+   "test_name": "test_stress_27_protocol_flood_mac",
+   "rule": "tunnel-down-under-load",
+   "reason": "zero-disconnect gate: tunnel dropped under load: AssertionError: [step-3] tunnel DISCONNECTED during protocol flood (iter 16) — zero-disconnect gate"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 123,
+   "test_name": "test_upgrade_01_failclose_during_upgrade_mac",
+   "rule": "leak",
+   "reason": "traffic leak (measured): AssertionError: traffic LEAK AFTER upgrade completed (1/4): 2026-10-16T03:52:35Z LEAK reachable assert not ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 140,
+   "test_name": "test_upgrade_01_failclose_during_upgrade_mac",
+   "rule": "leak",
+   "reason": "traffic leak (measured): AssertionError: traffic LEAK AFTER upgrade completed (2/5): 2026-10-16T15:11:43Z LEAK reachable assert not ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 152,
+   "test_name": "test_upgrade_01_failclose_during_upgrade_mac",
+   "rule": "failclose-lapsed",
+   "reason": "FailClose did not hold: AssertionError: FailClose did not continue after upgrade completed — neither signal: nsdiag never reported ..."
+  }
+ ],
+ "ambiguous_for_review": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": 172,
+   "test_name": "test_stress_08_enable_disable_steering",
+   "reason": "AssertionError: [STRESS-08 mode='all'] expected content absent after re-push (publish stall?) — failing loud at the push site, not downstream"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-MAC2-SSH",
+   "build": 36,
+   "test_name": "test_stress_08_enable_disable_steering_mac",
+   "reason": "AssertionError: [STRESS-08:step3] nsdiag traffic_mode != 'none' (got 'all')"
+  }
+ ]
+}

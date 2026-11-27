@@ -1,0 +1,61 @@
+{
+ "_about": "Which health gate and which dump trigger were in force when. Dates are the commit dates on GRS main (test_data.py history); a run uses the gate of the checkout it ran on. Rows with status 'planned' are decided but not in the product code yet. The handle FAIL gate is also read by the report as handles_gate_for_major(): from_major is the client major where the value starts.",
+ "gates": [
+  {
+   "id": "handles-fail",
+   "name": "Handle count gate (FAIL)",
+   "rule": "FAIL when handles_max reaches the limit AND the last sample is still at or above it (a peak that falls back is ignored).",
+   "periods": [
+    {"from_major": 0, "from": "2026-07-01", "limit": "1500", "limit_value": 1500, "source": "f1d54ef3 (#200)", "status": "in force"},
+    {"from_major": 145, "from": "R145", "limit": "1300", "limit_value": 1300, "source": "decided 2026-11-20, not in the code yet", "status": "planned"}
+   ]
+  },
+  {
+   "id": "handles-dump",
+   "name": "Early-warning live dump (not a gate)",
+   "rule": "A procdump of the process while the test keeps running.",
+   "periods": [
+    {"from": "2026-10-16", "to": "R144", "limit": "once at 1000 handles, again after each +200 handles, at most 3", "source": "142b7bad (#541)", "status": "in force"},
+    {"from": "R145", "limit": "dump 1 at 1000; dump 2 at 1300 = the gate; pause 10 min between iterations; below 1000 = delete dumps 1 and 2 and continue; otherwise dump 3 and FAIL", "source": "decided 2026-11-20", "status": "planned"}
+   ]
+  },
+  {
+   "id": "stress03-settle",
+   "name": "STRESS-03 settle-path dump",
+   "rule": "After each storm and a 30 s settle, compare the handle count with the count read at the start of the test.",
+   "periods": [
+    {"from": "2026-07-30", "to": "R144", "limit": "baseline + 150 handles", "source": "2ab54571", "status": "in force"},
+    {"from": "R145", "limit": "follows the same 1000 / 1300 stages as the early-warning dump", "source": "decided 2026-11-20", "status": "planned"}
+   ]
+  },
+  {
+   "id": "cpu",
+   "name": "CPU sustained gate",
+   "rule": "FAIL when a gated process stays at or above the limit for the whole window (per core: 100 = one core). A few tests carry their own per-test limit.",
+   "periods": [
+    {"from": "2026-07-03", "to": "2026-07-17", "limit": "30% for 30 s", "source": "a2a3127e (#204)", "status": "in force"},
+    {"from": "2026-07-18", "to": "2026-09-09", "limit": "120% per core for 30 s", "source": "12a9a31f (#263)", "status": "in force"},
+    {"from": "2026-09-10", "to": "2026-10-31", "limit": "140% for 60 s", "source": "8de19453", "status": "in force"},
+    {"from": "2026-11-01", "limit": "280% for 60 s", "source": "24842cc8 (#609)", "status": "in force"}
+   ]
+  },
+  {
+   "id": "mem-ceiling",
+   "name": "Memory peak ceiling",
+   "rule": "FAIL when one sample is above the ceiling.",
+   "periods": [{"from": "2026-07-03", "limit": "500 MB", "source": "a2a3127e (#204)", "status": "in force"}]
+  },
+  {
+   "id": "mem-growth",
+   "name": "Memory growth",
+   "rule": "FAIL when the recent average minus the baseline median is above the limit.",
+   "periods": [{"from": "2026-07-03", "limit": "100 MB", "source": "a2a3127e (#204)", "status": "in force"}]
+  },
+  {
+   "id": "min-alive",
+   "name": "Minimum alive share",
+   "rule": "A process alive in fewer samples than this is not gated (a process that is killed on purpose).",
+   "periods": [{"from": "2026-07-03", "limit": "50% of samples", "source": "a2a3127e (#204)", "status": "in force"}]
+  }
+ ]
+}

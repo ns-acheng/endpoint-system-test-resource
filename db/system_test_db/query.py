@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-"""MIRROR NOTICE (added for endpoint-system-test-resource): this is a point-in-time copy for onboarding/public reference.
-Canonical source (private repo): claude-resource/grs_tools/system_test_db/query.py -- do not edit this copy directly; changes land upstream first, then get re-synced here.
-"""
-
 """SystemTest /query page: pick test case(s) by checkbox, see the most recent
-PASS results for each of the 5 SystemTest lanes (REG / REG-02 / LOCAL1 / LOCAL2
-/ MAC1).
+PASS results for each of the 6 SystemTest lanes (REG / REG-02 / LOCAL1 / LOCAL2
+/ MAC1 / MAC2). AUSTIN is excluded on purpose — it's the generic SSH-pipeline
+template job, not a SystemTest DB-tracked lane.
 
 Answers "did steer01 recently pass on every lane, and when/what tenant/dc/
 bitness/duration" without hand SQL. Served by report_server.py at GET /query
@@ -21,6 +18,7 @@ from urllib.parse import parse_qs
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import dbconn  # noqa: E402
 import report  # noqa: E402
+import testname  # noqa: E402
 
 # Single source for job aliases, same import as db.py:444 (a hand-copied table
 # here is exactly the class of bug that broke localtest/LOCAL1 for 2 days).
@@ -28,6 +26,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from grs_jenkins import ALIASES as _JOB_ALIASES  # noqa: E402
 
 _TOP_N = 2
+_VERDICT_MODES = {"pass", "fail"}
 
 
 def _db_job(alias):
@@ -54,10 +53,16 @@ LANES = [
     ),
     ("LOCAL2", [_db_job("local2")]),
     ("MAC1", [_db_job("mac1")]),
+    ("MAC2", [_db_job("mac2")]),
+    # SSH-driven mac lane: separate Jenkins job, its runs (DEM etc.) never landed
+    # under MAC2, so query-history printed "no PASS record" for them.
+    ("MAC2-SSH", [_db_job("mac2-ssh")]),
 ]
 
 _COLS = [
     "Lane",
+    "Release",
+    "Verdict",
     "Run #",
     "Pass iter",
     "Tenant",
@@ -85,7 +90,7 @@ def _form_css(n):
         f".qlist{{display:grid;grid-auto-flow:column;"
         f"grid-template-rows:repeat({rows3}, auto);"
         "grid-template-columns:repeat(3, max-content);gap:4px 32px;"
-        "max-height:420px;overflow:auto;padding:14px;background:var(--card2);"
+        "padding:14px;background:var(--card2);"
         "border:1px solid var(--border);border-radius:var(--radius)}"
         "@media (max-width:1100px){.qlist{grid-template-columns:repeat(2, max-content);"
         f"grid-template-rows:repeat({rows2}, auto)}}}}"
@@ -99,6 +104,8 @@ def _form_css(n):
         ".qbtn{margin-top:14px;background:var(--grad);color:#fff;border:none;"
         "border-radius:var(--radius-sm);padding:10px 20px;font-size:14px;font-weight:600;"
         "cursor:pointer}"
+        ".qbtn.fail{background:linear-gradient(135deg,#b91c1c 0%,var(--fail) 100%)}"
+        ".qbtn.active{box-shadow:0 0 0 2px #fff inset}"
     )
 
 
@@ -135,7 +142,7 @@ def _fmt_dur(seconds):
     return f"{s // 60}m {s % 60}s" if s >= 60 else f"{s}s"
 
 
-def _latest_pass(cur, test_name, jobs):
+def _latest_records(cur, test_name, jobs, verdict):
     jobs = [j for j in jobs if j]
     if not jobs:
         return []
@@ -150,30 +157,47 @@ def _latest_pass(cur, test_name, jobs):
     # the same real execution shows up twice under an identical build number.
     cur.execute(
         """
-        SELECT r.jenkins_build, tr.iterations_passed, tr.iterations_target,
+        SELECT r.jenkins_build, tr.verdict, tr.iterations_passed, tr.iterations_target,
                tr.iterations_total, r.tenant, r.dc, r.is_64_bit_installed,
-               r.is_64_bit_cli, r.started_at, tr.duration_s
+               r.is_64_bit_cli, r.started_at, tr.duration_s, rel.label
         FROM test_result tr
         JOIN test_run r ON tr.run_id = r.id
-        WHERE tr.test_name = %s AND tr.verdict = 'PASS' AND r.jenkins_job = ANY(%s)
+        LEFT JOIN release rel ON rel.id = r.release_id
+        WHERE """
+        + testname.canon_sql("tr.test_name")
+        + """ = %s AND tr.verdict = %s AND r.jenkins_job = ANY(%s)
               AND r.run_id NOT LIKE '%%-int'
         ORDER BY r.started_at DESC NULLS LAST
         LIMIT %s
         """,
-        (test_name, jobs, _TOP_N),
+        (testname.canonical_name(test_name), verdict.upper(), jobs, _TOP_N),
     )
     return cur.fetchall()
 
 
-def _test_table(cur, test_name):
+def _test_table(cur, test_name, verdict):
     data = []
     for lane, jobs in LANES:
-        found = _latest_pass(cur, test_name, jobs)
+        found = _latest_records(cur, test_name, jobs, verdict)
         if not found:
-            data.append((lane, "-", "-", "-", "-", "-", "no PASS record", "-"))
+            data.append(
+                (
+                    lane,
+                    "-",
+                    "-",
+                    "-",
+                    "-",
+                    "-",
+                    "-",
+                    "-",
+                    f"no {verdict.upper()} record",
+                    "-",
+                )
+            )
             continue
         for (
             build,
+            row_verdict,
             passed,
             target,
             total,
@@ -183,11 +207,18 @@ def _test_table(cur, test_name):
             cli64,
             started,
             dur,
+            release_label,
         ) in found:
             data.append(
                 (
                     lane,
-                    build,
+                    release_label or "-",
+                    row_verdict,
+                    # NULL when the run has been detached from its build number
+                    # (Jenkins build-number reuse, see db.py reclaim-run) -- the
+                    # row/test result is still real, just no longer traceable to
+                    # a live build link.
+                    build if build is not None else "reclaimed",
                     _fmt_iter(passed, target, total),
                     tenant or "-",
                     dc or "-",
@@ -196,10 +227,17 @@ def _test_table(cur, test_name):
                     _fmt_dur(dur),
                 )
             )
-    return f'<div class="card"><h2>{report.esc(test_name)}</h2>{report.table(_COLS, data)}</div>'
+
+    def _hl(rd):
+        return "warn" if rd.get("Verdict") == "FAIL" else ""
+
+    return (
+        f'<div class="card"><h2>{report.esc(test_name)}</h2>'
+        f"{report.table(_COLS, data, highlight=_hl)}</div>"
+    )
 
 
-def build_query_page(selected):
+def build_query_page(selected, verdict):
     conn = dbconn.connect()
     try:
         cur = conn.cursor()
@@ -209,14 +247,24 @@ def build_query_page(selected):
             f'{" checked" if t in selected else ""}> {report.esc(t)}</label>'
             for t in all_tests
         )
+        # Two submit buttons, same form/checkboxes, different verdict= value --
+        # a plain HTML multi-submit-button pattern (no JS needed), matching the
+        # rest of this dashboard's zero-JS convention (see filter_bar()).
         form = (
             '<div class="card qform"><h2>Pick test case(s)</h2>'
             '<form method="get" action="/query">'
             f'<div class="qlist">{checks}</div>'
-            f'<button class="qbtn" type="submit">Show latest {_TOP_N} PASS per lane</button>'
+            f'<button class="qbtn{" active" if verdict == "pass" else ""}"'
+            f' type="submit" name="verdict" value="pass">'
+            f"Show latest {_TOP_N} PASS per lane</button> "
+            f'<button class="qbtn fail{" active" if verdict == "fail" else ""}"'
+            f' type="submit" name="verdict" value="fail">'
+            f"Show latest {_TOP_N} FAIL per lane</button>"
             "</form></div>"
         )
-        results = "".join(_test_table(cur, t) for t in selected if t in all_tests)
+        results = "".join(
+            _test_table(cur, t, verdict) for t in selected if t in all_tests
+        )
         if selected and not results:
             results = (
                 '<div class="card"><p class="foot">'
@@ -229,12 +277,17 @@ def build_query_page(selected):
 
 
 def selected_from_query(path):
-    """path = '/query' or '/query?test=a&test=b'. Ordered, deduped selection."""
+    """path = '/query' or '/query?test=a&test=b&verdict=fail'. Returns
+    (test_names, verdict) -- ordered/deduped test list, verdict defaults to
+    'pass' (the original/only behavior before the PASS/FAIL toggle)."""
     if "?" not in path:
-        return []
+        return [], "pass"
     qs = parse_qs(path.split("?", 1)[1])
     seen = []
     for t in qs.get("test", []):
         if t not in seen:
             seen.append(t)
-    return seen
+    verdict = (qs.get("verdict", ["pass"])[0] or "pass").lower()
+    if verdict not in _VERDICT_MODES:
+        verdict = "pass"
+    return seen, verdict

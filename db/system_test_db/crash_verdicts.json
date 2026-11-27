@@ -1,0 +1,7 @@
+{
+  "LOCAL1:184": "duplicated",
+  "LOCAL2:633": "ENG-1448626",
+  "MAC2:361": "ENG-1455025 CNSCom2::recvHandshakeReqfromClient (MacAppProxy, 5 crash reports, no BSOD on mac)",
+  "MAC2:362": "ENG-1455025 CNSCom2::recvHandshakeReqfromClient (MacAppProxy, 5 new crash reports; 5 more in the bundle are carried over from run 361; no BSOD on mac)",
+  "MAC2:363": "ENG-1455025 CNSCom2::recvHandshakeReqfromClient in 2 of 3 reports; the third (051332) is AiScanner::checkPort, same fd-set overflow, not on this ticket yet (no BSOD on mac)"
+}

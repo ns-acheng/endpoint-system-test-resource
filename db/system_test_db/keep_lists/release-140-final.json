@@ -1,0 +1,350 @@
+{
+ "source_release": "release-140",
+ "target_release": "release-140-final",
+ "generated_by": "db.py final (rules: final_rules.json)",
+ "policy": "PASS rows are always kept. A non-PASS row is kept only with concrete product evidence (measured value, named list, dump, gate_ticket); setup, config-sync, probe, installer and by-design-wait noise is filtered; anything ambiguous is filtered. A NULL build keys every null-build row of its job+test.",
+ "snapshot_note": "Point-in-time copy. Re-run `db.py final <N> --apply --redo` after more builds finish.",
+ "counts": {
+  "non_pass_rows": 31,
+  "kept": 18,
+  "gate_tickets_seen": 30
+ },
+ "by_rule": {
+  "filter:null-build-conflict": 1,
+  "filter:precondition": 9,
+  "filter:tray-icon-start": 3,
+  "keep:dump-or-ticket": 1,
+  "keep:main-never-passed": 1,
+  "keep:tunnel-not-connected": 1,
+  "keep:unresolved-failure": 15
+ },
+ "null_build_conflicts": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "test_name": "test_ipc_01_service_restart_win",
+   "keepable": 1,
+   "rows": 4,
+   "forced": false
+  }
+ ],
+ "overrides": {
+  "keep": [],
+  "filter": []
+ },
+ "keep": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: FC-04 step-5: client evaluated DNS Mode = 0 after FailClose recovery — DNS Security is NOT ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: KeyboardInterrupt:"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_stress_02_traffic_flood_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [step-4] sustained throughput 60% of baseline < 80% (9.07 < 12.02 MB/s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL2",
+   "build": null,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "rule": "dump-or-ticket",
+   "reason": "has a dump or a gate_ticket row (structured evidence): AssertionError: A cycle 47: stAgentSvc.exe PID changed 3828 -> 10768 (crash+respawn?)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_03_tunnel_flapping_win",
+   "rule": "tunnel-not-connected",
+   "reason": "tunnel did not (re)connect: AssertionError: B cycle 11: tunnel not CONNECTED within 30s after NIC restore (last=nstunnel_disconnected_f..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: [step3] nsdiag traffic_mode != 'none' (got '')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_stress_13_cert_pinned_exception_scope_win",
+   "rule": "main-never-passed",
+   "reason": "on origin/main and no PASS anywhere in this release: a test that exists but has never passed must be visible: AssertionError: [STRESS-13] cert-pinned write failed [on_prem] (outer='success' inner='error'): {'code': 20..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_upgrade_02_legacy_monitor_retry_win",
+   "rule": "unresolved-failure",
+   "reason": "no rule explains it and no later PASS on the same lane: kept as an unresolved failure: Exception: No response from artifactory"
+  }
+ ],
+ "filtered": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 132.4,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "null-build-conflict",
+   "reason": "null build shares its key with filtered rows",
+   "superseded_by_build": null,
+   "duration_s": 1676.1,
+   "failure": "AssertionError: [cycle 4] Step 7: crash dumps found: ['C:\\\\ProgramData\\\\Netskope\\\\STAgent\\\\Logs\\\\stAgentSvc.dmp', 'C:\\\\crash\\\\stagentsvc\\\\stAgentSvc__PID__46..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 127.4,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "verdict": "FAIL",
+   "rule": "tray-icon-start",
+   "reason": "start-state precondition",
+   "superseded_by_build": null,
+   "duration_s": 124.0,
+   "failure": "AssertionError: [iter 1] Step 1: no ENABLED tray icon visible at start (waited 60s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: client not enabled (got 'disabled') assert 'disable' not in 'disabled' 'disable' is contained here: disabled"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: traffic mode must be Cloud Apps Only (got 'web') — STEER-01 requires cloud mode so unlisted domains are bypassed by ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: traffic mode must be Cloud Apps Only (got 'web') — STEER-01 requires cloud mode so unlisted domains are bypassed by ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: traffic mode must be Cloud Apps Only (got 'web') — STEER-01 requires cloud mode so unlisted domains are bypassed by ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: traffic mode must be Cloud Apps Only (got 'web') — STEER-01 requires cloud mode so unlisted domains are bypassed by ..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_steer_01_steering_rule_update_active_connections_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 2.4,
+   "failure": "AssertionError: [STEER-01] precondition: client not enabled (got 'disabled') assert 'disable' not in 'disabled' 'disable' is contained here: disabled"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_01_connection_storm_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 36.7,
+   "failure": "AssertionError: precondition: stwatchdog not running at iter 1 start"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_stress_04_watchdog_kill_loop_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 0.4,
+   "failure": "AssertionError: precondition: stAgentSvcMon.exe not running at iter 1 start — watchdog is required for STRESS-04, refusing to run a meaningless test"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_stress_04_watchdog_kill_loop_win",
+   "verdict": "FAIL",
+   "rule": "precondition",
+   "reason": "setup or precondition gate",
+   "superseded_by_build": null,
+   "duration_s": 0.4,
+   "failure": "AssertionError: precondition: stAgentSvcMon.exe not running at iter 1 start — watchdog is required for STRESS-04, refusing to run a meaningless test"
+  }
+ ],
+ "filtered_summary": {
+  "precondition": {
+   "results": 9,
+   "hours": 0.0
+  },
+  "tray-icon-start": {
+   "results": 3,
+   "hours": 0.1
+  },
+  "null-build-conflict": {
+   "results": 1,
+   "hours": 0.5
+  }
+ },
+ "ambiguous_for_review": [
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_fc_04_failclose_dns_security_steering_transitions_win",
+   "reason": "AssertionError: FC-04 step-5: client evaluated DNS Mode = 0 after FailClose recovery — DNS Security is NOT in effect. S1: DNS traffic bypasses security after..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCAL1",
+   "build": null,
+   "test_name": "test_ipc_01_service_restart_win",
+   "reason": "KeyboardInterrupt:"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_stress_02_traffic_flood_win",
+   "reason": "AssertionError: [step-4] sustained throughput 60% of baseline < 80% (9.07 < 12.02 MB/s)"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "reason": "AssertionError: [step3] nsdiag traffic_mode != 'none' (got '')"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG-02",
+   "build": null,
+   "test_name": "test_stress_08_enable_disable_steering_win",
+   "reason": "AssertionError: [step3] python.org still steered after steering disabled (NONE) — traffic not bypassing"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_stress_13_cert_pinned_exception_scope_win",
+   "reason": "AssertionError: [STRESS-13] cert-pinned write failed [on_prem] (outer='success' inner='error'): {'code': 200, 'status': 'success', 'msg': 'Successfully proce..."
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "reason": "AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "reason": "AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "reason": "AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "reason": "AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-LOCALTEST",
+   "build": null,
+   "test_name": "test_stress_26_config_reload_race_win",
+   "reason": "AssertionError: iter 1 [cycle 1] custom DNS ports missing from nssteering.json: ['5353', '8853'] (live=[])"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_upgrade_02_legacy_monitor_retry_win",
+   "reason": "Exception: No response from artifactory"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_upgrade_02_legacy_monitor_retry_win",
+   "reason": "AssertionError: stAgentSvc did not upgrade from baseline '132.2.1.2566' within 600s (last: post_64=False ver='140.0.0.2764' target='develop-141') assert False"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_upgrade_02_legacy_monitor_retry_win",
+   "reason": "Exception: No response from artifactory"
+  },
+  {
+   "job": "DEV/GRS-SYSTEMTEST-REG",
+   "build": null,
+   "test_name": "test_upgrade_02_legacy_monitor_retry_win",
+   "reason": "AssertionError: stAgentSvc did not upgrade from baseline '132.2.1.2566' within 600s (last: post_64=False ver='140.0.0.2764' target='develop-141') assert False"
+  }
+ ]
+}

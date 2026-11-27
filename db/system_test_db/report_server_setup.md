@@ -1,28 +1,42 @@
-<!-- MIRROR NOTICE: point-in-time copy for onboarding/public reference. Canonical source (private repo): claude-resource/grs_tools/system_test_db/report_server_setup.md -->
-
 # SystemTest live report server — setup & rebuild
 
+**The report server runs ONLY on the results-DB VM `10.136.218.74` (hostname `u2404-kenmin`), systemd service
+`grs-report`, next to PostgreSQL.** `10.136.210.243` is the acheng workstation and is NOT a report server (its boot task
+and watchdog are Disabled). Everything about the Windows task, `schtasks`, firewall and `report_server.py
+restart/status/install-task` below is the retired workstation setup, kept only for a rebuild of that copy.
+
 Serves the same HTML `report.py` writes to a file, but on demand over HTTP, so
-the page always reflects the current DB. **Source + this doc live in
-claude-resource** (`grs_tools/system_test_db/`), so a host rebuild is one `git
-clone` + the steps below — not tribal knowledge.
+the page always reflects the current DB. **Source + this doc live in this repo
+(endpoint-system-test-resource), folder `db/`**, not in claude-resource (a private repo that goes to no VM).
 
 | what | value |
 |---|---|
-| Server source | `grs_tools/system_test_db/report_server.py` (stdlib only, no new deps) |
-| Runs on | the Windows report/orchestration box — currently `10.136.210.243` |
-| URL | `http://10.136.210.243:8080/report/140` (also `/report/141`, `/` index, `/healthz`) |
-| Data source | results DB `10.136.218.74` via `~/.grs_db.conf` (same as db.py) |
-| Auto-start | Task Scheduler `GRS-SystemTestDB-ReportServer` (at boot) **+ `GRS-SystemTestDB-ReportServerWatch` (`ensure`, every 10 min)** |
-| Firewall | inbound TCP 8080 allow rule `GRS-Report-8080` |
-| Operate it | `report_server.py status` / `restart` / `ensure` / `install-task` — **not** hand-typed schtasks + netstat + curl |
+| Server source | `db/system_test_db/report_server.py` (stdlib only, no new deps) |
+| Runs on | the results-DB VM `10.136.218.74`, from a **git clone of this repo** at `/home/nsadmin/grs_report_repo` |
+| URL | `http://10.136.218.74:8080/report/145` (also `/query`, `/ai_chat`, `/` index, `/healthz`) |
+| Data source | PostgreSQL on the same VM, `127.0.0.1` (settings in `/home/nsadmin/grs_report/grs_db.conf`, outside the repo) |
+| Auto-start | systemd `grs-report` (enabled at boot, `Restart=always`) |
+| Put new code on it | merge to `main` of this repo, then `python db/system_test_db/update_report_vm.py` (git pull on the VM, restart) |
+| Check it | `python db/system_test_db/report_servers_status.py` (service active, healthz, VM clone sha = origin/main sha) |
+| Old copy | `/home/nsadmin/grs_report` stays as the rollback copy; first unit file saved as `/home/nsadmin/grs-report.service.bak` |
 
-## Operate it with the tool (start here)
+A change to the report, a verdict in `crash_verdicts.json`, a new page: it is done when the cell is read on the LIVE page.
+
+## Operate it with the tools (start here)
+
+```bash
+python db/system_test_db/update_report_vm.py          # after ANY change merged to main under db/
+python db/system_test_db/report_servers_status.py     # active? is the VM clone at origin/main?
+python db/system_test_db/update_report_vm.py --check  # read only: VM sha vs origin/main sha
+```
+The ssh account is read from REPORT_VM_USER / REPORT_VM_PASS (default account `nsadmin`); no password is stored in this repo.
+
+## Retired: the workstation copy (do not use)
 
 ```bash
 python C:/git/claude-resource/grs_tools/system_test_db/report_server.py status
-python C:/git/claude-resource/grs_tools/system_test_db/report_server.py restart      # start + WAIT for /healthz
-python C:/git/claude-resource/grs_tools/system_test_db/report_server.py install-task # boot task + watchdog
+python C:/git/claude-resource/grs_tools/system_test_db/report_server.py restart
+python C:/git/claude-resource/grs_tools/system_test_db/report_server.py install-task
 ```
 
 `status` checks the boot task (state + decoded last result), the watchdog task,

@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Summary - system test automation forecast</title><style>
+body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f6f7f9;color:#1d2330}
+header{background:#1f3a5f;color:#fff;padding:18px 32px}header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85;font-size:13px}
+nav{background:#e9edf3;padding:8px 32px;font-size:14px}nav a{margin-right:18px;color:#1f3a5f;text-decoration:none;font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:22px 32px 60px}
+h2{border-bottom:2px solid #1f3a5f;padding-bottom:4px;margin-top:34px}h3{margin-top:22px}
+.tiles{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}.tile{background:#fff;border-radius:8px;padding:14px 18px;min-width:150px;box-shadow:0 1px 3px #0002}
+.tile b{display:block;font-size:28px;color:#1f3a5f}.tile span{font-size:12px;color:#556}
+table{border-collapse:collapse;background:#fff;margin:10px 0;font-size:13px}th,td{border:1px solid #d5dae3;padding:5px 9px;text-align:left;vertical-align:top}
+th{background:#eef1f6}td.n,th.n{text-align:right}.s5{background:#d6f5d6}.s4{background:#e6f5c8}.s3{background:#fff3c4}.s2{background:#ffe0b8}.s1{background:#f8cccc}
+.note{background:#fff8e1;border-left:4px solid #e0a800;padding:8px 12px;margin:12px 0;font-size:13px}
+.good{background:#e8f6ec;border-left:4px solid #2e9e55;padding:8px 12px;margin:12px 0;font-size:13px}
+code{background:#eef;padding:1px 4px;border-radius:3px}small{color:#667}ol,ul{line-height:1.5}
+</style></head><body><header><h1>System test automation forecast: Dec 2026 - Mar 2027</h1><p>Generated 2026-11-26 from the spec workbook and GRS origin/main as of 2026-11-17</p></header><nav><a href="/doc/automation-forecast">Summary</a><a href="/doc/automation-forecast/method">How it is calculated</a><a href="/doc/automation-forecast/history">History</a><a href="/doc/automation-forecast/forecast">Forecast</a><a href="/doc/automation-forecast/merged">Merged cases</a><a href="/doc/automation-forecast/cases">All scored cases</a><a href="/doc/automation-forecast/quality">Data quality</a><a href="/doc/automation-forecast/changes">Removed & merged</a></nav><main>
+<div class="tiles">
+<div class="tile"><b>222</b><span>plan cases in scope (Windows, Mac)</span></div>
+<div class="tile"><b>106 (48%)</b><span>already automated</span></div>
+<div class="tile"><b>116</b><span>not yet automated</span></div>
+<div class="tile"><b>87</b><span>automatable (score 2-5)</span></div>
+<div class="tile"><b>29</b><span>not automatable (score 1)</span></div>
+<div class="tile"><b>74</b><span>merged cases to build (from 87 plan cases)</span></div>
+</div>
+<div class="good"><b>Answer for the manager.</b> At the pace of the last three months, the base forecast automates
+<b>37</b> plan cases in December, <b>28</b> in January, <b>16</b> in February and <b>6</b> in March
+(as <b>33 / 21 / 15 / 5</b> merged test cases).
+Automated coverage moves from <b>48%</b> now to <b>64%</b> (Dec), <b>77%</b> (Jan), <b>84%</b> (Feb), <b>87%</b> (Mar);
+the low / high scenarios give 74% / 87% by end of March.
+Everything that can be automated is finished in about <b>3.4 months</b> in the base case
+(range 1.6 to 7.7 months), i.e. around <b>Mar 2027</b>.</div>
+<div class="note"><b>100% automated is not reachable.</b> 29 cases are counted as not automatable: 10 need an outside environment (captive portal, Wi-Fi or physical network change, proxy, VPN appliance, domain controller, GUI interaction) and 19 need several VMs, a power or sleep state, or a third-party product. The ceiling is <b>87%</b> of the 222 plan cases. These 29 cases need a separate manual or lab plan.</div>
+
+<h2>Platform split</h2>
+<table><tr><th>Platform</th><th class=n>Plan cases</th><th class=n>Automated</th><th class=n>Not automated</th><th class=n>Automatable (2-5)</th><th class=n>Not automatable (1)</th><th class=n>Merged cases to build</th></tr>
+<tr><td>Windows</td><td class=n>162</td><td class=n>64</td><td class=n>98</td><td class=n>71</td><td class=n>27</td><td class=n>59</td></tr><tr><td>Mac</td><td class=n>60</td><td class=n>42</td><td class=n>18</td><td class=n>16</td><td class=n>2</td><td class=n>15</td></tr></table>
+
+<h2>Forecast by month (base scenario)</h2>
+<table><tr><th>Month</th><th class=n>Plan cases automated</th><th class=n>Merged cases built</th><th class=n>Engineer-days</th><th class=n>Cumulative automated</th></tr>
+<tr><td>Dec</td><td class=n>37</td><td class=n>33</td><td class=n>79.5</td><td class=n>64% (143/222)</td></tr><tr><td>Jan</td><td class=n>28</td><td class=n>21</td><td class=n>75.5</td><td class=n>77% (171/222)</td></tr><tr><td>Feb</td><td class=n>16</td><td class=n>15</td><td class=n>80.0</td><td class=n>84% (187/222)</td></tr><tr><td>Mar</td><td class=n>6</td><td class=n>5</td><td class=n>35.0</td><td class=n>87% (193/222)</td></tr>
+<tr><td>after Mar</td><td class=n>0</td><td class=n>0</td><td class=n>0.0</td><td class=n>87% (ceiling)</td></tr></table>
+<p><small>Details of every number are on the <a href="/doc/automation-forecast/method">method</a> and <a href="/doc/automation-forecast/forecast">forecast</a> pages.</small></p>
+</main></body></html>

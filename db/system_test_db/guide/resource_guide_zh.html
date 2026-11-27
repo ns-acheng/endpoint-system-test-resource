@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資源監控解說 - SystemTest Report</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{--bg:#05081a;--card:#111827;--card2:#1a2235;--border:rgba(255,255,255,0.08);--border2:rgba(0,199,230,0.2);
+--fg:#f0f4ff;--muted:#94a3b8;--cyan:#00c7e6;--grad:linear-gradient(135deg,#0052cc 0%,#00c7e6 100%);
+--pass:#10b981;--fail:#ef4444;--warn:#f59e0b;--pass-bg:rgba(16,185,129,0.12);--fail-bg:rgba(239,68,68,0.12);
+--warn-bg:rgba(245,158,11,0.12);--pass-border:rgba(16,185,129,0.3);--fail-border:rgba(239,68,68,0.3);
+--warn-border:rgba(245,158,11,0.3);--radius:12px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter','Microsoft JhengHei','Noto Sans TC','Helvetica Neue',sans-serif;background:var(--bg);color:var(--fg);
+font-size:16px;line-height:1.7}
+.topbar{background:rgba(5,8,26,0.95);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;
+align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:17px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topbar .tag{font-size:13px;padding:2px 10px;border-radius:999px;background:rgba(0,199,230,0.1);border:1px solid var(--border2);
+color:var(--cyan);font-weight:600}
+.topbar a{font-size:13px;padding:3px 11px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-weight:600}
+.topbar a:hover{color:var(--cyan);border-color:var(--border2)}
+.page{max-width:1280px;margin:0 auto;padding:24px 28px 48px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card.hero{background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 100%);border-color:var(--border2)}
+h1{font-size:28px;font-weight:700}
+h2{font-size:17px;font-weight:600;letter-spacing:.8px;color:var(--cyan);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:16px;font-weight:600;color:var(--fg);margin:14px 0 8px}
+p{margin:8px 0;color:var(--muted)}
+p strong,li strong{color:var(--fg)}
+ul{margin:8px 0 8px 22px;color:var(--muted)}
+li{margin:4px 0}
+code,td.mono{font-family:'JetBrains Mono',Consolas,monospace;color:var(--cyan);font-size:14px}
+.badge{padding:3px 12px;border-radius:999px;font-weight:600;font-size:13px;display:inline-block}
+.badge.pass{background:var(--pass-bg);color:var(--pass);border:1px solid var(--pass-border)}
+.badge.fail{background:var(--fail-bg);color:var(--fail);border:1px solid var(--fail-border)}
+.badge.warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)}
+.badge.info{background:rgba(0,199,230,0.1);color:var(--cyan);border:1px solid var(--border2)}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+th{text-align:left;padding:9px 14px;color:var(--muted);font-size:13px;letter-spacing:.5px;font-weight:600;
+border-bottom:1px solid var(--border);background:rgba(255,255,255,0.03);white-space:nowrap}
+td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;color:var(--muted)}
+td:first-child{color:var(--fg);font-family:'JetBrains Mono',Consolas,monospace;white-space:nowrap}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+.explain{background:rgba(0,199,230,0.05);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 16px;
+font-size:15px;margin:12px 0;color:var(--muted);line-height:1.75}
+.explain strong{color:var(--fg)}
+.explain em{color:var(--cyan);font-style:normal}
+.warnbox{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:var(--radius-sm);padding:12px 16px;margin:12px 0;color:var(--muted)}
+.warnbox strong{color:var(--warn)}
+.okbox{background:var(--pass-bg);border:1px solid var(--pass-border);border-radius:var(--radius-sm);padding:12px 16px;margin:12px 0;color:var(--muted)}
+.okbox strong{color:var(--pass)}
+.fig{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin:14px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig .cap{font-size:14px;color:var(--muted);margin-top:8px}
+.fig .cap strong{color:var(--fg)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.row2{grid-template-columns:1fr}}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.toc a{font-size:13px;padding:3px 11px;border-radius:999px;border:1px solid var(--border2);color:var(--cyan);text-decoration:none;font-weight:600}
+.foot{color:var(--muted);font-size:14px;margin-top:8px}
+.topbar .push{margin-left:auto}
+.topbar a.cur{color:var(--cyan);border-color:var(--border2)}
+</style></head><body>
+<nav class="topbar"><span class="logo">Netskope SystemTest</span><span class="tag">資源監控解說</span>
+<span class="push"></span><a href="/guide/resources">English</a><a class="cur" href="/guide/resources/zh">中文</a><a href="/" onclick="if(history.length&gt;1){history.back();return false}">回到報表</a></nav>
+<div class="page">
+
+<div class="card hero" id="top">
+  <h1>資源監控解說</h1>
+  <p>這一頁解釋報表裡「Resource peaks per process」「Resource peaks per process across versions」「Memory per process across versions」每個欄位與每張圖的意思、為什麼要看、哪些會讓測試失敗、哪些不能單獨下結論。所有圖都用報表資料庫的真實數字畫成(標明「示意」的除外)。</p>
+  <div class="toc">
+    <a href="#s0">30 秒版</a><a href="#s1">資料怎麼來</a><a href="#s2">逐欄解說</a><a href="#s3">三張圖解</a>
+    <a href="#s4">跨版本 CPU</a><a href="#s5">跨版本記憶體</a><a href="#s6">要不要開 ticket</a><a href="#s7">名詞</a>
+  </div>
+</div>
+
+<div class="card" id="s0">
+  <h2>0. 先看這裡(30 秒版)</h2>
+  <div class="explain">
+    <strong>只有三個數字會讓測試失敗:</strong>
+    <em>worst_sustained_s</em>(CPU 持續太久)、<em>worst_mem_growth</em>(記憶體一路漲)、<em>worst_handles</em>(handle 一路漲)。
+    其他欄位(平均峰值、最高峰值、平均成長)都是「參考」,不會判定失敗。<br>
+    <strong>跨版本的圖是把各版本所有測試放在一起算,</strong>每個版本跑的測試不一樣,所以線往上走不代表產品變差(第 4 節有真實例子)。
+  </div>
+  <table>
+    <thead><tr><th>欄位</th><th>會讓 run 失敗?</th><th>一句話</th><th>重要性</th></tr></thead>
+    <tbody>
+      <tr><td>avg_cpu_peak</td><td><span class="badge info">否</span></td><td>各次 run 的最高 CPU 取平均</td><td>低</td></tr>
+      <tr><td>worst_cpu_peak</td><td><span class="badge info">否</span></td><td>所有 run 裡單一最高的 CPU 讀數</td><td>中</td></tr>
+      <tr><td>worst_sustained_s</td><td><span class="badge fail">是,≥ 60 秒</span></td><td>CPU 連續高於門檻的最長秒數</td><td>高</td></tr>
+      <tr><td>cpu_gate</td><td>—</td><td>上面那個門檻(每核,100 = 1 核)</td><td>看門檻用</td></tr>
+      <tr><td>avg_mem_growth</td><td><span class="badge info">否</span></td><td>各次 run 記憶體成長的平均</td><td>低</td></tr>
+      <tr><td>worst_mem_growth</td><td><span class="badge fail">是,&gt; 100 MB</span></td><td>單次 run 最大的記憶體成長</td><td>高</td></tr>
+      <tr><td>worst_handles</td><td><span class="badge fail">是,≥ 1500 且結束時仍在</span></td><td>任一取樣點的最大 handle 數</td><td>高</td></tr>
+    </tbody>
+  </table>
+  <p class="foot">例外:<code>demAgentSvc.exe</code>(Windows DEM agent)和 <code>epais.exe</code>(EPAIS AI 安全服務)目前是 observe-only,數字會記錄、會出現在表上,但不會判定失敗;只有在 client 設定開啟 EPAIS 而 <code>epais.exe</code> 沒在跑時,run 才會失敗。存活時間不到 50% 的 process 也不套用閘門(被故意殺掉重啟的情況)。</p>
+</div>
+
+<div class="card" id="s1">
+  <h2>1. 資料怎麼來</h2>
+  <ul>
+    <li><strong>取樣器</strong>在測試期間每 <strong>10 秒</strong>讀一次每個被監控的 process(少數測試改成 5 秒)。Windows 監控 <code>stAgentSvc.exe</code>、<code>stAgentSvcMon.exe</code>、<code>stAgentUI.exe</code>,另外記錄 <code>demAgentSvc.exe</code> 和 <code>epais.exe</code>,並記下每個 process 的 thread 數;Mac 監控 <code>nsAuxiliarySvc</code>、<code>Netskope Client</code>、<code>NetskopeClientMacAppProxy</code> 等。</li>
+    <li><strong>每次測試(一個 test case 的一次 run)</strong>把這些樣本濃縮成一列摘要:最高 CPU、持續秒數、記憶體基準與成長、最大 handles。報表的表格是把這些摘要再依 process 彙總。</li>
+    <li><strong>CPU 單位 = 每核</strong>:100 代表整整用掉 1 個核心,190 代表約 1.9 個核心。跟 VM 有幾個核心無關。</li>
+    <li><strong>記憶體單位 = MB</strong>:Windows 是 Private Bytes,Mac 是 RSS,兩者<strong>不能互相比較</strong>。</li>
+  </ul>
+<div class="fig"><svg viewBox="0 0 780 292" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><text x="20" y="25.0" font-size="15" fill="#f0f4ff" text-anchor="start" font-weight="600">取樣器每 10 秒讀一次「這個 process 累積用掉的 CPU 秒數」,相鄰兩次相減,就是這個點的值</text><g transform="translate(0,37.0)"><line x1="40" y1="60" x2="740" y2="60" stroke="#94a3b8" stroke-width="2"/><circle cx="60" cy="60" r="6" fill="#00c7e6"/><text x="60" y="88" font-size="13" fill="#f0f4ff" text-anchor="middle" font-weight="400">第 0 秒</text><text x="60" y="40" font-size="13" fill="#00c7e6" text-anchor="middle" font-weight="400">累積 100.0 秒</text><circle cx="260" cy="60" r="6" fill="#00c7e6"/><text x="260" y="88" font-size="13" fill="#f0f4ff" text-anchor="middle" font-weight="400">第 10 秒</text><text x="260" y="40" font-size="13" fill="#00c7e6" text-anchor="middle" font-weight="400">累積 128.0 秒</text><circle cx="460" cy="60" r="6" fill="#00c7e6"/><text x="460" y="88" font-size="13" fill="#f0f4ff" text-anchor="middle" font-weight="400">第 20 秒</text><text x="460" y="40" font-size="13" fill="#00c7e6" text-anchor="middle" font-weight="400">累積 139.0 秒</text><circle cx="660" cy="60" r="6" fill="#00c7e6"/><text x="660" y="88" font-size="13" fill="#f0f4ff" text-anchor="middle" font-weight="400">第 30 秒</text><text x="660" y="40" font-size="13" fill="#00c7e6" text-anchor="middle" font-weight="400">累積 150.0 秒</text><rect x="70.0" y="110.0" width="180.0" height="58.0" rx="6" fill="rgba(0,199,230,0.10)" stroke="rgba(0,199,230,0.35)"/><text x="160.0" y="132" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="400">這一段 10 秒</text><text x="160.0" y="154" font-size="20" fill="#f59e0b" text-anchor="middle" font-weight="700">= 280</text><rect x="270.0" y="110.0" width="180.0" height="58.0" rx="6" fill="rgba(0,199,230,0.10)" stroke="rgba(0,199,230,0.35)"/><text x="360.0" y="132" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="400">這一段 10 秒</text><text x="360.0" y="154" font-size="20" fill="#10b981" text-anchor="middle" font-weight="700">= 110</text><rect x="470.0" y="110.0" width="180.0" height="58.0" rx="6" fill="rgba(0,199,230,0.10)" stroke="rgba(0,199,230,0.35)"/><text x="560.0" y="132" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="400">這一段 10 秒</text><text x="560.0" y="154" font-size="20" fill="#10b981" text-anchor="middle" font-weight="700">= 110</text></g><text x="20" y="239.2" font-size="13" fill="#94a3b8" text-anchor="start" font-weight="400">第一段:(128.0 − 100.0)秒 ÷ 10 秒 = 2.8 個核心 = 280。100 = 整整用掉 1 個核心。表上的 CPU 數字全部是這種「</text><text x="20" y="257.4" font-size="13" fill="#94a3b8" text-anchor="start" font-weight="400">10 秒窗口的平均」,不是瞬間值。</text><text x="20" y="278.2" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">(示意數字,計算方式取自取樣器 windows_system_info.py)</text></svg><div class="cap"><strong>圖 1</strong>:每個 CPU 數字都需要「上一次取樣」才算得出來,所以第一個樣本沒有 CPU 值,重開機或 process 重啟後也會重算。</div></div></div>
+<div class="card" id="s2">
+  <h2>2. 「Resource peaks per process」逐欄解說</h2>
+  <h3>avg_cpu_peak — 平均的最高 CPU</h3>
+  <ul><li><strong>意思:</strong>每次 run 先取該 process 的最高 CPU,再把所有 run 取平均。</li>
+  <li><strong>為什麼看:</strong>當作「一般情況下 CPU 大概多忙」的粗略基準。</li>
+  <li><strong>怎麼讀:</strong>它是「最高值的平均」,測試種類(壓力測試 vs 閒置測試)占比一變它就跟著變。<strong>只適合同一批測試之間比較。</strong></li></ul>
+  <h3>worst_cpu_peak — 最高的 CPU 讀數</h3>
+  <ul><li><strong>意思:</strong>所有 run、所有取樣點裡最大的那一個 10 秒平均值。</li>
+  <li><strong>怎麼讀:</strong>它是單一個點,說明「曾經到過這個高度」,不說明「持續」。不會讓 run 失敗。用途是看離門檻還有多遠,例如 254.8 對門檻 280。</li></ul>
+  <h3>worst_sustained_s — 持續高於門檻的最長秒數</h3>
+  <ul><li><strong>意思:</strong>某次 run 裡,CPU 連續高於門檻的最長時間(見第 3 節圖 2)。</li>
+  <li><strong>為什麼看:</strong>抓失控的迴圈或卡死空轉。短暫尖峰在重連、載入設定時都是正常的,只有「持續」才是問題。</li>
+  <li><strong>怎麼讀:</strong>0 = 沒有任何一個樣本到門檻;10 = 恰好 1 個樣本到門檻;<strong>達 60 秒才失敗</strong>。幾乎都是 0,因為所有 process 的峰值都遠低於 280(歷史最高 261.2)。</li></ul>
+  <h3>cpu_gate — 門檻</h3>
+  <ul><li><strong>意思:</strong>判定「持續」所用的 CPU 值(每核),<strong>所有測試統一是 280</strong>(2.8 個核心),要連續 60 秒才失敗。圖上的黃色虛線就是這個門檻。</li>
+  <li><div class="warnbox"><strong>注意:</strong>峰值高過黃色虛線不等於失敗,要連續 60 秒高於才失敗;<code>demAgentSvc.exe</code> 是 observe-only,有量測但不會失敗。較早的 run 當時各測試用過 140 或 240,報表統一用 280 重新計算 <em>worst_sustained_s</em>:最高讀數沒到 280 的 run,高於門檻的時間就是 0。</div></li></ul>
+  <h3>avg_mem_growth / worst_mem_growth — 記憶體成長</h3>
+  <ul><li><strong>意思:</strong>成長 = 「近期平均」減「基準」(見第 3 節圖 3)。負數 = 縮小。</li>
+  <li><strong>為什麼看:</strong>記憶體洩漏的訊號。<em>worst</em> 超過 100 MB 判失敗。</li>
+  <li><strong>怎麼讀:</strong><em>avg</em> 會正負相抵,洩漏被平均掉,參考價值低;<em>worst</em> 才是有用的那個。成長跟 run 的長度有關,跑得越久越容易看到成長。</li></ul>
+  <h3>worst_handles — 最大 handle 數</h3>
+  <ul><li><strong>意思:</strong>任一取樣點的 handle 數最大值。</li>
+  <li><strong>為什麼看:</strong>handle 洩漏最終會讓 process 耗盡資源。</li>
+  <li><strong>怎麼讀:</strong>到 1500 而且<strong>最後一個樣本仍在 1500 以上</strong>才失敗(圖 4)。目前 <code>stAgentSvc.exe</code> 是 1400,離線 100,值得留意。</li></ul>
+</div>
+<div class="card" id="s3"><h2>3. 三張圖解</h2><div class="fig"><svg viewBox="0 0 780 411" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><g transform="translate(0,12.0)"><text x="20" y="14" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">左:真實資料(LOCAL2 build 550)</text><text x="20" y="32" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">STRESS-03,stAgentSvc,每根柱 = 10 秒平均</text><line x1="50" y1="274.0" x2="390" y2="274.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="44" y="278.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">0</text><line x1="50" y1="202.125" x2="390" y2="202.125" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="44" y="206.125" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">100</text><line x1="50" y1="130.25" x2="390" y2="130.25" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="44" y="134.25" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">200</text><line x1="50" y1="72.75" x2="390" y2="72.75" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 5"/><text x="44" y="76.75" font-size="11" fill="#f59e0b" text-anchor="end" font-weight="400">280</text><rect x="52.0" y="245.3" width="13.9" height="28.7" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="69.9" y="233.1" width="13.9" height="40.9" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="87.8" y="264.5" width="13.9" height="9.5" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="105.7" y="200.4" width="13.9" height="73.6" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="123.6" y="255.6" width="13.9" height="18.4" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="141.5" y="264.6" width="13.9" height="9.4" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="159.4" y="220.5" width="13.9" height="53.5" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="177.3" y="257.2" width="13.9" height="16.8" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="195.2" y="259.7" width="13.9" height="14.3" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="213.1" y="171.0" width="13.9" height="103.0" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="230.9" y="239.6" width="13.9" height="34.4" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="248.8" y="262.6" width="13.9" height="11.4" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="266.7" y="221.8" width="13.9" height="52.2" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="284.6" y="255.8" width="13.9" height="18.2" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="302.5" y="266.4" width="13.9" height="7.6" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="320.4" y="221.8" width="13.9" height="52.2" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="338.3" y="254.4" width="13.9" height="19.6" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="356.2" y="259.8" width="13.9" height="14.2" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="374.1" y="213.6" width="13.9" height="60.4" rx="2" fill="rgba(0,199,230,0.55)"/><text x="220.0" y="165.01749999999998" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">143.28</text><text x="30" y="306.2" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">沒有任何一根碰到門檻 280 → 連續高於門檻 = 0 個窗口</text><text x="30" y="328.4" font-size="13" fill="#10b981" text-anchor="start" font-weight="600">→ worst_sustained_s = 0(最高的一根只有 143.28)</text><text x="430" y="14" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">右:如果真的「持續」(示意)</text><text x="430" y="32" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">連續 6 根都 ≥ 門檻 280</text><line x1="450" y1="274.0" x2="760" y2="274.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><line x1="450" y1="202.125" x2="760" y2="202.125" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><line x1="450" y1="130.25" x2="760" y2="130.25" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><line x1="450" y1="72.75" x2="760" y2="72.75" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 5"/><rect x="452.0" y="230.9" width="27.0" height="43.1" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="483.0" y="187.8" width="27.0" height="86.2" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="514.0" y="58.4" width="27.0" height="215.6" rx="2" fill="#ef4444"/><rect x="545.0" y="51.2" width="27.0" height="222.8" rx="2" fill="#ef4444"/><rect x="576.0" y="65.6" width="27.0" height="208.4" rx="2" fill="#ef4444"/><rect x="607.0" y="54.8" width="27.0" height="219.2" rx="2" fill="#ef4444"/><rect x="638.0" y="47.6" width="27.0" height="226.4" rx="2" fill="#ef4444"/><rect x="669.0" y="58.4" width="27.0" height="215.6" rx="2" fill="#ef4444"/><rect x="700.0" y="209.3" width="27.0" height="64.7" rx="2" fill="rgba(0,199,230,0.55)"/><rect x="731.0" y="230.9" width="27.0" height="43.1" rx="2" fill="rgba(0,199,230,0.55)"/><text x="430" y="306.2" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">秒數 = 時間差 50 秒 + 1 個窗口 10 秒 = 60 秒</text><text x="430" y="328.4" font-size="13" fill="#ef4444" text-anchor="start" font-weight="600">→ 達到 60 秒 = 這個 run 判定失敗(只有 1 根高於門</text><text x="430" y="346.6" font-size="13" fill="#ef4444" text-anchor="start" font-weight="600">檻則是 10 秒)</text></g></svg><div class="cap"><strong>圖 2:怎麼知道「持續」?</strong>每根柱是一個 10 秒窗口,黃色虛線是門檻 280。左圖是真實 run:最高的一根只有 143.28,沒有任何一根碰到門檻,所以 worst_sustained_s = 0。如果剛好有 1 根高於門檻,值會是 10 秒:秒數 = (最後一根時間 − 第一根時間)+10,1 根就是 0+10;連續 6 根 = 50+10 = 60 秒,達到失敗線(右圖,示意)。注意它量的是 10 秒平均,短於 10 秒的尖峰會被攤平。</div></div><div class="fig"><svg viewBox="0 0 780 368" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><text x="20" y="23.6" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">真實資料:LOCAL2 build 549,STRESS-03,stAgentSvc 的記憶體(MB),約 9500 秒</text><g transform="translate(0,35.6)"><line x1="56" y1="239.42857142857142" x2="756" y2="239.42857142857142" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="243.42857142857142" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">80</text><line x1="56" y1="162.28571428571428" x2="756" y2="162.28571428571428" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="166.28571428571428" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">120</text><line x1="56" y1="85.14285714285714" x2="756" y2="85.14285714285714" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="89.14285714285714" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">160</text><line x1="56" y1="8.0" x2="756" y2="8.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="12.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">200</text><polyline fill="none" stroke="#00c7e6" stroke-width="2" points="56.0,115.8 63.3,115.8 70.7,114.7 100.0,258.6 107.5,161.5 129.2,148.3 165.6,140.8 202.1,136.6 209.6,68.3 238.5,56.3 275.0,55.0 311.5,52.7 348.1,49.8 384.1,44.4 420.7,44.7 457.0,40.1 493.8,37.0 530.2,37.0 566.6,33.4 603.3,33.3 639.3,30.4 675.9,51.7 712.8,31.0 749.3,27.6"/><line x1="56" y1="115.78785714285712" x2="756" y2="115.78785714285712" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6 4"/><text x="60" y="109.78785714285712" font-size="12" fill="#f59e0b" text-anchor="start" font-weight="400">基準 144.11(最前面 3 個樣本的中位數)</text><line x1="522.6666666666666" y1="32.782142857142844" x2="756" y2="32.782142857142844" stroke="#10b981" stroke-width="2" stroke-dasharray="6 4"/><rect x="522.7" y="8.0" width="233.3" height="270.0" rx="0" fill="rgba(16,185,129,0.07)"/><text x="526.6666666666666" y="10.782142857142844" font-size="12" fill="#10b981" text-anchor="start" font-weight="400">最後三分之一</text><text x="526.6666666666666" y="24.782142857142844" font-size="12" fill="#10b981" text-anchor="start" font-weight="400">的平均 ≈ 187.15</text><line x1="750" y1="32.782142857142844" x2="750" y2="115.78785714285712" stroke="#f0f4ff" stroke-width="2"/><text x="744" y="78.28499999999998" font-size="13" fill="#f0f4ff" text-anchor="end" font-weight="700">成長 +43.04 MB</text><text x="115.47916666666667" y="262.57928571428573" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">中途曾掉到約 70 MB(不影響基準)</text><text x="56.0" y="296" font-size="11" fill="#94a3b8" text-anchor="start" font-weight="400">0 秒</text><text x="752.0" y="296" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">9600 秒</text></g><text x="20" y="353.8" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">mem_growth_mb = 近期平均 − 基準;超過 100 MB 判定記憶體洩漏。這個 run 是 +43.04,遠低於 100。</text></svg><div class="cap"><strong>圖 3:記憶體成長怎麼算</strong>(真實 run)。基準 = 前 3 個存活樣本的中位數,近期 = 最後三分之一的平均,成長 = 近期 − 基準。每次開機算一段(重開機後記憶體歸零,跨開機比較沒有意義),取成長最大的那一段。</div></div><div class="explain"><strong>剛安裝完的 client 呢?</strong>程式沒有暖機豁免:基準永遠取該次測試最前面 3 個存活樣本。一般測試開始時 client 已經在跑,基準是穩定值(例如 STRESS-01、STRESS-08、STEER-06 的基準是 25–29 MB,成長只有 5–8 MB);暖機增幅遠小於 100 MB 的門檻,不會誤判。
+    若要「等 process 準備好再取基準」,需要先有 thread 數資料,這個工作已列入待辦。</div><div class="fig"><svg viewBox="0 0 780 344" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><text x="20" y="23.6" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">handles 規則:只有「到了天花板而且最後還在天花板」才算洩漏</text><g transform="translate(0,35.6)"><line x1="56" y1="240.0" x2="760" y2="240.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="244.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">0</text><line x1="56" y1="144.16666666666669" x2="760" y2="144.16666666666669" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 4"/><text x="50" y="148.16666666666669" font-size="11" fill="#f59e0b" text-anchor="end" font-weight="400">1500</text><line x1="56" y1="48.33333333333333" x2="760" y2="48.33333333333333" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="50" y="52.33333333333333" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">3000</text><polyline fill="none" stroke="#10b981" stroke-width="2.5" points="56.0,28.9 105.1,189.5 154.3,187.6 203.4,183.8 252.6,181.9 301.7,181.2 350.9,180.6 400.0,180.9"/><text x="64.0" y="32.91111111111111" font-size="12" fill="#10b981" text-anchor="start" font-weight="400">啟動瞬間 3304</text><text x="111.14285714285714" y="207.52777777777777" font-size="12" fill="#10b981" text-anchor="start" font-weight="400">10 秒後 790,兩小時後約 920</text><polyline fill="none" stroke="#ef4444" stroke-width="2.5" points="430.0,195.3 476.0,182.5 522.0,169.7 568.0,156.9 614.0,144.2 660.0,134.6 706.0,131.4 752.0,126.3"/><text x="430" y="114.27777777777777" font-size="13" fill="#ef4444" text-anchor="start" font-weight="600">右(示意):漲過 1500 且停在上面 → 失敗</text></g><text x="20" y="307.8" font-size="13" fill="#10b981" text-anchor="start" font-weight="600">左:STEER-07 build 74 的真實情況(程式註解記載)→ 峰值回落,不算洩漏,通過</text><text x="20" y="330.0" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">門檻 1500;目前 stAgentSvc.exe 的 worst_handles = 1400,離門檻只差 100</text></svg><div class="cap"><strong>圖 4:handles 規則</strong>。啟動瞬間衝高、之後回落不算洩漏(STEER-07 真實情況:3304 → 790 → 約 920);只有一路漲過天花板、結束時還在上面才失敗。</div></div></div>
+<div class="card" id="s4">
+  <h2>4. 「Resource peaks per process across versions」(CPU 跨版本圖)</h2>
+  <div class="explain"><strong>已移除「各版本平均峰值(avg)」的趨勢線,</strong>因為它會隨測試組成而變,不能當成回歸訊號。目前保留的是「各版本 worst」圖,下面說明怎麼讀它,以及 avg 為什麼被拿掉。</div>
+  <h3>現在畫的是什麼</h3>
+  <ul>
+    <li>X 軸是 client 主版本(R140 起,每個新版本多一個點),每個 process 一條線;分成 heavy(峰值 ≥ 30%)與 light(&lt; 30%)兩組,避免輕的 process 被壓成一條直線。Mac 另有自己的圖,從 R143 起。</li>
+    <li>每個點是該版本<strong>單一最高的 CPU 讀數</strong>(worst)。它是單一個 10 秒平均,不是持續的證據,也不會讓 run 失敗。請當成「曾經到過這個高度」,不要當成趨勢。</li>
+  </ul>
+  <h3>為什麼 avg(各版本平均)被移除</h3>
+  <ul>
+    <li><strong>測試組成每版都不同:</strong>R140 跑 15 種、R142 跑 36 種、R143 跑 57 種、R144 只跑 21 種。壓力測試占比一高,平均自然升高。</li>
+    <li><strong>每個點是 10 秒平均的最高值,</strong>跑得越久、重複越多次,越容易遇到一個高點。</li>
+    <li><strong>單次 run 本來就很不穩定:</strong>同一個測試、同一個版本,STRESS-26 的峰值在 16 次 run 之間是 49 到 162。</li>
+  </ul>
+<div class="fig"><svg viewBox="0 0 780 444" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><text x="20" y="23.6" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">同一份資料的兩種算法:舊的趨勢圖 vs 只比較「兩個版本都跑過的測試」(stAgentSvc)</text><g transform="translate(0,35.6)"><text x="30" y="14" font-size="13" fill="#00c7e6" text-anchor="start" font-weight="600">A. 舊趨勢圖:每版所有測試的平均峰值</text><line x1="40" y1="250.0" x2="380" y2="250.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="34" y="254.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">0</text><line x1="40" y1="145.0" x2="380" y2="145.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="34" y="149.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">50</text><line x1="40" y1="40.0" x2="380" y2="40.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="34" y="44.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">100</text><rect x="52.0" y="169.8" width="44.0" height="80.2" rx="3" fill="rgba(0,199,230,0.6)"/><text x="74.0" y="163.78" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">38.2</text><text x="74.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R140</text><text x="74.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">15 種測試</text><rect x="120.0" y="189.3" width="44.0" height="60.7" rx="3" fill="rgba(0,199,230,0.6)"/><text x="142.0" y="183.31" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">28.9</text><text x="142.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R141</text><text x="142.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">24 種測試</text><rect x="188.0" y="112.4" width="44.0" height="137.6" rx="3" fill="rgba(0,199,230,0.6)"/><text x="210.0" y="106.44999999999999" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">65.5</text><text x="210.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R142</text><text x="210.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">36 種測試</text><rect x="256.0" y="137.0" width="44.0" height="113.0" rx="3" fill="rgba(0,199,230,0.6)"/><text x="278.0" y="131.02" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">53.8</text><text x="278.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R143</text><text x="278.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">57 種測試</text><rect x="324.0" y="129.2" width="44.0" height="120.8" rx="3" fill="rgba(0,199,230,0.6)"/><text x="346.0" y="123.25" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">57.5</text><text x="346.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R144</text><text x="346.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">21 種測試</text><text x="410" y="14" font-size="13" fill="#00c7e6" text-anchor="start" font-weight="600">B. 同樣的測試:只算兩版都跑過的</text><line x1="420" y1="250.0" x2="760" y2="250.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><line x1="420" y1="145.0" x2="760" y2="145.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><line x1="420" y1="40.0" x2="760" y2="40.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><rect x="428.0" y="160.5" width="30.0" height="89.5" rx="3" fill="rgba(148,163,184,0.7)"/><rect x="462.0" y="180.3" width="30.0" height="69.7" rx="3" fill="#10b981"/><text x="443.0" y="155.54000000000002" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="400">42.6</text><text x="477.0" y="175.28" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="700">33.2</text><text x="460.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">140→141</text><text x="460.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">15 種測試</text><rect x="513.0" y="192.7" width="30.0" height="57.3" rx="3" fill="rgba(148,163,184,0.7)"/><rect x="547.0" y="120.6" width="30.0" height="129.4" rx="3" fill="#ef4444"/><text x="528.0" y="187.67" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="400">27.3</text><text x="562.0" y="115.64000000000001" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="700">61.6</text><text x="545.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">141→142</text><text x="545.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">24 種測試</text><rect x="598.0" y="146.5" width="30.0" height="103.5" rx="3" fill="rgba(148,163,184,0.7)"/><rect x="632.0" y="159.7" width="30.0" height="90.3" rx="3" fill="rgba(0,199,230,0.6)"/><text x="613.0" y="141.47" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="400">49.3</text><text x="647.0" y="154.7" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="700">43</text><text x="630.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">142→143</text><text x="630.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">33 種測試</text><rect x="683.0" y="104.7" width="30.0" height="145.3" rx="3" fill="rgba(148,163,184,0.7)"/><rect x="717.0" y="69.0" width="30.0" height="181.0" rx="3" fill="#ef4444"/><text x="698.0" y="99.67999999999998" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="400">69.2</text><text x="732.0" y="63.97999999999999" font-size="11" fill="#f0f4ff" text-anchor="middle" font-weight="700">86.2</text><text x="715.0" y="266" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">143→144</text><text x="715.0" y="282" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">14 種測試</text></g><text x="20" y="350.4" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">左:每版跑的測試數 15 → 24 → 36 → 57 → 21,組成一直在變。右:灰 = 前一版,彩色 = 後一版(紅 = 上升超過 20%,綠 = 下降超過</text><text x="20" y="367.2" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">20%)。</text><text x="20" y="389.4" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">143→144:左邊只升 3.7(53.8→57.5);右邊同樣的 14 種測試卻升了 17(69.2→86.2)。</text><text x="20" y="411.6" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">141→142:左邊升 36.6;右邊 24 種測試確實升了 34.3,而 143 又降回來。左邊的升降,有一部分是「跑了什麼測試」造成的</text><text x="20" y="429.8" font-size="13" fill="#f0f4ff" text-anchor="start" font-weight="400">。</text></svg><div class="cap"><strong>圖 5(真實資料)</strong>:左邊是舊趨勢圖的算法,右邊只比較兩個版本都跑過的測試。143→144 左邊只升 3.7,右邊同樣 14 種測試升了 17:平均會誇大,也會掩蓋。</div></div><div class="warnbox"><strong>注意:</strong>R142 同一批測試確實上升(24 種裡 17 種升超過 20%),R143 又降回來。資料看不出原因(可能是產品、VM 或取樣條件),這該另外查證,而不是靠趨勢圖開 ticket。</div>
+</div>
+
+<div class="card" id="s5">
+  <h2>5. 「Memory per process across versions」(記憶體跨版本圖與表格)</h2>
+  <table>
+    <thead><tr><th>欄位</th><th>意思</th><th>怎麼讀</th></tr></thead>
+    <tbody>
+      <tr><td>Avg baseline MB</td><td>各次測試開始時的記憶體,取平均</td><td>受前一個測試留下的狀態影響(例如 STRESS-03 的基準是 144 或 192 MB,一般測試約 25–29 MB)</td></tr>
+      <tr><td>Avg peak MB</td><td>各次測試最高記憶體,取平均</td><td>跟測試時間長短有關</td></tr>
+      <tr><td>Worst peak MB</td><td>單次測試的最高記憶體</td><td>單一點;超過 500 MB 會判失敗</td></tr>
+      <tr><td>Samples</td><td>參與平均的「測試 × run」列數</td><td>太少(例如 &lt; 5)不要下結論</td></tr>
+      <tr><td>Tests</td><td>該版本跑過幾種不同的測試</td><td><strong>先看這欄:</strong>兩版的數字差很多,就不能直接比</td></tr>
+      <tr><td>Runs</td><td>該版本的 run 數</td><td>重複次數</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><strong>Windows 是 Private Bytes,Mac 是 RSS</strong>,兩者不可互比,所以分開兩張圖。</li>
+    <li><strong>各版本的「平均記憶體成長(Avg growth)」欄已移除:</strong>成長有正有負,平均會相抵,看不出洩漏。要看洩漏請看「Resource peaks per process」表的 worst_mem_growth。</li>
+    <li><strong>「Large steps」註記:</strong>相鄰版本的平均基準上升 50% 以上且超過 10 MB 時,報表會自動寫一行,並用「兩版都跑過的測試」重算一次,避免把測試組成的改變當成產品變化。</li>
+  </ul>
+<div class="fig"><svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,'Microsoft JhengHei',sans-serif"><text x="20" y="23.6" font-size="14" fill="#f0f4ff" text-anchor="start" font-weight="600">stAgentSvc 每版的平均「記憶體基準」(MB)與跑過的測試數</text><g transform="translate(0,35.6)"><line x1="60" y1="170.0" x2="740" y2="170.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="54" y="174.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">0</text><line x1="60" y1="95.0" x2="740" y2="95.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="54" y="99.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">35</text><line x1="60" y1="20.0" x2="740" y2="20.0" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="54" y="24.0" font-size="11" fill="#94a3b8" text-anchor="end" font-weight="400">70</text><rect x="90.0" y="118.4" width="76.0" height="51.6" rx="3" fill="rgba(0,199,230,0.6)"/><text x="128.0" y="112.35714285714286" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">24.1</text><text x="128.0" y="186" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R140</text><text x="128.0" y="202" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">15 種測試</text><rect x="226.0" y="122.4" width="76.0" height="47.6" rx="3" fill="rgba(0,199,230,0.6)"/><text x="264.0" y="116.42857142857143" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">22.2</text><text x="264.0" y="186" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R141</text><text x="264.0" y="202" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">24 種測試</text><rect x="362.0" y="58.6" width="76.0" height="111.4" rx="3" fill="rgba(0,199,230,0.6)"/><text x="400.0" y="52.57142857142857" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">52</text><text x="400.0" y="186" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R142</text><text x="400.0" y="202" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">36 種測試</text><rect x="498.0" y="63.3" width="76.0" height="106.7" rx="3" fill="rgba(0,199,230,0.6)"/><text x="536.0" y="57.28571428571429" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">49.8</text><text x="536.0" y="186" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R143</text><text x="536.0" y="202" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">57 種測試</text><rect x="634.0" y="43.1" width="76.0" height="126.9" rx="3" fill="rgba(0,199,230,0.6)"/><text x="672.0" y="37.14285714285714" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">59.2</text><text x="672.0" y="186" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="400">R144</text><text x="672.0" y="202" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="400">21 種測試</text></g><text x="20" y="266.4" font-size="12" fill="#94a3b8" text-anchor="start" font-weight="400">R142 起翻倍。報表已註記「R142 開啟 NPA 功能,記憶體較高是預期」;但測試組成同時也改變,兩個原因分不開。</text></svg><div class="cap"><strong>圖 6(真實資料)</strong>:每版平均基準與測試數。R142 起翻倍,報表註記是 NPA 功能開啟;但同一版的測試組成也改變了,兩個原因分不開。</div></div></div>
+
+<div class="card" id="s6">
+  <h2>6. 數字上升,要開 ticket 嗎?</h2>
+  <div class="explain">先問三個問題,三個都「是」才值得開:<br>
+    <strong>1. 測試組成一樣嗎?</strong>看 Tests 欄,或改看「同一個測試跨版本」。<br>
+    <strong>2. 同一個測試本身也升了嗎?</strong>並且不是只有一次 run。<br>
+    <strong>3. 有 gate 命中嗎?</strong>sustained、memory growth、handles 任一個。</div>
+  <table>
+    <thead><tr><th>情況</th><th>要開 ticket?</th><th>原因</th></tr></thead>
+    <tbody>
+      <tr><td>Gate 命中(sustained ≥ 60 秒、growth &gt; 100 MB、handles 不降回)</td><td><span class="badge fail">要</span></td><td>測試已經失敗,這是產品訊號</td></tr>
+      <tr><td>同一個測試連續兩個版本都明顯上升</td><td><span class="badge warn">先查再決定</span></td><td>需排除 VM 與取樣條件</td></tr>
+      <tr><td>記憶體 Avg baseline 上升,但 Tests 數量不同</td><td><span class="badge pass">不用</span></td><td>測試組成改變,不是同一批比較</td></tr>
+      <tr><td>worst 圖出現一個高點(worst_cpu_peak)</td><td><span class="badge pass">不用</span></td><td>單一 10 秒平均,不代表持續</td></tr>
+      <tr><td>worst_sustained_s = 10 或 20</td><td><span class="badge pass">不用</span></td><td>1 到 2 個窗口,距 60 秒的失敗線很遠</td></tr>
+      <tr><td>worst_handles 接近 1500(例如 1400)</td><td><span class="badge warn">盯著</span></td><td>還沒失敗,留意趨勢</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card" id="s7">
+  <h2>7. 名詞</h2>
+  <table>
+    <thead><tr><th>名詞</th><th>意思</th></tr></thead>
+    <tbody>
+      <tr><td>取樣 / 窗口</td><td>每 10 秒讀一次;每個 CPU 值是「與上一次相比」的 10 秒平均</td></tr>
+      <tr><td>每核 CPU</td><td>100 = 1 個核心,與 VM 核心數無關</td></tr>
+      <tr><td>gate(閘門)</td><td>測試結束後檢查資源數字,超過門檻就判這個 run 失敗</td></tr>
+      <tr><td>sustained</td><td>連續高於門檻的時間,預設 60 秒才失敗</td></tr>
+      <tr><td>baseline / recent</td><td>記憶體成長的起點(前 3 個存活樣本中位數)/ 終點(最後三分之一平均)</td></tr>
+      <tr><td>observe-only</td><td>只記錄、不判失敗的 process(目前是 demAgentSvc.exe 和 epais.exe)</td></tr>
+      <tr><td>Private Bytes / RSS</td><td>Windows / Mac 的記憶體度量,不可互比</td></tr>
+    </tbody>
+  </table>
+  <p class="foot">資料來源:SystemTest 結果資料庫(2026-10-30 查詢,stAgentSvc.exe,Windows)。門檻與算法取自 health_gate.py 與 test_data.py。</p>
+</div>
+
+</div></body></html>

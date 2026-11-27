@@ -1,7 +1,3 @@
-"""MIRROR NOTICE (added for endpoint-system-test-resource): this is a point-in-time copy for onboarding/public reference.
-Canonical source (private repo): claude-resource/grs_tools/system_test_db/dbconn.py -- do not edit this copy directly; changes land upstream first, then get re-synced here.
-"""
-
 """Connection settings for the SystemTest results DB.
 
 Credentials NEVER live in the repo. Resolution order (first hit wins):

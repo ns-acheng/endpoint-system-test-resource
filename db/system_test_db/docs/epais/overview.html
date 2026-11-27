@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EPAIS review pack - Overview</title>
+<style>
+:root{--bg:#05081a;--bg2:#0a1628;--card:#111827;--card2:#1a2235;--border:rgba(255,255,255,.08);--border2:rgba(0,199,230,.2);
+--fg:#f0f4ff;--muted:#94a3b8;--accent:#0052cc;--cyan:#00c7e6;--grad:linear-gradient(135deg,#0052cc 0%,#00c7e6 100%);
+--pass:#10b981;--fail:#ef4444;--warn:#f59e0b;--pass-bg:rgba(16,185,129,.12);--fail-bg:rgba(239,68,68,.12);--warn-bg:rgba(245,158,11,.12);
+--pass-border:rgba(16,185,129,.3);--fail-border:rgba(239,68,68,.3);--warn-border:rgba(245,158,11,.3);--radius:12px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:'Inter','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--fg);font-size:16px;line-height:1.6}
+code,.mono{font-family:'JetBrains Mono',Consolas,monospace;font-size:.92em}
+.topbar{background:rgba(5,8,26,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{font-size:17px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tag{font-size:13px;padding:2px 10px;border-radius:999px;background:rgba(0,199,230,.1);border:1px solid var(--border2);color:var(--cyan);font-weight:600}
+.nav{display:flex;gap:8px;margin-left:16px;flex-wrap:wrap}
+.nav a{font-size:13px;padding:3px 11px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-weight:600}
+.nav a:hover{color:var(--cyan);border-color:var(--border2);background:rgba(0,199,230,.08)}
+.page{max-width:1500px;margin:0 auto;padding:24px 28px 56px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card.hero{background:linear-gradient(135deg,#0a1628 0%,#0d1f3c 100%);border-color:var(--border2)}
+h1{font-size:28px;font-weight:700}
+h2{font-size:17px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--cyan);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:16px;font-weight:600;margin:14px 0 8px}
+p{margin-bottom:8px}.muted{color:var(--muted)}.foot{color:var(--muted);font-size:14px;margin-top:8px}
+.part{font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin:30px 0 10px;font-weight:700}
+.badge{display:inline-block;padding:2px 11px;border-radius:999px;font-weight:600;font-size:12.5px;letter-spacing:.3px;margin:0 2px}
+.badge.pass{background:var(--pass-bg);color:var(--pass);border:1px solid var(--pass-border)}
+.badge.fail{background:var(--fail-bg);color:var(--fail);border:1px solid var(--fail-border)}
+.badge.warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)}
+.badge.info{background:rgba(0,199,230,.1);color:var(--cyan);border:1px solid var(--border2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.kpi{padding:14px 16px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+.kpi .value{font-size:30px;font-weight:700;margin-top:4px;font-family:'JetBrains Mono',Consolas,monospace;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi .delta{font-size:13px;color:var(--muted)}
+/* flow blocks */
+.flow{display:flex;flex-wrap:wrap;gap:34px 38px;margin:14px 0 6px;align-items:stretch}
+.blk{flex:1 1 190px;max-width:260px;background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;position:relative;box-shadow:var(--shadow)}
+.blk::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;background:var(--grad)}
+.blk .n{font-family:'JetBrains Mono',Consolas,monospace;font-size:12px;color:var(--cyan);font-weight:700;letter-spacing:.6px}
+.blk h4{font-size:15px;margin:2px 0 6px}
+.blk p{font-size:13.5px;color:var(--muted);margin:0 0 6px}
+.blk .out{font-size:12.5px;border-top:1px dashed var(--border);padding-top:6px;margin-top:6px;color:var(--fg)}
+.blk:not(:last-child)::after{content:'\2192';position:absolute;right:-30px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:24px;font-weight:700}
+.blk.warn::before{background:var(--warn)}.blk.fail::before{background:var(--fail)}.blk.ok::before{background:var(--pass)}
+.lane{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;align-items:center;margin:8px 0}
+.lane .who{font-weight:700;color:var(--cyan);font-size:14px;text-align:right}
+.lane .flow{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:8px}
+thead tr{background:rgba(255,255,255,.03)}
+th{text-align:left;padding:9px 14px;color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;overflow-wrap:anywhere}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+td:first-child{font-weight:600;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.grid2,.grid3{grid-template-columns:1fr}.lane{grid-template-columns:1fr}.lane .who{text-align:left}.blk:not(:last-child)::after{display:none}}
+.callout{border-left:3px solid var(--cyan);background:rgba(0,199,230,.06);padding:10px 14px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:10px 0;font-size:14.5px}
+.callout.warn{border-color:var(--warn);background:var(--warn-bg)}.callout.bad{border-color:var(--fail);background:var(--fail-bg)}
+ul{margin:6px 0 8px 20px}li{margin:3px 0;font-size:14.5px}
+.bar{height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin:4px 0 10px}.bar>i{display:block;height:100%;background:var(--grad)}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:10px 28px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:90}
+.tabs a{font-size:13px;padding:4px 12px;border-radius:999px;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-weight:600}
+.tabs a:hover{color:var(--cyan);border-color:var(--border2)}
+.tabs a.on{color:#05081a;background:var(--cyan);border-color:var(--cyan)}
+.pager{display:flex;justify-content:space-between;margin-top:8px}
+.pager a{color:var(--cyan);text-decoration:none;font-weight:600}
+a{color:var(--cyan)}
+</style></head><body>
+<div class="topbar"><span class="logo">GRS</span><span class="tag">EPAIS review pack</span>
+<div class="nav"><a href="/">Reports</a><a href="/ai_chat">AI chat</a></div></div>
+<div class="tabs"><a href="/doc/epais/overview" class="on">Overview</a><a href="/doc/epais/study" class="">1 Study</a><a href="/doc/epais/poc" class="">2 Assumption & POC</a><a href="/doc/epais/generate" class="">3 Generate</a><a href="/doc/epais/implement" class="">4 Implement</a><a href="/doc/epais/dispatch" class="">5 Dispatch</a><a href="/doc/epais/communicate" class="">6 Communicate</a><a href="/doc/epais/status" class="">7 Status</a><a href="/doc/epais/lessons" class="">8 Lessons</a><a href="/doc/epais/grs" class="">Part 2 &middot; GRS</a><a href="/doc/epais/recipe" class="">Part 2 &middot; New feature</a><a href="/doc/epais/demo" class="">Demo</a></div>
+<div class="page">
+
+<div class="card hero">
+<h1>EPAIS (Endpoint AI Security): how we study, generate, implement, dispatch and test</h1>
+<p class="muted">Review pack for management. Part 1 follows one critical feature from the first document to a result on a lane. Part 2 explains how GRS tests the client and what makes a new feature (EPAIS, DEM agent) quick to pick up. Feature build under test: 10603 (Windows msi, mac pkg). Page state: 2026-11-09 evening.</p>
+<div class="kpi-row">
+<div class="kpi"><div class="label">Planned cases</div><div class="value">30</div><div class="delta">EPAIS-01..30, Windows and mac</div></div>
+<div class="kpi"><div class="label">New drafts</div><div class="value">15</div><div class="delta">EPAIS-31..45, workbook v4</div></div>
+<div class="kpi"><div class="label">Live PASS records</div><div class="value">6</div><div class="delta">Win 01, 04, 05, 06; mac 05, 06</div></div>
+<div class="kpi"><div class="label">Platforms</div><div class="value">2</div><div class="delta">Windows, macOS</div></div>
+<div class="kpi"><div class="label">Agents</div><div class="value">4</div><div class="delta">git, git44, git22, klin</div></div>
+<div class="kpi"><div class="label">Rule</div><div class="value">1:1</div><div class="delta">one case, one run</div></div>
+</div></div>
+
+
+<div class="card">
+<h2>The whole pipeline in one picture</h2>
+<div class="flow">
+<div class="blk"><div class="n">1 &middot; READ</div><h4>Documents</h4><p>NPLAN files, MVP test plan (E2E rows), PR notes in the feature folder.</p><div class="out">says what it <b>should</b> do</div></div>
+<div class="blk"><div class="n">2 &middot; STUDY</div><h4>Observe the product</h4><p>Read the client's own debug log, files, folders and the tenant API on a real VM.</p><div class="out">facts tagged observed / inferred / sample</div></div>
+<div class="blk warn"><div class="n">3 &middot; ASSUME</div><h4>Name the unknowns</h4><p>Every open question is written down as an assumption, never as a pass criterion.</p><div class="out">becomes a POC question</div></div>
+<div class="blk"><div class="n">4 &middot; POC</div><h4>Prove one fact</h4><p>One small run per question. Read first; a write on a VM needs a plan and the owner's go.</p><div class="out">raw evidence lines</div></div>
+<div class="blk"><div class="n">5 &middot; GENERATE</div><h4>Cases + steps</h4><p>Skill builds a fresh workbook: goal, steps, pass criteria with fact ids, automation.</p><div class="out">sysplan xlsx</div></div>
+<div class="blk"><div class="n">6 &middot; IMPLEMENT</div><h4>Code on a branch</h4><p>GRS SystemTest module, unit tests, gate, plain push.</p><div class="out">branch + head sha</div></div>
+<div class="blk"><div class="n">7 &middot; DISPATCH</div><h4>Run on a lane</h4><p>git22 triggers Jenkins, one case per run, tenant and dc from the map.</p><div class="out">build number</div></div>
+<div class="blk ok"><div class="n">8 &middot; REPORT</div><h4>Result of record</h4><p>Results DB and the HTML report; failure text goes back to the author.</p><div class="out">PASS record = job, build, tenant, dc, client version</div></div>
+</div>
+<div class="callout">Definition of done for a case: <b>code on main AND one live PASS record per planned platform</b>. Gate OK or unit tests passing is only the precondition.</div>
+</div>
+
+<div class="pager"><span></span><a href="/doc/epais/study">1 Study &rsaquo;</a></div>
+</div></body></html>

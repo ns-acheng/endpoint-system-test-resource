@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-"""MIRROR NOTICE (added for endpoint-system-test-resource): this is a point-in-time copy for onboarding/public reference.
-Canonical source (private repo): claude-resource/grs_tools/system_test_db/report_server.py -- do not edit this copy directly; changes land upstream first, then get re-synced here.
-"""
-
 """Live HTTP front-end for the SystemTest results report.
 
 Wraps report.build_report() in a stdlib http.server so the same HTML the CLI
@@ -12,9 +8,11 @@ task ingests new builds every 5 min, so the page is live with no extra work).
     GET  /                        index: links to every release found in the DB
     GET  /report/<rel>            the report for that release (140, r140, release-140)
     GET  /report/<rel>/<tenant>   same report, filtered to one tenant (run.tenant), e.g. 1457
-    GET  /report/<rel>?platform=&tenant=   same filters via the page's own dropdowns
+    GET  /report/<rel>?platform=&tenant=&stack=&version=   same filters via the page's own dropdowns
+                                  (version: 'ehf' = every EHF build, or one exact version such as 143.0.2.2839)
                                             (wins over the legacy suffix/path-segment forms
                                             above, which stay supported for old bookmarks)
+    GET  /guide/resources         how to read the resource numbers (English); /guide/resources/zh is the zhTW copy
     GET  /healthz                 "ok" + DB reachability (200 healthy / 503 if DB down)
 
 Operating the server is part of the tool, not a shell recipe to remember:
@@ -38,6 +36,12 @@ the auto-start task live in report_server_setup.md, kept beside this file so a
 host rebuild is one document, not tribal knowledge.
 """
 
+import os as _nw_os
+import sys as _nw_sys
+
+_nw_sys.path.insert(0, _nw_os.path.dirname(_nw_os.path.dirname(_nw_os.path.abspath(__file__))))
+import nowindow  # noqa: E402,F401  (pythonw: no console windows from child processes)
+
 import argparse
 import io
 import os
@@ -45,6 +49,7 @@ import re
 import socket
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import urllib.error
@@ -53,14 +58,17 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, unquote
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import chat_board  # noqa: E402
 import dbconn  # noqa: E402
 import query  # noqa: E402
 import report  # noqa: E402
+import swr_cache  # noqa: E402
 
-# release label -> (rendered_at_epoch, html). Trimmed implicitly: at most one
-# entry per release, and releases are few.
-_CACHE = {}
+# Stale-while-revalidate (swr_cache.py): every page a viewer asks for is kept warm by a background refresh, a cold
+# page is rendered once for all concurrent viewers, and a failed refresh keeps serving the previous copy.
 _CACHE_TTL = 30.0
+_PAGES = swr_cache.SWRCache(ttl=_CACHE_TTL)
+_HEALTH = swr_cache.SWRCache(ttl=10.0, max_stale=60.0)
 _TOP = 10
 
 
@@ -84,6 +92,8 @@ def _code_mtime():
 _HERE = os.path.dirname(os.path.abspath(__file__))
 # Snapshot at import time: this is the code the process is actually running.
 _CODE_MTIME = _code_mtime()
+_GUIDE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "guide")
+_DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 
 
 def _norm_release(arg):
@@ -126,28 +136,58 @@ def _norm_platform(arg):
     return s if s in report._PLATFORMS else False  # False = present but invalid
 
 
+def _norm_stack(arg):
+    """Validate an explicit ?stack= query value against report._STACKS -- the
+    same fixed hand-maintained list build_report's tenants_in_stack() reads,
+    not a second whitelist that could drift out of sync with it."""
+    s = unquote(arg or "").strip()
+    if not s:
+        return None
+    return s if s in report._STACKS else False  # False = present but invalid
+
+
+def _norm_version(arg):
+    """Validate an explicit ?version= value: 'ehf' (every EHF build) or one exact product version such as 143.0.2.2839."""
+    s = unquote(arg or "").strip().lower()
+    if not s:
+        return None
+    if s in (report.EHF_TOKEN, report.NONEHF_TOKEN) or report.VERSION_RE.match(s):
+        return s
+    return False  # False = present but invalid
+
+
 def _query_filters(full_path):
-    """?platform=&tenant= from the RAW request path (do_GET's local `path` var
-    already had the query string stripped off before this is called -- same
-    reason query.selected_from_query re-reads self.path instead of relying on
-    that stripped copy). Returns (platform, tenant, error); error is a string
-    when a value was present but failed validation, so the caller 400s instead
-    of silently matching zero rows.
+    """?platform=&tenant=&stack=&version= from the RAW request path (do_GET's local
+    `path` var already had the query string stripped off before this is
+    called -- same reason query.selected_from_query re-reads self.path
+    instead of relying on that stripped copy). Returns (platform, tenant,
+    stack, version, error); error is a string when a value was present but failed
+    validation, so the caller 400s instead of silently matching zero rows.
     """
     if "?" not in full_path:
-        return None, None, None
+        return None, None, None, None, None
     qs = parse_qs(full_path.split("?", 1)[1])
     platform = None
     if qs.get("platform"):
         platform = _norm_platform(qs["platform"][0])
         if platform is False:
-            return None, None, "bad platform"
+            return None, None, None, None, "bad platform"
     tenant = None
     if qs.get("tenant"):
         tenant = _norm_tenant(qs["tenant"][0])
         if tenant is None:
-            return None, None, "bad tenant"
-    return platform, tenant, None
+            return None, None, None, None, "bad tenant"
+    stack = None
+    if qs.get("stack"):
+        stack = _norm_stack(qs["stack"][0])
+        if stack is False:
+            return None, None, None, None, "bad stack"
+    version = None
+    if qs.get("version"):
+        version = _norm_version(qs["version"][0])
+        if version is False:
+            return None, None, None, None, "bad version"
+    return platform, tenant, stack, version, None
 
 
 def _list_releases():
@@ -182,14 +222,34 @@ def _list_platforms():
         conn.close()
 
 
-def _render_cached(release, tenant=None, platform=None):
-    key = (release, platform, tenant)
-    now = time.monotonic()
-    hit = _CACHE.get(key)
-    if hit and (now - hit[0]) < _CACHE_TTL:
-        return hit[1]
-    html = report.build_report(release, _TOP, tenant, platform)
-    _CACHE[key] = (now, html)
+TIMING_LOG = os.path.join(os.environ.get("TEMP") or os.environ.get("TMPDIR") or "/tmp", "report_server_timing.log")
+
+
+def _log_timing(key, seconds, built, who="request"):
+    """One line per report request: when, how long the server needed, and whether it had to render. A slow view then leaves
+    evidence (the server was fast = the delay is in the network or the browser). Never raises."""
+    try:
+        with open(TIMING_LOG, "a", encoding="utf-8") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {seconds * 1000:7.0f} ms {'RENDER' if built else 'cache '} {who:<12} {key[1:]}\n")
+    except OSError:
+        pass
+
+
+def _render_cached(release, tenant=None, platform=None, stack=None, version=None):
+    key = ("report", release, platform, tenant, stack, version)
+    built = []
+
+    def _build():
+        built.append(1)
+        t = time.perf_counter()
+        html = report.build_report(release, _TOP, tenant, platform, stack, version)
+        _log_timing(key, time.perf_counter() - t, True, who=threading.current_thread().name)
+        return html
+
+    t0 = time.perf_counter()
+    html = _PAGES.get(key, _build)
+    if not built:  # a render already logged itself, with the thread that did it
+        _log_timing(key, time.perf_counter() - t0, False)
     return html
 
 
@@ -200,6 +260,13 @@ _FAVICON_SVG = (
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" '
     'stroke="#6ea8fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
     f"{_ICON_PATHS}</svg>"
+)
+# AI chat tab icon: Feather "message-square" (MIT) with two text lines, same blue stroke and size as the report icon.
+_CHAT_FAVICON_SVG = (
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" '
+    'stroke="#6ea8fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
+    '<path d="M8 8h8"/><path d="M8 12h5"/></svg>'
 )
 # data: URI so the tab icon needs no extra request; also served at /favicon.svg
 # (report.py pages link there) and /favicon.ico (browsers probe it blindly).
@@ -254,7 +321,9 @@ def _index_html(releases, platforms):
         f"<h1>{_TITLE_ICON}SystemTest results — live reports</h1>"
         f'<p class="muted">Rendered from the results DB on each request '
         f"(cache {int(_CACHE_TTL)}s). New builds appear within the poll interval.</p>"
-        f'<p><a href="/query">Query latest PASS results by test case, across all 5 lanes &rarr;</a></p>'
+        f'<p><a href="/query">Query latest PASS results by test case, across all 6 lanes &rarr;</a></p>'
+        f'<p><a href="/doc">Documents: gate history, guides and review packs &rarr;</a></p>'
+        f'<p><a href="/ai_chat" target="_blank" rel="noopener">AI chat board &rarr;</a></p>'
         f"<ul>{links}</ul></body></html>"
     )
 
@@ -278,24 +347,74 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?", 1)[0].rstrip("/") or "/"
         try:
             if path == "/":
-                try:
-                    rels = _list_releases()
-                except Exception:
-                    rels = []
-                try:
-                    plats = _list_platforms()
-                except Exception:
-                    plats = []
-                self._send(200, _index_html(rels, plats))
+                def _index():
+                    try:
+                        rels = _list_releases()
+                    except Exception:
+                        rels = []
+                    try:
+                        plats = _list_platforms()
+                    except Exception:
+                        plats = []
+                    return _index_html(rels, plats)
+
+                self._send(200, _PAGES.get(("index",), _index))
+                return
+
+            if path in ("/gates", "/doc/gates"):
+                # gate history: which gate was in force when (gate_history.json); same page shell as /query. /gates is the
+                # first address it went live under and stays as an alias; /doc/gates is the one the index links.
+                import gate_history
+
+                self._send(200, report.PAGE_TEMPLATE.format(release="Gate history", body=gate_history.page_html()))
+                return
+
+            if path in ("/doc", "/doc/"):
+                # the index of every document page (doc_index.py reads docs/ on each request)
+                import doc_index
+
+                self._send(
+                    200, report.PAGE_TEMPLATE.format(release="Documents", body=doc_index.doc_index_html(_DOCS_DIR))
+                )
+                return
+
+            if path in ("/guide/resources", "/guide/resources/zh"):
+                # the resource-numbers guide (guide/build_guide.py writes both files): English at the bare path, zhTW under /zh
+                name = "resource_guide_zh.html" if path.endswith("/zh") else "resource_guide_en.html"
+                with open(os.path.join(_GUIDE_DIR, name), encoding="utf-8") as fh:
+                    self._send(200, fh.read())
+                return
+
+            if path.startswith("/doc/"):
+                # multi-page review packs: docs/<name>/<page>.html (docs/epais/build.py writes them); /doc/<name> is the overview page
+                segs = path.split("/")[2:]
+                if 1 <= len(segs) <= 2 and all(re.fullmatch(r"[a-z0-9_-]+", s) for s in segs):
+                    page = segs[1] if len(segs) == 2 else "overview"
+                    fp = os.path.join(_DOCS_DIR, segs[0], page + ".html")
+                    if os.path.isfile(fp):
+                        with open(fp, encoding="utf-8") as fh:
+                            self._send(200, fh.read())
+                        return
+                self._send(404, "not found\n", "text/plain; charset=utf-8")
                 return
 
             if path in ("/favicon.svg", "/favicon.ico"):
                 self._send(200, _FAVICON_SVG, "image/svg+xml")
                 return
 
+            if path == "/favicon-chat.svg":
+                self._send(200, _CHAT_FAVICON_SVG, "image/svg+xml")
+                return
+
             if path == "/healthz":
                 try:
-                    dbconn.connect().close()
+                    # the DB probe is cached for 10 s: a monitor polling /healthz must not open a connection per poll,
+                    # and one slow connect must not hold every later probe for its full timeout
+                    def _probe():
+                        dbconn.connect().close()
+                        return "ok"
+
+                    _HEALTH.get(("db",), _probe)
                     # Report the report.py this PROCESS is running on. The server
                     # renders in-process, so an edit to report.py changes nothing
                     # here until a restart — 2026-08-14 the new gate-breakdown
@@ -314,8 +433,11 @@ class Handler(BaseHTTPRequestHandler):
 
             if path == "/query":
                 try:
-                    selected = query.selected_from_query(self.path)
-                    self._send(200, query.build_query_page(selected))
+                    selected, verdict = query.selected_from_query(self.path)
+                    self._send(
+                        200,
+                        _PAGES.get(("query", tuple(selected), verdict), lambda: query.build_query_page(selected, verdict)),
+                    )
                 except Exception:
                     traceback.print_exc()
                     self._send(
@@ -337,11 +459,13 @@ class Handler(BaseHTTPRequestHandler):
                     if not tenant:
                         self._send(400, "bad tenant\n", "text/plain; charset=utf-8")
                         return
-                # ?platform=&tenant= (the filter-bar dropdowns) win over the
-                # legacy suffix/path-segment forms -- self.path still carries
-                # the query string that `path` (above) already stripped off.
+                # ?platform=&tenant=&stack= (the filter-bar dropdowns) win over
+                # the legacy suffix/path-segment forms -- self.path still
+                # carries the query string that `path` (above) already
+                # stripped off.
                 platform = None
-                q_platform, q_tenant, q_err = _query_filters(self.path)
+                stack = None
+                q_platform, q_tenant, q_stack, q_version, q_err = _query_filters(self.path)
                 if q_err:
                     self._send(400, f"{q_err}\n", "text/plain; charset=utf-8")
                     return
@@ -349,8 +473,10 @@ class Handler(BaseHTTPRequestHandler):
                     platform = q_platform
                 if q_tenant:
                     tenant = q_tenant
+                if q_stack:
+                    stack = q_stack
                 try:
-                    self._send(200, _render_cached(release, tenant, platform))
+                    self._send(200, _render_cached(release, tenant, platform, stack, q_version))
                 except Exception:
                     # A bad release label reaches build_report and yields an
                     # empty-but-valid report, so an exception here is a real
@@ -363,9 +489,23 @@ class Handler(BaseHTTPRequestHandler):
                     )
                 return
 
+            if path == "/ai_chat" or path.startswith("/ai_chat/"):
+                chat_board.handle_get(self)
+                return
+
             self._send(404, "not found\n", "text/plain; charset=utf-8")
         except BrokenPipeError:
             pass  # client navigated away mid-response; nothing to do
+
+    def do_POST(self):
+        # Only the ai_chat board takes a POST (form post and /ai_chat/api/messages); everything else stays read-only.
+        try:
+            if self.path.split("?", 1)[0].startswith("/ai_chat/"):
+                chat_board.handle_post(self)
+            else:
+                self._send(404, "not found\n", "text/plain; charset=utf-8")
+        except BrokenPipeError:
+            pass
 
     def log_message(self, fmt, *args):
         # One concise line to stdout (Task Scheduler / console); no client host spam.
@@ -827,6 +967,8 @@ def main(argv):
 
     global _CACHE_TTL, _TOP
     _CACHE_TTL = a.cache
+    _PAGES.ttl = a.cache
+    _PAGES.start_warmer(interval=10.0)
     _TOP = a.top
 
     httpd = ThreadingHTTPServer((a.host, a.port), Handler)

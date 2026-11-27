@@ -1,7 +1,3 @@
--- MIRROR NOTICE (added for endpoint-system-test-resource): point-in-time copy.
--- Canonical source (private repo): claude-resource/grs_tools/system_test_db/schema.sql
--- Do not edit this copy directly -- changes land upstream first, then get re-synced here.
-
 -- ============================================================================
 -- GRS SystemTest results DB — schema
 -- Target: PostgreSQL 14+.  db/user/host live outside the repo (see the DB VM
@@ -204,6 +200,33 @@ CREATE TABLE IF NOT EXISTS gate_ticket (
     jenkins_build  INTEGER NOT NULL,     -- test_run.jenkins_build
     test_name      TEXT,                 -- NULL = whole build
     note           TEXT,
+    -- Explicit version/bitness (2026-09-08): normally derived live from the
+    -- matching test_run at report time, but a build that died before pytest
+    -- ever ran (docker image missing, git checkout timeout, ...) has NO
+    -- test_run row at all, so the ticket must carry its own copy of what
+    -- version/bitness it actually happened on -- a ticket links to a real
+    -- build+version, never a bare test name. `db.py issue set` auto-fills
+    -- these from a resolvable test_run; --version/--bitness override for the
+    -- no-test_run case.
+    product_version TEXT,
+    is_64_bit        BOOLEAN,
+    -- Report-page override (2026-10-07): product_version/is_64_bit above are
+    -- the REAL observed facts about the build this ticket happened on, and
+    -- normally that same build's own release (r.label, via test_run) decides
+    -- which report page shows the ticket. Owner case: a crash found on an
+    -- old, otherwise-unrelated run (REG2 build 212, release predates 143)
+    -- needs to appear on the 143 report because that's the PERIOD it was
+    -- discovered/triaged in, not the period the client was actually running.
+    -- report_release decouples "which page shows this" from "what version
+    -- really ran" -- bare major number as TEXT (e.g. '143'), matched against
+    -- the same major-version extraction report.py already uses for
+    -- ver_prefix. NULL = no override, use the existing run-release/
+    -- product_version-prefix logic unchanged.
+    report_release TEXT,
+    -- Ticket-level facts shown in the release report's Tickets table (2026-11-18): one value per ticket, written to
+    -- every row of that ticket by `db.py issue info`; the report reads it with a per-ticket fallback.
+    category       TEXT,                 -- crash / functional / resource leak / latency
+    summary        TEXT,                 -- the ticket title
     created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 -- Two PARTIAL unique indexes, not one plain UNIQUE: on PG 14 a plain unique
@@ -243,7 +266,10 @@ CREATE TABLE resource_sample (
     -- decision 2026-07-24: gather a few weeks, then set a data-driven bar).
     net_mbps_in       NUMERIC,           -- MB/s received over the tick interval (null on first tick)
     net_mbps_out      NUMERIC,           -- MB/s sent over the tick interval (null on first tick)
-    load_phase        TEXT               -- 'under_load' | 'idle' | null — isolates flood samples
+    load_phase        TEXT,              -- 'under_load' | 'idle' | null — isolates flood samples
+    -- Thread count of the process at the tick (Windows sampler key "threads", mac key "num_threads"). Collection-only:
+    -- no gate reads it. Mac writes 0 on ticks where the process is not alive, so skip alive = false rows when reading.
+    threads           INTEGER
 );
 -- BRIN on (test_result_id, elapsed_s): rows are inserted in test+time order, so
 -- the block-range index is tiny and fast for "one test's timeline" scans.
@@ -259,4 +285,24 @@ CREATE TABLE db_growth (
     n_test_result BIGINT,
     n_iteration   BIGINT,
     n_psummary    BIGINT
+);
+
+-- ─────────────────────── ingester heartbeat (poller liveness + code version) ──
+-- One row per polling host; also created on demand by heartbeat.py (IF NOT EXISTS).
+CREATE TABLE IF NOT EXISTS ingester_heartbeat (
+    host        TEXT PRIMARY KEY,
+    code_sha    TEXT,
+    last_poll   TIMESTAMPTZ NOT NULL,
+    last_rc     INTEGER,
+    summary     TEXT
+);
+
+-- Operational journal for tests that PUSH tenant config (config_guard.py creates it lazily with the same DDL).
+-- Not derived data: rows of phase 'open'/'failed' are the only record of what a config looked like before a push.
+CREATE TABLE IF NOT EXISTS config_journal (
+  id serial PRIMARY KEY, tenant text NOT NULL, config_name text NOT NULL,
+  case_id text, test_name text, run_ref text, lane text, agent text,
+  started_at timestamptz NOT NULL DEFAULT now(), closed_at timestamptz,
+  phase text NOT NULL DEFAULT 'open',            -- open | clean | restored | failed
+  before_rows jsonb NOT NULL, note text
 );

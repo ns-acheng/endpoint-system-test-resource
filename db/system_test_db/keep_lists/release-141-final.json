@@ -1,0 +1,40 @@
+{
+  "source_release": "release-141",
+  "target_release": "release-141-final",
+  "decided_by": "owner (acheng), 2026-08-21",
+  "policy": "PASS results always kept. Non-PASS results are kept ONLY if listed below (concrete product-behavior evidence: measured value/list/dump, or an existing gate_ticket) or filtered as infra/harness noise (timeouts, backend-sync lag, precondition gates, test code exceptions, transport errors, self-declared setup issues, or an existing owner ruling that the signal is by-design).",
+  "keep": [
+    {"job": "DEV/GRS-SYSTEMTEST-LOCALTEST", "build": 153, "test_name": "test_ipc_01_service_restart",
+     "reason": "real crash dump (Second Chance Exception C0000005) captured for stAgentSvc.exe"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 265, "test_name": "test_steer_01_steering_rule_update_active_connections",
+     "reason": "12/30 domains' new connections not steered after simultaneous rule change (core assertion)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 335, "test_name": "test_steer_01_steering_rule_update_active_connections",
+     "reason": "21/30 domains' new connections not steered after simultaneous rule change (core assertion)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 260, "test_name": "test_stress_02_traffic_flood",
+     "reason": "throughput collapsed to 36% of early rate under sustained load (cpu_sustained gate)"},
+    {"job": "DEV/GRS-SYSTEMTEST-LOCAL2", "build": 24, "test_name": "test_stress_03_tunnel_flapping",
+     "reason": "tunnel not CONNECTED within 60s after NIC restore, cycle 17"},
+    {"job": "DEV/GRS-SYSTEMTEST-LOCAL2", "build": 26, "test_name": "test_stress_03_tunnel_flapping",
+     "reason": "stAgentSvc.exe handles 1050 > baseline 847 + tol 150 (resource-leak gate)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 279, "test_name": "test_stress_04_watchdog_kill_loop",
+     "reason": "watchdog failed to restart stAgentSvc.exe on cycle 3 (core assertion)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG-02", "build": 99, "test_name": "test_stress_06_config_push_storm",
+     "reason": "last-write-wins config value mismatch after concurrent push storm (core assertion)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 325, "test_name": "test_stress_07_failclose_traffic_enforcement",
+     "reason": "ENFORCEMENT LEAK: traffic not stopped while FailClose armed, non-crash (S1 bug class)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG-02", "build": 132, "test_name": "test_stress_07_failclose_traffic_enforcement",
+     "reason": "ENFORCEMENT LEAK: traffic not stopped while FailClose armed, non-crash (S1 bug class)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG-02", "build": 133, "test_name": "test_stress_07_failclose_traffic_enforcement",
+     "reason": "ENFORCEMENT LEAK: traffic not stopped while FailClose armed, non-crash (S1 bug class)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG-02", "build": 87, "test_name": "test_stress_11_dns_tcp_large_packet",
+     "reason": "has_dump=True, failing_gate=crash_dump, already triaged as ticket ENG-1180143 (structured evidence overrides text)"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 185, "test_name": "test_stress_11_dns_tcp_large_packet",
+     "reason": "message self-declares NOT a transport failure -- tenant did not apply the pushed config"}
+  ],
+  "excluded_as_owner_ruled_non_issue": [
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 175, "test_name": "test_stress_07_failclose_traffic_enforcement"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 176, "test_name": "test_stress_07_failclose_traffic_enforcement"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 177, "test_name": "test_stress_07_failclose_traffic_enforcement"},
+    {"job": "DEV/GRS-SYSTEMTEST-REG", "build": 175, "note": "CRASH-WINDOW LEAK during FailClose; owner ruling in reference_failclose_crash_failopen_design.md: crash -> driver auto-teardown of WFP is fail-open BY DESIGN, not a product issue"}
+  ]
+}

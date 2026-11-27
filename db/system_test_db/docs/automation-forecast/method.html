@@ -1,0 +1,63 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Method - system test automation forecast</title><style>
+body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f6f7f9;color:#1d2330}
+header{background:#1f3a5f;color:#fff;padding:18px 32px}header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85;font-size:13px}
+nav{background:#e9edf3;padding:8px 32px;font-size:14px}nav a{margin-right:18px;color:#1f3a5f;text-decoration:none;font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:22px 32px 60px}
+h2{border-bottom:2px solid #1f3a5f;padding-bottom:4px;margin-top:34px}h3{margin-top:22px}
+.tiles{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}.tile{background:#fff;border-radius:8px;padding:14px 18px;min-width:150px;box-shadow:0 1px 3px #0002}
+.tile b{display:block;font-size:28px;color:#1f3a5f}.tile span{font-size:12px;color:#556}
+table{border-collapse:collapse;background:#fff;margin:10px 0;font-size:13px}th,td{border:1px solid #d5dae3;padding:5px 9px;text-align:left;vertical-align:top}
+th{background:#eef1f6}td.n,th.n{text-align:right}.s5{background:#d6f5d6}.s4{background:#e6f5c8}.s3{background:#fff3c4}.s2{background:#ffe0b8}.s1{background:#f8cccc}
+.note{background:#fff8e1;border-left:4px solid #e0a800;padding:8px 12px;margin:12px 0;font-size:13px}
+.good{background:#e8f6ec;border-left:4px solid #2e9e55;padding:8px 12px;margin:12px 0;font-size:13px}
+code{background:#eef;padding:1px 4px;border-radius:3px}small{color:#667}ol,ul{line-height:1.5}
+</style></head><body><header><h1>System test automation forecast: Dec 2026 - Mar 2027</h1><p>Generated 2026-11-26 from the spec workbook and GRS origin/main as of 2026-11-17</p></header><nav><a href="/doc/automation-forecast">Summary</a><a href="/doc/automation-forecast/method">How it is calculated</a><a href="/doc/automation-forecast/history">History</a><a href="/doc/automation-forecast/forecast">Forecast</a><a href="/doc/automation-forecast/merged">Merged cases</a><a href="/doc/automation-forecast/cases">All scored cases</a><a href="/doc/automation-forecast/quality">Data quality</a><a href="/doc/automation-forecast/changes">Removed & merged</a></nav><main>
+<h2>1. What was scanned</h2>
+<table><tr><th>Excel file</th><th>Used</th><th>Why</th></tr>
+<tr><td>system_test_all.xlsx, sheet Windows_System_Test_Plan</td><td>yes</td><td>162 cases (3 date-header rows with no content were found and removed)</td></tr>
+<tr><td>system_test_all.xlsx, sheet Mac_System_Test_Plan</td><td>yes</td><td>60 cases</td></tr>
+<tr><td>sysplan-nplan-4237.xlsx (DEM)</td><td>yes</td><td>only DEM ids not already in the main workbook (1 case)</td></tr>
+<tr><td>NPLAN-7032 BE Client Auto Downgrade Test Cases.xlsx</td><td>no</td><td>20 backend API cases: tests of the Netskope backend, not client system tests; taken out of the forecast scope</td></tr>
+<tr><td>system_test_all.xlsx roadmap sheets</td><td>no</td><td>management summaries, not test cases (used only as a cross-check)</td></tr>
+<tr><td>sysplan-epais*.xlsx (many versions)</td><td>no</td><td>older versions of the EPAIS plan, whose final cases are already rows of system_test_all.xlsx</td></tr>
+<tr><td>NPLAN-7844-test-case.xlsx</td><td>no</td><td>closed project; its cases are the OVLP rows of the main workbook and the NPLAN-7844 tests already in GRS</td></tr>
+<tr><td>bug-*.xlsx, Escalation Bug review *.xlsx</td><td>no</td><td>bug review sheets that cases were generated from; not test plans</td></tr></table>
+
+<h2>2. What counts as automated</h2>
+<p>The Status column of the workbook is not reliable (see <a href="/doc/automation-forecast/quality">data quality</a>), so the code is the authority. A plan case is <b>automated</b> when
+GRS <code>origin/main</code> has a test for it: a <code>@pyrobin.case("&lt;id&gt;")</code> decorator (the plan id, or <code>SYS-&lt;id&gt;</code>) or a <code>test_&lt;id&gt;_*</code> function, on the matching platform
+(<code>_win</code> / <code>_mac</code> suffix or path). 98 cases are verified in code. 8 more are counted as automated only because the workbook says so and no code could be matched (VDI and two others, listed on the data-quality page).
+Cases marked in-progress are counted as not done.</p>
+
+<h2>3. Scoring (1 to 5)</h2>
+<table><tr><th>Score</th><th>Meaning</th><th>Definition</th><th class=n>Cases</th></tr>
+<tr class=s5><td>5</td><td>Easy</td><td>Every step can be done with primitives that already exist in GRS; deterministic; about 1 day</td><td class=n>2</td></tr><tr class=s4><td>4</td><td>Mostly existing</td><td>One small new helper or probe; 1-2 days</td><td class=n>19</td></tr><tr class=s3><td>3</td><td>Medium</td><td>A new primitive or tool (tenant API wrapper, VM-side script, driver or WFP probe, timing-sensitive harness) or some non-determinism; 2-4 days</td><td class=n>44</td></tr><tr class=s2><td>2</td><td>Hard</td><td>Significant new infrastructure (multi-VM, power or sleep states, crash induction, third-party product), runs for hours, or the product behaviour is not defined yet; 5+ days</td><td class=n>22</td></tr><tr class=s1><td>1</td><td>Not automatable</td><td>Needs an outside environment (captive portal, Wi-Fi or physical network change, proxy, VPN appliance, domain controller, real network topology), a human, state a script cannot set up, or several VMs, a power or sleep state, or a third-party product</td><td class=n>29</td></tr></table>
+<p>Each of the 116 not-yet-automated cases was read in full by an agent that checked in the GRS repository whether the primitives its steps need really exist (helpers, platform clients, tenant APIs), then gave a score, an engineer-day estimate, the blocker and the missing piece.
+Two rules from the project owner are built in: <b>anything that needs an outside environment scores 1</b>, and so does anything that needs <b>several VMs, a power or sleep state (standby, hibernate, sleep/wake; a plain reboot does not count), or a third-party product</b>. Scores are written to the new column <code>Automation Score (1-5)</code> in the workbook copy
+<code>task_docs/automation_forecast_2026_11/system_test_all_scored.xlsx</code> (columns appended to the Windows and Mac sheets; the original workbook is unchanged).</p>
+<svg width="560" height="190" style="background:#fff;border:1px solid #d5dae3;margin:8px 0"><rect x="46.0" y="154.1" width="88.0" height="5.9" fill="#3a6ea5"/><text x="90.0" y="150.1" font-size="11" text-anchor="middle">2</text><text x="90.0" y="176" font-size="11" text-anchor="middle">5</text><rect x="146.0" y="103.9" width="88.0" height="56.1" fill="#3a6ea5"/><text x="190.0" y="99.9" font-size="11" text-anchor="middle">19</text><text x="190.0" y="176" font-size="11" text-anchor="middle">4</text><rect x="246.0" y="30.0" width="88.0" height="130.0" fill="#3a6ea5"/><text x="290.0" y="26.0" font-size="11" text-anchor="middle">44</text><text x="290.0" y="176" font-size="11" text-anchor="middle">3</text><rect x="346.0" y="95.0" width="88.0" height="65.0" fill="#3a6ea5"/><text x="390.0" y="91.0" font-size="11" text-anchor="middle">22</text><text x="390.0" y="176" font-size="11" text-anchor="middle">2</text><rect x="446.0" y="74.3" width="88.0" height="85.7" fill="#3a6ea5"/><text x="490.0" y="70.3" font-size="11" text-anchor="middle">29</text><text x="490.0" y="176" font-size="11" text-anchor="middle">1</text><text x="4" y="14" font-size="11" fill="#556">cases by score (before merging)</text></svg>
+
+<h2>4. De-duplication and merging</h2>
+<ol><li>Only cases that are <b>not automated</b> and scored 2-5 are merged. Automated cases are never merged into.</li>
+<li>Windows and Mac are merged separately; a Mac case and its Windows twin are different code, so they are never combined.</li>
+<li>Cases merge only when they share feature area, preconditions and setup so one test run can cover them, and their scores differ by at most 1.</li>
+<li>A merged case has <b>at most 10 steps</b> (checked by the build script) and still asserts every member's pass criterion.</li></ol>
+<p>Result: <b>87 plan cases became 74 merged cases</b>. Estimated effort falls from 290 engineer-days (one by one) to 270 engineer-days (merged), because the setup is shared.
+A merged case takes the lowest score of its members.</p>
+<svg width="560" height="190" style="background:#fff;border:1px solid #d5dae3;margin:8px 0"><rect x="46.0" y="156.7" width="113.0" height="3.3" fill="#2e9e55"/><text x="102.5" y="152.7" font-size="11" text-anchor="middle">1</text><text x="102.5" y="176" font-size="11" text-anchor="middle">5</text><rect x="171.0" y="113.3" width="113.0" height="46.7" fill="#2e9e55"/><text x="227.5" y="109.3" font-size="11" text-anchor="middle">14</text><text x="227.5" y="176" font-size="11" text-anchor="middle">4</text><rect x="296.0" y="30.0" width="113.0" height="130.0" fill="#2e9e55"/><text x="352.5" y="26.0" font-size="11" text-anchor="middle">39</text><text x="352.5" y="176" font-size="11" text-anchor="middle">3</text><rect x="421.0" y="93.3" width="113.0" height="66.7" fill="#2e9e55"/><text x="477.5" y="89.3" font-size="11" text-anchor="middle">20</text><text x="477.5" y="176" font-size="11" text-anchor="middle">2</text><text x="4" y="14" font-size="11" fill="#556">merged cases by score</text></svg>
+
+<h2>5. How the forecast is calculated</h2>
+<ol>
+<li><b>Unit.</b> Engineer-days. The 98 already-automated cases were re-estimated in hindsight with the same scoring rubric (an agent read the implemented code), so history and backlog are measured in the same unit.</li>
+<li><b>Capacity per month</b> = engineer-days of cases that first landed on origin/main in that month. Using the last three months (Sep, Oct, Nov; November is only 17 days old and is scaled by 30/17):
+Low = lowest of the three, Base = average, High = highest. Values: Low 35.0, Base 79.7, High 165.0 engineer-days per month.</li>
+<li><b>Order of work.</b> Easiest first: merged cases sorted by score (5 to 2), then by estimated days. Only score 2-5 merged cases are in the plan; score 1 is excluded from the denominator of "can be automated".</li>
+<li><b>Month assignment.</b> Walk down the list adding estimated days; a case completes in month ceil(cumulative days / capacity). December is month 1.</li>
+<li><b>Coverage</b> = (automated now + plan cases covered by finished merged cases) / total plan cases.</li>
+<li><b>Time to finish everything automatable</b> = total merged estimate (270 days) / capacity.</li></ol>
+<div class="note"><b>Interpretation of the instruction "estimate 1-4 merged cases".</b> Score 1 means not automatable, so the estimate covers merged cases scored <b>2 to 5</b>; score-1 cases are reported separately and are not in the denominator. If a different reading was meant, only step 3 changes.</div>
+<h3>Known limits of the forecast</h3>
+<ul><li>History is short and uneven: only 63 merged pull requests touched system tests since July, and one week in November (week 46) delivered 40 plan cases, mostly the EPAIS batch. Low / Base / High show that spread; the Base is not a guarantee.</li>
+<li>Estimates are agent judgement against the codebase, not measured effort. The hindsight estimate of the 98 finished cases uses the same method, so a bias is shared by capacity and backlog and mostly cancels in the month count, but not in the absolute day counts.</li>
+<li>Product changes, new plan cases added to the workbook, lane or VM availability and tenant problems are not modelled.</li></ul>
+</main></body></html>
