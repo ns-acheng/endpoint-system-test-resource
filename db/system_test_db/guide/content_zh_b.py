@@ -76,7 +76,7 @@ def part_b():
       <tr><td>gate(閘門)</td><td>測試結束後檢查資源數字,超過門檻就判這個 run 失敗</td></tr>
       <tr><td>sustained</td><td>連續高於門檻的時間,預設 60 秒才失敗</td></tr>
       <tr><td>baseline / recent</td><td>記憶體成長的起點(前 3 個存活樣本中位數)/ 終點(最後三分之一平均)</td></tr>
-      <tr><td>observe-only</td><td>只記錄、不判失敗的 process(目前是 demAgentSvc.exe 和 epais.exe)</td></tr>
+      <tr><td>observe-only</td><td>只記錄、不判失敗的 process(demAgentSvc.exe 和 epais.exe;有 Shuttle/Keystone 監控改動時還有 shuttle-ctl.exe、sovin.exe,以及 Mac 的 keystone-auth、shuttle-launcher)</td></tr>
       <tr><td>Private Bytes / RSS</td><td>Windows / Mac 的記憶體度量,不可互比</td></tr>
     </tbody>
   </table>

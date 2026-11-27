@@ -94,13 +94,13 @@ font-size:15px;margin:12px 0;color:var(--muted);line-height:1.75}
       <tr><td>worst_handles</td><td><span class="badge fail">是,≥ 1500 且結束時仍在</span></td><td>任一取樣點的最大 handle 數</td><td>高</td></tr>
     </tbody>
   </table>
-  <p class="foot">例外:<code>demAgentSvc.exe</code>(Windows DEM agent)和 <code>epais.exe</code>(EPAIS AI 安全服務)目前是 observe-only,數字會記錄、會出現在表上,但不會判定失敗;只有在 client 設定開啟 EPAIS 而 <code>epais.exe</code> 沒在跑時,run 才會失敗。存活時間不到 50% 的 process 也不套用閘門(被故意殺掉重啟的情況)。</p>
+  <p class="foot">例外:<code>demAgentSvc.exe</code>(Windows DEM agent)和 <code>epais.exe</code>(EPAIS AI 安全服務)目前是 observe-only,數字會記錄、會出現在表上,但不會判定失敗;只有在 client 設定開啟 EPAIS 而 <code>epais.exe</code> 沒在跑時,run 才會失敗。存活時間不到 50% 的 process 也不套用閘門(被故意殺掉重啟的情況)。帶有 Shuttle/Keystone 監控改動的 build 多一組:<code>shuttle-launcher.exe</code>、<code>shuttle.exe</code>、<code>keystone.exe</code>(Mac 是 <code>keystone</code>)和 client 的 process 一樣會判定,記憶體上限先暫定每個 1024 MB(起始值,不是量測值,等有真實 run 後改成實測的第 95 百分位);<code>shuttle-ctl.exe</code>(只跑幾秒的 CLI)、<code>sovin.exe</code>(升級後可能留下的舊 Shuttle 名稱),以及 Mac 的 <code>keystone-auth</code> 和 <code>shuttle-launcher</code>(它會換成 <code>shuttle</code> 而不常駐)是 observe-only。整個 run 都沒出現的 process 顯示成沒在跑並略過,不算失敗。</p>
 </div>
 
 <div class="card" id="s1">
   <h2>1. 資料怎麼來</h2>
   <ul>
-    <li><strong>取樣器</strong>在測試期間每 <strong>10 秒</strong>讀一次每個被監控的 process(少數測試改成 5 秒)。Windows 監控 <code>stAgentSvc.exe</code>、<code>stAgentSvcMon.exe</code>、<code>stAgentUI.exe</code>,另外記錄 <code>demAgentSvc.exe</code> 和 <code>epais.exe</code>,並記下每個 process 的 thread 數;Mac 監控 <code>nsAuxiliarySvc</code>、<code>Netskope Client</code>、<code>NetskopeClientMacAppProxy</code> 等。</li>
+    <li><strong>取樣器</strong>在測試期間每 <strong>10 秒</strong>讀一次每個被監控的 process(少數測試改成 5 秒)。Windows 監控 <code>stAgentSvc.exe</code>、<code>stAgentSvcMon.exe</code>、<code>stAgentUI.exe</code>,另外記錄 <code>demAgentSvc.exe</code> 和 <code>epais.exe</code>(帶有 Shuttle/Keystone 監控改動的 build 還有 <code>shuttle-launcher.exe</code>、<code>shuttle.exe</code>、<code>keystone.exe</code>、<code>shuttle-ctl.exe</code>、<code>sovin.exe</code>),並記下每個 process 的 thread 數;Mac 監控 <code>nsAuxiliarySvc</code>、<code>Netskope Client</code>、<code>NetskopeClientMacAppProxy</code> 等(有監控改動時還有 <code>keystone</code>、<code>keystone-auth</code>、<code>shuttle-launcher</code>)。取樣器記錄到的每個 process,只要 run 裡有資料,就會自動出現在每個 process 的表和跨版本圖上。</li>
     <li><strong>每次測試(一個 test case 的一次 run)</strong>把這些樣本濃縮成一列摘要:最高 CPU、持續秒數、記憶體基準與成長、最大 handles。報表的表格是把這些摘要再依 process 彙總。</li>
     <li><strong>CPU 單位 = 每核</strong>:100 代表整整用掉 1 個核心,190 代表約 1.9 個核心。跟 VM 有幾個核心無關。</li>
     <li><strong>記憶體單位 = MB</strong>:Windows 是 Private Bytes,Mac 是 RSS,兩者<strong>不能互相比較</strong>。</li>
@@ -199,7 +199,7 @@ font-size:15px;margin:12px 0;color:var(--muted);line-height:1.75}
       <tr><td>gate(閘門)</td><td>測試結束後檢查資源數字,超過門檻就判這個 run 失敗</td></tr>
       <tr><td>sustained</td><td>連續高於門檻的時間,預設 60 秒才失敗</td></tr>
       <tr><td>baseline / recent</td><td>記憶體成長的起點(前 3 個存活樣本中位數)/ 終點(最後三分之一平均)</td></tr>
-      <tr><td>observe-only</td><td>只記錄、不判失敗的 process(目前是 demAgentSvc.exe 和 epais.exe)</td></tr>
+      <tr><td>observe-only</td><td>只記錄、不判失敗的 process(demAgentSvc.exe 和 epais.exe;有 Shuttle/Keystone 監控改動時還有 shuttle-ctl.exe、sovin.exe,以及 Mac 的 keystone-auth、shuttle-launcher)</td></tr>
       <tr><td>Private Bytes / RSS</td><td>Windows / Mac 的記憶體度量,不可互比</td></tr>
     </tbody>
   </table>

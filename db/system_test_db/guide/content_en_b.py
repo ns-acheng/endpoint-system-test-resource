@@ -76,7 +76,7 @@ def part_b():
       <tr><td>gate</td><td>The check of the resource numbers after a test; above a threshold the run fails</td></tr>
       <tr><td>sustained</td><td>Time continuously above the threshold; 60 s by default fails the run</td></tr>
       <tr><td>baseline / recent</td><td>Start of memory growth (median of the first 3 living samples) / end (average of the last third)</td></tr>
-      <tr><td>observe-only</td><td>A process that is recorded but never fails a run (currently demAgentSvc.exe and epais.exe)</td></tr>
+      <tr><td>observe-only</td><td>A process that is recorded but never fails a run (demAgentSvc.exe and epais.exe; with the Shuttle/Keystone monitor change also shuttle-ctl.exe, sovin.exe and, on Mac, keystone-auth and shuttle-launcher)</td></tr>
       <tr><td>Private Bytes / RSS</td><td>Memory metric on Windows / Mac; not comparable</td></tr>
     </tbody>
   </table>
