@@ -1,0 +1,46 @@
+{
+  "windows": [
+    "stAgentSvc.exe",
+    "stAgentSvcMon.exe",
+    "stAgentUI.exe",
+    "demAgentSvc.exe",
+    "epais.exe",
+    "shuttle-launcher.exe",
+    "shuttle.exe",
+    "keystone.exe",
+    "shuttle-ctl.exe",
+    "sovin.exe"
+  ],
+  "mac": [
+    "nsAuxiliarySvc",
+    "Netskope Client",
+    "NetskopeClientMacAppProxy",
+    "netskope-dem-agent",
+    "MacOS/epais --config-dir",
+    "/shuttle --bootstrap-config",
+    "keystone",
+    "keystone-auth",
+    "shuttle-launcher"
+  ],
+  "observe_only": [
+    "demAgentSvc.exe",
+    "epais.exe",
+    "MacOS/epais --config-dir",
+    "/shuttle --bootstrap-config",
+    "shuttle-ctl.exe",
+    "sovin.exe",
+    "keystone-auth",
+    "shuttle-launcher"
+  ],
+  "mem_ceiling_mb": {
+    "shuttle.exe": 1024,
+    "shuttle-launcher.exe": 1024,
+    "keystone.exe": 1024,
+    "keystone": 1024
+  },
+  "source": {
+    "ref": "origin/acheng/git33-shuttle-keystone-monitor",
+    "sha": "7feac38e305b2683ebe5e00eb06d9f5a0a70405d",
+    "synced": "2026-11-27"
+  }
+}

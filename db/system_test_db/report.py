@@ -113,6 +113,53 @@ def table(
     return f'<table class="{cls}"><thead><tr>{th}</tr></thead><tbody>{"".join(trs)}</tbody></table>'
 
 
+def monitored_card(roster, seen, platform=None):
+    """The card that lists EVERY process the sampler is configured to monitor, also those with no data in this release, so that
+    everybody can see what is monitored (the human, 2026-11-27: "show all proc name in report even they do not have any data").
+
+    roster: the dict of monitored.load() (None when the file is missing); seen: {(process, platform): (runs, tests)} of this
+    release; platform: "windows" / "mac" / None. A process with data that is not on the roster is listed too, so a roster that
+    fell behind the sampler is visible."""
+    if not roster:
+        return (
+            '<div class="card"><h2>Monitored processes</h2><p class="foot">The roster file monitored_processes.json is missing or '
+            "unreadable on this server, so the list of monitored processes cannot be shown.</p></div>"
+        )
+    observe = set(roster.get("observe_only") or [])
+    ceilings = roster.get("mem_ceiling_mb") or {}
+    cols = ["process", "platform", "gate", "memory ceiling", "runs with data", "tests with data", "status"]
+    data = []
+    for pf in ("windows", "mac"):
+        if platform and platform != pf:
+            continue
+        names = list(roster.get(pf) or [])
+        for name in names:
+            runs, tests = seen.get((name, pf), (0, 0))
+            data.append(
+                [
+                    name,
+                    pf,
+                    "observe-only" if name in observe else "judged",
+                    f"{ceilings[name]} MB (first value)" if name in ceilings else "default",
+                    runs,
+                    tests,
+                    "monitored" if runs else "monitored, no data in this release",
+                ]
+            )
+        for (name, spf), (runs, tests) in sorted(seen.items()):
+            if spf == pf and name not in names:
+                data.append([name, pf, "-", "-", runs, tests, "has data, NOT on the roster (the roster file is behind the sampler)"])
+    src = roster.get("source") or {}
+    where = f"{src.get('ref', '?')} {str(src.get('sha', ''))[:8]}, synced {src.get('synced', '?')}"
+    return (
+        '<div class="card"><h2>Monitored processes</h2>'
+        '<p class="foot">Every process the sampler is configured to read during a test, whether this release has data for it or not. '
+        "<em>judged</em> processes can fail a run; <em>observe-only</em> ones are recorded and shown but never fail it. "
+        '"no data in this release" means no sampled test saw the process running: it was not started, or the build under test does '
+        f"not carry it. Roster file: {esc(where)}.</p>" + table(cols, data) + "</div>"
+    )
+
+
 # Product version filter. "ehf" is a token, not a version: an EHF build is X.0.N.build with N > 0 (143.0.2.2839);
 # monthly builds are X.0.0.build and feature builds X.100.100.build. Any other value is one exact version.
 EHF_TOKEN = "ehf"
@@ -1187,6 +1234,21 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
         {**p, "cpu_gate": CPU_GATE},
     )
 
+    # 3a. the roster of monitored processes with the number of runs that saw each one alive in this release (0 = no data)
+    _, _seen_rows = rows(
+        cur,
+        f"""
+        SELECT ps.process_name, run.platform, count(DISTINCT run.id), count(DISTINCT tr.test_name)
+        FROM process_summary ps JOIN test_result tr ON tr.id=ps.test_result_id
+        JOIN test_run run ON run.id=tr.run_id JOIN release r ON r.id=run.release_id
+        WHERE r.label=%(rel)s {_VER_GUARD} AND ps.alive_pct > 0
+        GROUP BY ps.process_name, run.platform""",
+        p,
+    )
+    import monitored  # noqa: E402  (a file of this folder; sys.path already holds it)
+
+    monitored_html = monitored_card(monitored.load(), {(r[0], r[1]): (r[2], r[3]) for r in _seen_rows}, platform)
+
     # 3b. resource peaks per process ACROSS versions (140 up through the
     # current release's major), feeding the trend line chart below the
     # per-process table. Deliberately NOT scoped by r.label/release: this
@@ -1982,6 +2044,8 @@ def _build_report_raw(release, top, tenant=None, platform=None, stack=None, vers
   {table(c3, res)}
   <div class="chart-wrap"><canvas id="cpuChart"></canvas></div>
 </div>
+
+{monitored_html}
 
 {ver_win_card}
 {mem_win_card}
